@@ -1,66 +1,60 @@
-# Project AI Bootstrap v5 Prompt
+# Project AI Bootstrap v5.4 Prompt
 
 I want to build the project described below.
 
-Using the attached `PROJECT_BOOTSTRAP_V5.md` (v5.3.1 Linear + local Codex/mobile Remote workflow):
+Using the attached `PROJECT_BOOTSTRAP_V5.md`:
 
-1. Generate the project-specific repository documents:
+1. Generate or update:
    - `PRD.md`
    - `AGENTS.md`
    - `README.md`
-   - `SKILL.md` only when the project has meaningful UI
-2. Create or reuse one dedicated Linear Project for this software project.
-3. Create the Linear milestones, parent issues, executable issues, labels, priorities, and blocker relationships required to implement it.
-4. Do not generate `.devtool/features/*.md` or any other local task files.
+   - `SKILL.md` only when meaningful UI exists
+2. Create or reuse one dedicated Linear Project.
+3. Create the milestones, parent issues, executable issues, labels, priorities, and blocker relationships needed to implement the project.
+4. Do not create `.devtool/features/*.md` or any local task-state file.
+5. Treat the Linear issue roadmap as the core output. Do not finish after writing repository documents.
 
 ## Linear target
 
-- Workspace/team: `<team name, or infer when unambiguous>`
-- Project name: `<optional; infer from the idea when omitted>`
-- Existing Linear project to reuse: `<optional name or URL>`
+- Team: `<team name, or infer only when unambiguous>`
+- Project: `<optional project name or URL>`
 
-## Project shape
-
-Infer one or more when omitted:
+## Execution policy
 
 ```text
-web-ui
-mobile-ui
-desktop-ui
-api-service
-full-stack-product
-cli-tool
-library-sdk
-data-pipeline
-ai-system
-automation-integration
-infrastructure-platform
+execution_mode: codex-local-remote
+completion_mode: pr-created
+context_mode: lean
+session_policy: one-issue-per-thread
 ```
 
-## Requirements
+## Context-efficiency requirements
 
-- Make reasonable assumptions for small gaps and record them.
-- Ask only one focused question when a missing answer materially changes architecture, scope, data model, UX, security, or the required Linear team.
-- Keep `AGENTS.md` brief and token-efficient.
-- Keep Linear as the only implementation-task state.
-- Require agents to move issues to In Progress before editing code and verify the mutation.
-- Set `execution_mode: codex-local-remote` unless the user explicitly selects another mode.
-- Set `completion_mode` to `merge-gated` or `pr-created`; do not assume one silently.
-- Require agents to update status according to the selected completion mode.
-- A failed Linear status mutation must stop implementation rather than allowing status drift.
-- Use small, dependency-aware, independently verifiable Linear issues.
-- Use capability-based agent recommendations rather than assuming one LLM provider.
-- Prefer latest stable dependencies where practical.
-- Use the repository's existing package manager and tooling; otherwise prefer pnpm, TypeScript, Vitest, Prettier, and lint-staged where they fit.
-- For meaningful UI, apply the contextual TasteSkill workflow and generate a project-specific `SKILL.md`.
-- Do not default to a component library unless the user, repository, domain, or design read justifies it.
-- Do not create duplicate Linear projects or duplicate issues when rerun.
+- Resolve Linear team statuses once and store their actual names in `AGENTS.md`.
+- List existing project issues once during bootstrap and index stable bootstrap keys.
+- Give every executable issue an `Execution context` section containing:
+  - context budget
+  - exact required document headings
+  - likely paths/packages
+  - whether comments must be read
+  - whether the issue was previously attempted/reopened
+  - narrow verification commands
+- Default `Read comments` to `no`.
+- Reference `SKILL.md` only for relevant UI/visual tasks.
+- Keep issue descriptions independently executable without copying the whole PRD.
+- Keep root `AGENTS.md` brief. Add nested `AGENTS.md` only for materially different subtrees.
+- Require one fresh Codex thread per issue.
+- Require minimal narration and targeted reads during execution.
+- Require narrow verification before broad repository checks.
+- Prefer local `git` and `gh` for branch/PR work; use Linear MCP for task state.
 
-## Execution workflow
+## Model guidance
 
-- Primary execution mode: `codex-local-remote`
-- Completion mode: `pr-created` (use `merge-gated` only when explicitly selected)
-- Codex Cloud: optional and disabled unless explicitly requested
+- Use capability profiles as the canonical recommendation.
+- Recommend the minimum sufficient capability and reasoning level.
+- Provide compatible recommendations for both Codex/OpenAI and Claude/Anthropic when current models can be resolved.
+- Otherwise write `resolve at execution time`; do not invent model names.
+- Do not assign the strongest model or `xhigh` to routine work.
 
 ## Project idea
 
@@ -68,9 +62,6 @@ infrastructure-platform
 <Paste the project idea here>
 ---
 
-## Model and completion requirements
+## Completion requirements
 
-- For every Linear issue, include provider-compatible model guidance for both Codex/OpenAI and Claude/Anthropic.
-- Resolve current model names from the connected environments at generation time; do not permanently rely on model names listed in this prompt.
-- Keep capability profile and reasoning requirement canonical.
-- After every completed task, require the agent to include the GitHub PR URL, current Linear issue URL, next Linear issue URL, and the next issue's suggested models and reasoning for both providers.
+After bootstrap creation, report the Linear Project URL, issue counts, first ready issue URL, its model guidance, assumptions, open questions, and the stored Linear status mapping.

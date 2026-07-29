@@ -1,73 +1,73 @@
 # AGENTS.md
 
-## Purpose
+## Project
 
-Guide coding agents working on `<Project Name>`.
-
-## Project snapshot
-
-- Shapes: `<project shapes>`
-- Stack: `<short stack summary>`
-- Linear Project: `<project name and full URL>`
-- GitHub repository: `<full URL>`
+- Linear team: `<team>`
+- Linear project: `<project name or URL>`
 - Execution mode: `codex-local-remote`
 - Completion mode: `pr-created`
+- Context mode: `lean`
+- Session policy: `one-issue-per-thread`
 
-## Sources of truth
+## Linear status map
 
-- Product and architecture: `PRD.md`
-- Setup and commands: `README.md`
-- UI/UX constraints: `SKILL.md`, when present
-- Task status, dependencies, priority, assignment, model guidance, and progress: Linear
+- Ready: `<actual status name>`
+- Started: `<actual status name>`
+- Review: `<actual status name or none>`
+- Done: `<actual status name>`
 
-## Mandatory Linear lifecycle
+Use these names directly. List team statuses only when this mapping is missing or rejected by Linear.
 
-1. Fetch the assigned Linear issue, status, comments, and blockers.
-2. Confirm blockers are resolved.
-3. Move the issue to the team's Started status and verify the mutation.
-4. Stop before editing when the status update fails.
-5. Implement only the issue scope.
-6. Run the required verification.
-7. Push a branch and create or update a GitHub PR containing the Linear issue identifier.
-8. Post the required completion comment.
-9. Apply `completion_mode`:
-   - `merge-gated`: move to In Review; merge automation moves it to Done.
-   - `pr-created`: move to Done after verified implementation and successful PR creation.
-10. Verify the final Linear mutation.
-11. When blocked, add the blocker relation/comment and return the issue to the appropriate blocked or unstarted status.
+## Source of truth
 
-## Project rules
+- Linear owns issue state, priority, dependencies, assignee, and progress.
+- `PRD.md` owns product and architecture decisions.
+- `README.md` owns setup and commands.
+- `SKILL.md` owns UI direction and is read only for relevant UI/visual work.
+- Nested `AGENTS.md` files own subtree-specific rules.
 
-- Do not create local task files.
-- Do not change unrelated Linear issues.
-- Do not claim a task started or completed until the Linear mutation succeeds.
-- Use the same workflow from Codex app, mobile Remote, CLI, or VS Code.
-- Do not require Codex Cloud unless the project explicitly selects it.
+## Lean issue startup
+
+1. Use a fresh thread for one issue.
+2. Fetch the target issue once with relations.
+3. If no ID was supplied, list only a small set of ready candidates.
+4. Trust blocker statuses returned with relations; fetch only unclear or unresolved blockers.
+5. Read comments only when the issue says `Read comments: yes`, was attempted/reopened, or scope changed in comments.
+6. Move the issue to the Started status and verify once.
+7. Run `git status --short --branch` once.
+8. Read this file once, then only the issue's required document sections and likely paths.
+9. Do not read full PRD/README/SKILL files by default.
+10. Do not narrate routine successful steps.
+
+## Worktree safety
+
+Preserve unrelated pre-existing changes. Do not inspect their full diff unless they overlap target files or create a safety concern. Do not include them in the task commit or PR.
+
+## Implementation
+
+- Work only within issue scope.
+- Search before reading broad files.
+- Use targeted ranges and cap command output.
+- Avoid generated bundles, lockfiles, snapshots, and large logs unless required.
+- Do not silently expand scope; update Linear when a new dependency is discovered.
 
 ## Verification
 
-- Run the narrowest relevant checks first.
-- Run broader typecheck, lint, tests, and build checks when appropriate.
-- Record commands and results in the Linear completion comment.
+Run the narrowest applicable check first:
 
-## Required completion report
+1. focused test
+2. affected package lint/typecheck/test
+3. affected app integration test
+4. repository-wide checks only when required or justified
 
-After implementation and verification:
+Do not mark Done when verification fails.
 
-1. Obtain the full GitHub PR URL.
-2. Update Linear according to `completion_mode`.
-3. Fetch the next ready unblocked issue from the same Linear Project.
-4. Read that issue's `Suggested AI` section.
-5. Return and post:
-   - what changed
-   - verification results
-   - remaining risks
-   - completed Linear issue URL
-   - GitHub PR URL
-   - next Linear issue URL
-   - next issue title
-   - next issue's Codex/OpenAI model and reasoning
-   - next issue's Claude/Anthropic model and reasoning
-   - why it is the recommended next issue
+## Completion
 
-Do not start the next issue automatically. If none is ready, say `No ready unblocked issue`, link the Linear Project, and list the blockers.
+1. Push a branch containing the Linear issue ID.
+2. Create a GitHub PR.
+3. Post one concise Linear completion comment.
+4. Apply `completion_mode` and verify the final status once.
+5. Fetch one next ready issue and copy its model guidance.
+6. Report current issue URL, PR URL, concise changes, verification, risks, next issue URL, and next model guidance.
+7. Stop. Do not start the next issue in this thread.

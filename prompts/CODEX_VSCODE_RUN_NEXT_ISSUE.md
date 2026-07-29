@@ -1,7 +1,7 @@
-# Codex VS Code prompt: run the next ready issue
+# Codex VS Code: run the next ready issue efficiently
 
 Use the repository open in VS Code and its `AGENTS.md` instructions.
 
-Fetch the highest-priority ready issue from the linked Linear Project, move it to In Progress, verify the status, implement it, run checks, create a GitHub PR, update Linear according to `completion_mode`, and return the PR and next-issue links with the next issue's model recommendations.
+Apply the lean Linear workflow: inspect only a small Ready candidate set, fetch the selected issue once with relations, verify only unclear blockers, skip comments by default, use the stored status mapping, read only referenced context and likely paths, implement the issue, run focused checks, create the GitHub PR, update Linear, fetch one next issue, report links and model guidance, then stop.
 
-Do not create local task files or start the next issue automatically.
+Use one fresh thread per issue. Do not create local task files, load the entire roadmap, read all project documents, narrate routine actions, or start the next issue automatically.

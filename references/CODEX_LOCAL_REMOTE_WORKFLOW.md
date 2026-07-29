@@ -1,74 +1,63 @@
-# Codex Local + Mobile Remote Workflow
+# Codex Local + Mobile Remote Workflow — Lean Mode
 
-## Target architecture
+## Architecture
 
 ```text
 Mac, devbox, or approved remote machine
   Codex app / CLI / VS Code extension
   local Git repository
-  local credentials and tools
   Linear MCP
+  git + GitHub CLI
         ^
-        | secure Remote connection
+        | ChatGPT mobile Remote
         v
-ChatGPT mobile app
-  start or continue Codex threads
-  approve commands
-  change direction or model
-  inspect terminal output, tests, diffs, and screenshots
+Phone or tablet
 ```
 
-This is not Codex Cloud. Codex executes on the connected host machine.
+Execution remains on the host machine.
 
-## Requirements
+## Run a known issue
 
-- Codex is installed and signed in on the host.
-- The repository exists locally and has a working GitHub remote.
-- Linear MCP is authenticated in Codex.
-- The host remains powered on, connected, and available.
-- ChatGPT mobile and Codex desktop use the same authorized account/workspace.
+1. Start a fresh Codex thread in the repository.
+2. Supply the Linear issue identifier.
+3. Codex fetches the issue once with relations.
+4. Codex verifies only unclear/unresolved blockers.
+5. Codex skips comments unless required by the issue.
+6. Codex moves the issue to the configured Started status and verifies once.
+7. Codex runs one concise Git status.
+8. Codex reads root `AGENTS.md`, relevant nested instructions, exact referenced document sections, and likely paths only.
+9. Codex implements and runs focused verification.
+10. Codex pushes and creates the PR.
+11. Codex updates Linear according to `completion_mode`.
+12. Codex fetches one next ready issue, reports links/model guidance, and stops.
 
-## Run one Linear issue
+## Run the next issue when no ID is known
 
-1. Open the repository in Codex or VS Code.
-2. From desktop or mobile Remote, give Codex the Linear Project or issue identifier.
-3. Codex fetches the issue, comments, blockers, and status.
-4. Codex confirms that blockers are resolved.
-5. Codex updates the issue to the Started status and verifies it.
-6. Codex reads `AGENTS.md` and only the relevant project documents.
-7. Codex creates or uses a branch containing the Linear issue identifier.
-8. Codex implements and verifies the issue.
-9. Codex pushes the branch and opens a GitHub PR.
-10. Codex updates Linear according to `completion_mode`.
-11. Codex fetches the next ready issue and copies its model guidance.
-12. Codex returns the PR URL and next issue URL.
+1. List a small page of issues in the active project's Ready status.
+2. Choose the highest-priority candidate whose returned relations show no unresolved blocker.
+3. Fetch only the chosen issue when more detail is needed.
+4. Continue with the known-issue workflow.
+
+Do not load the entire roadmap.
 
 ## Completion modes
-
-### `merge-gated`
-
-```text
-Started -> In Progress
-PR opened and verified -> In Review
-PR merged manually -> Done through Linear/GitHub automation
-```
-
-Use this when Done means code is merged.
 
 ### `pr-created`
 
 ```text
-Started -> In Progress
-Implementation verified and PR opened -> Done
-PR remains available for manual review and merge
+Ready -> In Progress -> Done after verification and PR creation
 ```
 
-Use this when Done means the coding agent finished its assigned implementation. This matches the user's existing workflow.
+The user reviews and merges manually.
 
-## Mobile operating prompt
+### `merge-gated`
 
-Use the prompt in `prompts/MOBILE_REMOTE_RUN_NEXT_ISSUE.md`.
+```text
+Ready -> In Progress -> In Review after PR creation -> Done after merge
+```
 
-## Switching to VS Code
+## Mobile Remote
 
-Open the same repository in VS Code and use the Codex extension. Linear's Codex MCP setup is shared by the CLI and IDE extension, so the task roadmap and status workflow remain unchanged.
+From ChatGPT mobile Remote, open the host Codex thread and use the prompt in `prompts/RUN_SPECIFIC_ISSUE_LEAN.md` or `prompts/MOBILE_REMOTE_RUN_NEXT_ISSUE.md`.
+
+Use a new thread for the recommended next task rather than continuing the completed issue thread.
