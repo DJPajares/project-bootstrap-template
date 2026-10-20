@@ -1,1 +1,1 @@
-Use the attached PROJECT_BOOTSTRAP.md, AGENTS.template.md, and PRD.template.md to bootstrap the project from my context below.
+Read and follow [PROJECT_BOOTSTRAP.md](https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/PROJECT_BOOTSTRAP.md) using my project context below. If you cannot retrieve that file, say so.

@@ -1,1 +1,1 @@
-Use the attached TASK_PLANNING.md, PRD.md, and AGENTS.md to brainstorm the next outcome with me before creating tasks.
+Read and follow [TASK_PLANNING.md](https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/TASK_PLANNING.md) to brainstorm the next outcome with me using my current project documents. If you cannot retrieve that file, say so.

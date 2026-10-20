@@ -1,21 +1,27 @@
 # Project Bootstrap Template
 
-Give an AI agent your project idea or an existing project. First it generates the project documents. In a separate conversation, it helps you brainstorm an outcome and turn agreed decisions into reviewed tasks.
+Paste a short prompt with a URL, add your project context, and choose how the agent should deliver the result: create the project in a workspace/repository, or generate the files for you. In a separate conversation, brainstorm outcomes and turn agreed decisions into reviewed tasks.
 
-**The same attachments work for both new and existing projects.** No particular AI platform, technology stack, issue tracker, or hosting service is required.
+**No template downloads or edits are needed when the AI platform can read URLs.** The same flow works for new and existing projects. A GitHub connection is optional and usable only for operations its tools and permissions actually support.
 
 ## 1. Generate the project documents
 
-1. Attach these three files unchanged: [PROJECT_BOOTSTRAP.md](PROJECT_BOOTSTRAP.md), [AGENTS.template.md](templates/AGENTS.template.md), and [PRD.template.md](templates/PRD.template.md).
-2. Paste this short line into the chat:
+1. Copy this prompt into your AI platform:
 
    ```text
-   Use the attached PROJECT_BOOTSTRAP.md, AGENTS.template.md, and PRD.template.md to bootstrap the project from my context below.
+   Read and follow [PROJECT_BOOTSTRAP.md](https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/PROJECT_BOOTSTRAP.md) using my project context below. If you cannot retrieve that file, say so.
    ```
 
-3. Add your idea dump, structured ideas, problem statement, or existing project context below the line and send it.
+2. Add your idea dump, structured ideas, problem statement, or existing project context below it and send.
+3. Choose the delivery path the agent presents:
+   - **Create the project:** initialize a project folder or create/populate a GitHub repository when supported. For an existing project, update its documents in place.
+   - **Generate the files:** receive downloadable documents where supported, otherwise complete Markdown contents. No target-project or repository changes are made.
 
-A paragraph is enough to start. Do not edit the attachments or fill in their placeholders. The agent organizes your context, gathers what it can, resolves routine gaps, and writes the documents. Missing consequential decisions are recorded with recommendations for later review, so document generation does not require a follow-up questionnaire. It stops after the documents and handoff; it does not draft or create implementation tasks.
+A paragraph is enough to start. The agent reads the URL and retrieves the reference templates itself. It waits for your delivery choice unless you already supplied it, and requests only missing destination details needed for that path. A connected account alone does not guarantee repository creation or write access; the agent checks capabilities and explains any limitation before acting.
+
+No product questionnaire or template editing is required. The agent organizes your context, handles routine gaps, and records consequential unknowns with recommendations. Creating the project initializes its documents; it does not build an application. This workflow stops after the documents and handoff, without drafting or creating implementation tasks.
+
+If the platform cannot read the URL, use pasted instructions or attach [PROJECT_BOOTSTRAP.md](PROJECT_BOOTSTRAP.md) and its [agent-rules](templates/AGENTS.template.md) and [requirements](templates/PRD.template.md) references unchanged. The agent must disclose unread sources instead of claiming it followed them.
 
 ## What the agent produces
 
@@ -24,20 +30,21 @@ A paragraph is enough to start. Do not edit the attachments or fill in their pla
 - **Supporting guidance when needed** — such as setup instructions, a technical decision record, or an operational runbook. Existing documents are updated instead of duplicated.
 - **A short handoff** — what changed, what was checked, any decisions still needed, and a suggested outcome to discuss next.
 
-With file access, the agent writes the documents. In a chat-only environment, it provides complete file contents ready to save. Draft decisions stay visibly distinct from approved ones.
+On the creation/update path, the agent writes and verifies the documents in the agreed destination. On the file-generation path, it returns the files without modifying a target project. Draft decisions stay visibly distinct from approved ones.
 
 ## 2. Brainstorm and plan the tasks
 
 Start a separate conversation when you are ready to plan work:
 
-1. Attach [TASK_PLANNING.md](TASK_PLANNING.md) unchanged, plus the project's current `PRD.md` and `AGENTS.md` generated in stage 1. Use the actual project documents, not the reference templates.
-2. Paste this short line into the chat:
+1. Copy this prompt into the chat:
 
    ```text
-   Use the attached TASK_PLANNING.md, PRD.md, and AGENTS.md to brainstorm the next outcome with me before creating tasks.
+   Read and follow [TASK_PLANNING.md](https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/TASK_PLANNING.md) to brainstorm the next outcome with me using my current project documents. If you cannot retrieve that file, say so.
    ```
 
-3. Add the outcome, problem, or improvement you want to explore. If you have no starting point, the agent recommends one.
+2. Add the outcome, problem, or improvement you want to explore, and the project location or document links if they are not already available. The agent reads the current project `PRD.md` and `AGENTS.md`; these are not the bootstrap templates. If you have no starting point, it recommends one.
+
+Attachments or pasted project documents remain available when URL or repository access is unavailable.
 
 This stage is a conversation: **discuss → decide → draft tasks → approve creation**. The agent brings options, recommendations, and focused questions, then waits for your response. It explores one outcome or related task group at a time, records accepted decisions, and prepares task briefs with scope, acceptance criteria, dependencies, and verification.
 
@@ -51,9 +58,9 @@ Describe the outcome you want and any decisions already made. The agent proposes
 
 ## Existing project
 
-Open the project workspace, share its repository, or provide the relevant documents with your chat context when available. The same attachments tell the agent to inspect the existing direction, rules, structure, and delivery conventions before updating anything. If access is unavailable, it produces complete drafts and clearly identifies what could not be verified.
+Open the project workspace, share its repository, or provide the relevant documents with your chat context when available. The agent inspects existing direction, rules, structure, and delivery conventions. Choose project creation/update to apply the document changes, or file generation to receive the revised documents without changing the project.
 
-It preserves accepted decisions, useful setup instructions, unrelated work, and the distinction between intended behavior and what has actually shipped. It reconciles outdated or conflicting guidance rather than appending another competing rule set. Running it again updates the same documents.
+It preserves accepted decisions, useful setup instructions, unrelated work, and the distinction between intended behavior and what has actually shipped. It reconciles outdated or conflicting guidance rather than appending another competing rule set. Repeated runs reuse existing destinations and documents rather than creating duplicates.
 
 ## What the agent handles
 
@@ -70,10 +77,10 @@ Project document generation and conversational task planning are separate workfl
 
 | File                                                         | Purpose                                                                      |
 | ------------------------------------------------------------ | ---------------------------------------------------------------------------- |
-| [PROJECT_BOOTSTRAP.md](PROJECT_BOOTSTRAP.md)                 | Main instructions for the agent. Attach unchanged.                           |
-| [PROMPT_TEMPLATE.md](PROMPT_TEMPLATE.md)                     | The short chat line that references the attachments.                         |
+| [PROJECT_BOOTSTRAP.md](PROJECT_BOOTSTRAP.md)                 | Main instructions, linked from the URL-based prompt.                         |
+| [PROMPT_TEMPLATE.md](PROMPT_TEMPLATE.md)                     | Copy-ready prompt containing the bootstrap URL.                              |
 | [TASK_PLANNING.md](TASK_PLANNING.md)                         | Separate instructions for brainstorming, task review, and approved creation. |
-| [TASK_PLANNING_PROMPT.md](TASK_PLANNING_PROMPT.md)           | The short chat line for the planning conversation.                           |
+| [TASK_PLANNING_PROMPT.md](TASK_PLANNING_PROMPT.md)           | Copy-ready prompt containing the planning URL.                               |
 | [templates/AGENTS.template.md](templates/AGENTS.template.md) | Structural reference for the agent generating working rules.                 |
 | [templates/PRD.template.md](templates/PRD.template.md)       | Structural reference for the agent generating direction and requirements.    |
 | [CONTRIBUTING.md](CONTRIBUTING.md)                           | Guidance for improving this kit.                                             |
