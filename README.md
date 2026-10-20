@@ -2,15 +2,20 @@
 
 Give an AI agent your project idea or an existing project. It does the discovery, makes recommendations, and creates the documents needed to start useful work.
 
-**One prompt works for both new and existing projects.** No particular AI platform, technology stack, issue tracker, or hosting service is required.
+**The same attachments work for both new and existing projects.** No particular AI platform, technology stack, issue tracker, or hosting service is required.
 
 ## Get started
 
-1. Copy [PROMPT_TEMPLATE.md](PROMPT_TEMPLATE.md) into your AI platform.
-2. Add your idea or existing project location in the short **Your project** section.
-3. Send it. Give the agent access to the project when available.
+1. Attach these three files unchanged: [PROJECT_BOOTSTRAP.md](PROJECT_BOOTSTRAP.md), [AGENTS.template.md](templates/AGENTS.template.md), and [PRD.template.md](templates/PRD.template.md).
+2. Paste this short line into the chat:
 
-A paragraph is enough to start. The agent gathers what it can, handles routine choices, and asks only for important decisions or access it cannot obtain itself. You do not need to fill in the document templates or design the workflow first.
+   ```text
+   Use the attached PROJECT_BOOTSTRAP.md, AGENTS.template.md, and PRD.template.md to bootstrap the project from my context below.
+   ```
+
+3. Add your idea dump, structured ideas, problem statement, or existing project context below the line and send it.
+
+A paragraph is enough to start. Do not edit the attachments or fill in their placeholders. The agent organizes your context, gathers what it can, resolves routine gaps, and writes the documents. Missing consequential decisions are recorded with recommendations for later review, so document generation does not require a follow-up questionnaire.
 
 ## What the agent produces
 
@@ -27,7 +32,7 @@ Describe the outcome you want and any decisions already made. The agent proposes
 
 ## Existing project
 
-Open the project workspace, share its repository, or provide the relevant documents. The same prompt tells the agent to inspect the existing direction, rules, structure, and delivery conventions before updating anything.
+Open the project workspace, share its repository, or provide the relevant documents with your chat context when available. The same attachments tell the agent to inspect the existing direction, rules, structure, and delivery conventions before updating anything. If access is unavailable, it produces complete drafts and clearly identifies what could not be verified.
 
 It preserves accepted decisions, useful setup instructions, unrelated work, and the distinction between intended behavior and what has actually shipped. It reconciles outdated or conflicting guidance rather than appending another competing rule set. Running it again updates the same documents.
 
@@ -44,11 +49,12 @@ The bootstrap ends with usable project documents and an implementation starting 
 
 ## Files
 
-| File                                                         | Purpose                                                                     |
-| ------------------------------------------------------------ | --------------------------------------------------------------------------- |
-| [PROMPT_TEMPLATE.md](PROMPT_TEMPLATE.md)                     | The only prompt needed to start. It works independently of the other files. |
-| [templates/AGENTS.template.md](templates/AGENTS.template.md) | Structural reference for the agent generating working rules.                |
-| [templates/PRD.template.md](templates/PRD.template.md)       | Structural reference for the agent generating direction and requirements.   |
-| [CONTRIBUTING.md](CONTRIBUTING.md)                           | Guidance for improving this kit.                                            |
+| File                                                         | Purpose                                                                   |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------- |
+| [PROJECT_BOOTSTRAP.md](PROJECT_BOOTSTRAP.md)                 | Main instructions for the agent. Attach unchanged.                        |
+| [PROMPT_TEMPLATE.md](PROMPT_TEMPLATE.md)                     | The short chat line that references the attachments.                      |
+| [templates/AGENTS.template.md](templates/AGENTS.template.md) | Structural reference for the agent generating working rules.              |
+| [templates/PRD.template.md](templates/PRD.template.md)       | Structural reference for the agent generating direction and requirements. |
+| [CONTRIBUTING.md](CONTRIBUTING.md)                           | Guidance for improving this kit.                                          |
 
 The agent selects relevant modules for interfaces, technical design, data, external dependencies, AI product behavior, or delivery governance. None is assumed simply because the project uses an AI development assistant.
