@@ -9,6 +9,7 @@ Confirm URL sources were actually retrieved. If the instruction URL cannot be re
 ## 1. Understand the outcome
 
 - Read the applicable agent rules and the relevant requirements, accepted decisions, open questions, and delivery constraints. Inspect implementation or existing tasks only where access and the selected outcome warrant it.
+- Reuse the selected task destination and setup guidance from the project. Recheck relevant authentication and target access before relying on it; a prior setup result may be stale or belong to another platform/session. If access is missing, use available connection/setup tools, automate supported configuration, guide only the required sign-in/consent step, and verify the result. Never request secrets in chat or create test tasks. Keep brainstorming and task drafts moving when connection setup is deferred or blocked.
 - Use the user's stated focus. If none is supplied, recommend one useful outcome from the current scope and explain why it is a good starting point.
 - Plan one meaningful outcome or related task group at a time. Do not load or generate the entire backlog by default.
 - Keep approved intent, shipped behavior, proposed changes, and historical validation distinct. If project material is unavailable, state the limitation and discuss the supplied context without inventing requirements or implementation facts.
@@ -72,7 +73,7 @@ Only after the user authorizes the concrete reviewed batch:
 4. If creation partially fails, report what succeeded and what remains. On retry, reconcile existing results before creating anything again.
 5. Report the created or updated task links, any failures or blocked work, and the first unblocked task with the reason it is ready. Stop; do not start implementation or another planning batch automatically.
 
-If no task system is selected, keep the reviewed task briefs as the deliverable in chat or a downloadable artifact. Do not force tool setup. If an external write needs missing access or an ambiguous destination, finish the approved briefs, state the exact blocker, and do not claim tasks were created. Ask only for the access or destination needed to perform the authorized write.
+If no task system is selected, keep the reviewed task briefs as the deliverable in chat or a downloadable artifact. Do not force tool setup. If an authorized external write lacks access, first discover supported connection options and help connect or restore access; verify the result without creating test resources. For an ambiguous destination, resolve only the missing scope. If access remains unavailable or setup is deferred, finish the approved briefs, state the exact blocker, and do not claim tasks were created. Do not treat connection setup as approval to create unreviewed tasks or unrelated task-system resources.
 
 ## Repeat the cycle
 

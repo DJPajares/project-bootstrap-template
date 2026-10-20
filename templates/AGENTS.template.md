@@ -101,6 +101,7 @@ Retain only for projects with software, stored information, or external dependen
 Retain only when a tracker has been selected.
 
 - Tracker/project: {{TRACKER_AND_PROJECT_SCOPE}}.
+- Verify relevant authentication, target scope, and supported operations before task writes. If access is missing, help connect through supported tooling and user-controlled sign-in/consent; never request secrets in chat or create test tasks. Keep drafts useful when setup is deferred, and do not treat connection setup as task-creation authorization.
 - Use the task already referenced by the request. Create new tasks only when explicitly requested or authorized by {{ISSUE_CREATION_POLICY}}. Task size alone does not authorize creation.
 - Check actual blocking relationships before dependent implementation.
 - Lifecycle: {{ACTUAL_STATUS_MEANINGS_AND_TRANSITIONS}}. Distinguish work in progress, review readiness, integration, and release where the tool supports them.
@@ -113,6 +114,7 @@ Retain only when a tracker has been selected.
 Retain only when version control and review-based integration have been selected.
 
 - Protected integration branch(es): {{PROTECTED_BRANCHES}}.
+- Check access to the intended repository and the actual capabilities needed. Help restore a missing connection through supported authentication rather than assuming an installed integration grants write access. Keep credentials and transient readiness flags out of project files.
 - Inspect the current branch before the first edit and immediately before every commit and push. Use {{CHANGE_ISOLATION_POLICY}}; do not commit or push directly to a protected branch.
 - Preserve unrelated local changes. Do not overwrite, reset, or move another contributor's work without authorization.
 - Naming and task linking: {{PROJECT_CONVENTIONS_IF_ANY}}. Do not assume service-specific keywords or branch formats.
