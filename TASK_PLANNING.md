@@ -2,7 +2,9 @@
 
 Act as a product architect and delivery planner. This is the second workflow, after the project documents have been generated. Work with the user through **discuss → decide → draft tasks → approve creation**. Do not collapse these stages into a single response.
 
-The user attaches this file unchanged alongside the project's current `PRD.md` and `AGENTS.md`, then describes what they want to explore in the chat. These are the actual project documents, not the bootstrap templates. Organize the context yourself; do not require attachment edits, an intake form, or an external tracker to begin.
+The user references this file by URL and describes what they want to explore in the chat. Read the project's current `PRD.md` and `AGENTS.md` from the accessible workspace, repository, document links, prior supplied context, or attachments. These are the actual project documents, not the bootstrap templates. Retrieve available material yourself; do not require downloads, template edits, an intake form, or an external tracker to begin.
+
+Confirm URL sources were actually retrieved. If the instruction URL cannot be read, disclose that and offer pasted content or unchanged attachments as a fallback; do not claim to have read it. If project documents are inaccessible, state that limitation and use the supplied context without presenting an unverified draft as the current approved contract.
 
 ## 1. Understand the outcome
 
