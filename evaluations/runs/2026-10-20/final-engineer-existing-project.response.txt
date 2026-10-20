@@ -1,0 +1,208 @@
+The project remains a small, offline Python utility: preview filename normalization safely, then apply only conflict-free changes. The first useful version should prioritize predictable plans, explicit skip/error reporting, and recovery guidance—without changing public CLI flags, adding dependencies, or broadening scope.
+
+## `PRD.md`
+
+````markdown
+# Safe Filename Normalizer — Project Requirements Document
+
+**Status:** Approved project contract, updated to clarify recovery and verification  
+**Owner:** Project owner  
+**Updated:** 2026-10-20  
+**Approval source:** Existing project decisions and the project owner’s 2026-10-20 update request
+
+This document owns the project’s purpose, scope, behavior, constraints, and product decisions. `AGENTS.md` owns execution and validation rules. The authorized request or reviewed task owns current implementation status. Validation reports own observed evidence. Requirements, implementation status, approval, and historical test results remain distinct.
+
+## Purpose and scope
+
+The utility helps people normalize filenames without accidentally overwriting files or depending on network services. It provides a preview so users can inspect the intended changes before applying them.
+
+- **First useful result:** A standard-library Python command-line utility that deterministically previews and applies safe filename normalization using the existing public command-line flags.
+- **Outside this version:** Network access, third-party frameworks, graphical interfaces, persistent databases, migrations, repository or tracker setup, automatic conflict resolution, overwrite support, and unrelated file-management features.
+- **Success evidence:** Focused `unittest` coverage passes; representative preview and apply scenarios produce the expected observable results; conflicts and failures preserve existing files and are reported clearly.
+- **Tradeoff principles:** Prefer safety and understandable results over performing every possible rename. Preserve compatibility over redesigning established interfaces. Preview and apply must use the same normalization and validation rules.
+
+## Requirements and acceptance
+
+| Reference | Required behavior or output | Observable acceptance and verification | Decision status/source |
+| --- | --- | --- | --- |
+| REQ-001 | The utility shall use only the Python standard library and shall not perform network operations. | Dependency inspection finds no third-party runtime package requirement, and focused tests do not require network access. | Accepted existing contract; reaffirmed 2026-10-20 |
+| REQ-002 | The existing public command-line flags and their meanings shall remain compatible. | Existing CLI tests pass, and representative documented invocations continue to parse and behave as documented. | Accepted existing interface; reaffirmed 2026-10-20 |
+| REQ-003 | Preview shall report the rename plan without modifying files. It shall apply the same normalization and safety checks used by apply mode. | A snapshot of the relevant directory before and after preview is unchanged, while output identifies proposed renames and skipped or conflicting entries. | Accepted behavior; recovery and verification clarified 2026-10-20 |
+| REQ-004 | Apply shall perform only safe, validated renames and shall never overwrite an existing path. A target occupied by an existing file, directory, or another planned rename shall be treated as a conflict unless the existing accepted behavior can resolve the plan without overwrite. | Conflict tests show that every pre-existing destination remains unchanged and the affected source is not silently lost or replaced. | Accepted no-overwrite contract; reaffirmed 2026-10-20 |
+| REQ-005 | A rename plan shall detect invalid, duplicate, or colliding destinations before performing the affected operation. Unsafe entries shall be skipped or cause the existing documented failure behavior, with a clear diagnostic. | Tests cover destination collisions, occupied destinations, invalid inputs, and repeated normalization results. No affected existing content is overwritten. | Accepted safety boundary; clarified 2026-10-20 |
+| REQ-006 | Failures shall leave users with an observable, recoverable state. The utility shall report which renames succeeded, which did not, and why; it shall not claim transaction-wide rollback unless that behavior is implemented and verified. | Failure-path tests confirm truthful status reporting and preservation of source and destination data for rejected renames. If an operating-system error occurs after earlier successful renames, the result identifies completed and incomplete work so the user can inspect the filesystem and safely rerun preview. | Recovery clarification accepted 2026-10-20 |
+| REQ-007 | Re-running preview after an interruption or partial apply shall calculate a fresh plan from the current filesystem state. It shall not rely on hidden network or persistent migration state. | A test or controlled scenario applies only part of a plan, previews again, and confirms the new output reflects actual current filenames without proposing overwrites. | Recovery clarification accepted 2026-10-20 |
+| REQ-008 | User-facing outcomes shall distinguish proposed renames, completed renames, skipped entries, conflicts, and execution errors using the project’s existing output and exit-status conventions. | CLI tests assert the established output and exit behavior for successful, mixed, and failed scenarios without inventing incompatible flags or formats. | Existing conventions preserved; clarification accepted 2026-10-20 |
+
+## Structure and approach
+
+This is a bounded standard-library Python command-line project. Preserve its existing layout:
+
+- `rename_tool/` contains the command-line entry point and the normalization, planning, conflict-detection, and rename behavior.
+- `tests/` contains focused `unittest` coverage of public CLI behavior and safety invariants.
+- `README.md` contains user-facing orientation, existing CLI documentation, and the documented verification command.
+- `PRD.md` owns approved product behavior and boundaries.
+- `AGENTS.md` owns execution and review rules.
+
+Keep normalization separate from filesystem mutation where the existing implementation permits it. Preview and apply should consume the same plan or equivalent shared logic so they cannot drift. Conflict validation must occur before each affected rename, including protection against filesystem changes that occur after preview.
+
+Do not add a framework, third-party runtime dependency, network service, repository integration, task tracker, migration system, or speculative infrastructure. Preserve the current CLI flags and package layout.
+
+## Recovery and failure behavior
+
+“No overwrite” is the primary integrity invariant. A failed or conflicting rename must not remove or replace pre-existing destination content.
+
+Preview is the normal preparation and recovery mechanism:
+
+1. Preview the current filesystem state.
+2. Resolve reported conflicts outside the utility if desired.
+3. Apply using the existing CLI contract.
+4. If apply is interrupted or reports an error, inspect its result and run preview again.
+5. Treat the new preview as authoritative for the current filesystem state.
+
+The utility need not provide transaction-wide rollback unless separately proposed and approved. Where multiple renames are processed, an execution error may leave earlier successful renames in place. Reporting must make this visible and must not describe the whole operation as successful. A rerun must re-evaluate current paths and retain all no-overwrite checks.
+
+Recovery behavior must not depend on a journal, database, migration, network service, or newly introduced command-line flag.
+
+## Validation and delivery
+
+The documented test command is:
+
+`python -m unittest discover`
+
+It is the primary automated verification command, but it has not been run as part of this documentation-only delivery.
+
+Focused validation should cover:
+
+- existing CLI flag parsing and documented behavior;
+- preview making no filesystem changes;
+- preview and apply deriving consistent plans;
+- successful normalization;
+- occupied target paths;
+- two sources mapping to the same target;
+- invalid or inaccessible paths where the platform permits reliable testing;
+- an execution error or simulated partial apply followed by a fresh preview;
+- preservation of source and destination contents on rejected renames;
+- truthful output and exit status for success, conflict, partial completion, and error outcomes;
+- absence of network-dependent and third-party runtime behavior.
+
+Filesystem tests should use isolated temporary directories and assert names and file contents before and after each operation. Platform-specific cases should be reported as skipped or untested rather than assumed to pass.
+
+Before integration, the change requires self-review, the documented automated tests, and human review under the existing project rules. Documentation review does not establish runtime behavior. Reports must identify the environment, command, result, coverage, and any skipped or untested cases.
+
+## Decisions and uncertainty
+
+Accepted decisions:
+
+- Python standard library only.
+- Source remains in `rename_tool/`.
+- Tests remain in `tests/` and use `unittest`.
+- Existing public CLI flags are preserved.
+- The utility performs no network operations.
+- Existing paths are never overwritten.
+- No framework, repository setup, tracker, or migration is added.
+- Human review is required before merge.
+
+Recovery clarification:
+
+- Previewing the current filesystem is the supported route for checking and recovering from conflicts, interruptions, or partial completion.
+- Whole-operation atomicity and automatic rollback are not implied by the no-overwrite guarantee.
+- If current implementation behavior differs from these recovery requirements, that difference must be reported and reviewed rather than silently described as complete.
+
+No implementation or runtime-validation status is established by this document update.
+````
+
+## `AGENTS.md`
+
+````markdown
+# AGENTS.md
+
+## Project and authority
+
+Safe Filename Normalizer is a standard-library Python command-line utility that lets users preview and apply filename normalization without network access or overwriting existing paths.
+
+- `PRD.md` owns approved purpose, scope, behavior, constraints, and product decisions.
+- `AGENTS.md` owns execution, validation, review, and delivery rules.
+- The current authorized request or reviewed task owns work scope, dependencies, and implementation status; no external tracker is required.
+- The “Structure and approach” and “Decisions and uncertainty” sections of `PRD.md` own accepted technical decisions.
+- A validation report attached to the relevant change owns observed results for the identified artifact, environment, date, commands, coverage, and gaps.
+
+Implementation, task status, and historical evidence do not silently amend requirements. Reconcile contradictions before dependent work while continuing independent work where safe.
+
+## Working boundaries
+
+- Preserve the Python standard-library constraint, `rename_tool/` and `tests/` layout, current public CLI flags, `unittest` usage, and the accepted no-network and no-overwrite contracts.
+- Follow the requirements and recovery behavior in `PRD.md`. Do not duplicate or weaken them in implementation notes.
+- Make the smallest coherent change. Preserve existing conventions, useful history, and unrelated work.
+- Do not introduce a framework, third-party runtime dependency, network integration, repository setup, tracker, migration, persistent journal, new CLI flag, or unrelated feature without an approved requirements change.
+- Keep credentials and secrets out of code, tests, documentation, logs, and chat. This utility should not require credentials.
+- Separate facts, assumptions, proposals, approved decisions, implementation status, and observed validation results. Never fabricate a command result or claim a check was run when it was not.
+- The project owner controls consequential product, scope, architecture, interface, and acceptance decisions. Agents may make routine reversible implementation choices within authorized scope.
+- Merging requires human review. Passing checks or becoming review-ready does not authorize a merge.
+
+## Planning and execution
+
+For new work:
+
+1. Discuss one useful outcome and any consequential alternatives.
+2. Record accepted product decisions in `PRD.md`; update this file only when working rules change.
+3. Draft a concrete task proposal with scope, exclusions, acceptance criteria, dependencies, and verification.
+4. Obtain authorization before creating reviewed tasks in any task system. Task creation does not authorize implementation.
+
+For authorized implementation:
+
+1. Read the relevant requirements, current request, README guidance, affected source, and focused tests.
+2. Inspect the workspace and preserve unrelated changes.
+3. Confirm that the work does not change public CLI flags or weaken no-network or no-overwrite behavior.
+4. Implement the smallest coherent change, sharing planning and validation logic between preview and apply where appropriate.
+5. Validate affected observable behavior in isolated temporary directories.
+6. Self-review safety, recovery reporting, compatibility, and scope.
+7. Prepare the change for human review and report results and gaps honestly.
+
+Do not describe automatic rollback or transaction-wide atomicity unless the implementation and focused tests establish it. After an interruption or partial apply, a fresh preview of the current filesystem is the supported recovery check.
+
+## Validation and handoff
+
+Use the documented command:
+
+`python -m unittest discover`
+
+Also run the narrowest relevant test selection when useful. Do not replace the full documented suite with focused tests alone when preparing a change for review.
+
+Validation must cover the behavior affected by the change and protect these invariants:
+
+- preview does not mutate the filesystem;
+- preview and apply use consistent normalization and safety rules;
+- an existing destination is never overwritten;
+- multiple sources cannot silently claim the same destination;
+- rejected operations preserve relevant source and destination contents;
+- partial completion and errors are reported truthfully;
+- rerunning preview after changed or partially renamed state produces a fresh safe plan;
+- no test or runtime path requires network access or a third-party package;
+- existing CLI flags and documented meanings remain compatible.
+
+Use isolated temporary directories for filesystem tests. Assert filenames, file types where relevant, and file contents before and after operations. Avoid tests that depend on incidental ordering or platform-specific filename behavior unless the supported platform contract requires it.
+
+For each validation report, state:
+
+- the artifact or change checked;
+- environment and date;
+- exact commands run;
+- passed, failed, skipped, blocked, and untested checks;
+- representative manual scenarios, if any;
+- remaining gaps.
+
+A documentation review is not runtime validation. A simulated error is not evidence of every operating-system failure mode. Historical results do not validate changed code.
+
+Work is ready for review only when the authorized scope is met, documentation is current, required checks pass, and known gaps are explicit. A human reviewer decides whether the change may be merged. Review readiness, approval, merge, and release are separate events.
+
+Read only targeted context, use concise project vocabulary, and report the outcome, evidence, material gaps, affected artifacts, and any decision needed. Do not create external issues, repositories, or unrelated follow-up work without authorization.
+````
+
+The recommended direction is to keep the utility deliberately small and make safety observable: one shared rename plan, explicit conflicts, truthful partial-failure reporting, and fresh preview as the recovery path.
+
+These are file-delivery drafts only; the project was not modified. `PRD.md` is the product contract, while `AGENTS.md` provides working, validation, and review rules. The documented test command was preserved but not executed, so no runtime validation is claimed.
+
+For the separate planning conversation, attach these generated `PRD.md` and `AGENTS.md` files and use this copy-ready starter:
+
+> Follow the [Brainstorming and Task Planning instructions](https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/TASK_PLANNING.md). The project is the existing Safe Filename Normalizer, with source in `rename_tool/` and tests in `tests/`. Read the attached `PRD.md` and `AGENTS.md` as the current project documents. Focus first on comparing the implementation and tests with the clarified recovery and verification contracts, especially no-overwrite conflict handling, partial-apply reporting, and fresh preview after failure. Discuss options and consequential gaps first; do not create tasks, modify the project, or begin implementation until the workflow reaches the applicable approval stage.

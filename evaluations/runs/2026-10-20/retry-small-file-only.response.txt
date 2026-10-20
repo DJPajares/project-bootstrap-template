@@ -1,0 +1,477 @@
+Recommended direction: a small, non-recursive command-line utility with a strict two-step workflow: preview a deterministic rename plan, then run a separate explicit apply command. The first version should handle regular files in one folder, preserve extensions, reject every conflict before changing anything, and never replace an existing path. Recursive cleanup, undo history, configuration files, interfaces, and integrations should wait.
+
+The exact cleanup convention was not specified, so the documents propose a conservative default: trim surrounding whitespace from the filename stem and collapse internal whitespace to a single hyphen while preserving case, extension, and all other characters. This remains an open product decision before implementation.
+
+## `PRD.md`
+
+````markdown
+# Filename Cleanup Preview — Project Requirements Document
+
+**Status:** Draft; explicit user constraints are accepted, while the cleanup convention remains proposed  
+**Owner:** Project owner  
+**Updated:** 2026-10-20  
+**Approval source:** User request dated 2026-10-20  
+**Current scope:** Documentation and first-version requirements
+
+This document defines the intended behavior of a small Python standard-library utility for previewing and applying filename cleanup in one folder. `AGENTS.md` defines working and validation rules. Future task briefs or an explicitly selected task record will own implementation status and dependencies. Completion reports will contain validation evidence; intended behavior in this document is not proof of implementation.
+
+## 1. Purpose and direction
+
+People sometimes need to make filenames more consistent but should not have to trust a bulk rename operation without seeing its exact effects first. Existing shell commands can be difficult to inspect, may behave differently across platforms, and can accidentally replace files when conflicts are overlooked.
+
+The utility will:
+
+1. inspect one explicitly selected folder without recursion;
+2. calculate a deterministic cleanup plan for regular files;
+3. display the proposed source and destination names without changing the folder; and
+4. perform those same changes only after a separate, explicit apply command.
+
+The utility is intended for a person working locally from a command line. It is not a service, graphical interface, file organizer, or general-purpose batch-processing framework.
+
+### Principles
+
+- Preview is the safe default and never changes the filesystem.
+- Apply must be explicit; confirmation is never inferred from having run preview.
+- Existing paths are preserved. A cleanup operation must not overwrite or replace one.
+- Ambiguity blocks mutation rather than being resolved silently.
+- Output must make planned, skipped, conflicting, successful, and failed items distinguishable.
+- The first version remains small, local, dependency-free, and understandable.
+
+## 2. Outcome and success
+
+### Intended outcome
+
+A user can review an exact filename cleanup plan for one folder and apply it with confidence that unrelated entries and existing destination paths will not be overwritten.
+
+### Observable success measures
+
+- Preview reports every proposed rename and performs no writes.
+- Apply requires an explicit apply mode or command.
+- Given unchanged input, preview and apply derive the same plan.
+- A destination conflict prevents that rename from being attempted.
+- Regular files not selected for renaming remain unchanged.
+- Directories, symbolic links, and nested contents remain unchanged.
+- The process returns a non-zero exit status for invalid input, conflicts that prevent a requested apply, or operational failures.
+- Automated tests cover cleanup rules, preview safety, collisions, repeated execution, and apply failures.
+
+No usage-volume, performance, or adoption target has been approved. For this bounded local utility, correctness and preservation of files are the primary success criteria.
+
+## 3. Current scope
+
+### Included
+
+- A Python command-line program implemented with the Python standard library only.
+- One folder supplied explicitly by the user.
+- Non-recursive inspection of regular files directly inside that folder.
+- A deterministic preview showing old and proposed new names.
+- A separate explicit apply operation.
+- Conflict detection before mutation.
+- Protection against replacing an existing destination.
+- Clear summaries and meaningful process exit codes.
+- Focused automated tests and concise usage guidance when implementation begins.
+
+### Explicit non-goals
+
+The first version does not include:
+
+- a graphical or web interface;
+- a server, API, database, account system, or external service;
+- recursive traversal or multi-folder batches;
+- a task tracker integration;
+- background file watching;
+- configurable cleanup rules or configuration files;
+- automatic numbering or other silent collision resolution;
+- directory renaming;
+- symbolic-link renaming;
+- content inspection or modification;
+- rollback history or a persistent rename journal;
+- deployment, packaging, or publication to a package registry.
+
+These exclusions are boundaries, not instructions to build extension infrastructure.
+
+## 4. Filename cleanup policy
+
+The user has not yet approved the exact cleanup transformation. The recommended first-version policy is:
+
+1. Operate on the filename only, never its parent path.
+2. Treat the final suffix as the extension and preserve it exactly.
+3. For ordinary filenames, trim leading and trailing Unicode whitespace from the stem.
+4. Replace each remaining run of one or more Unicode whitespace characters in the stem with one ASCII hyphen (`-`).
+5. Preserve case and every other character exactly.
+6. Leave a name unchanged when the transformation produces the original name.
+7. Reject a proposed result whose stem becomes empty.
+8. Treat dotfiles with no additional suffix, such as `.env`, as extensionless names and leave their leading dot intact.
+9. Do not normalize Unicode, change capitalization, transliterate characters, remove punctuation, or alter extensions.
+
+Examples under the proposed policy:
+
+| Source | Proposed result |
+| --- | --- |
+| `Quarterly Report.pdf` | `Quarterly-Report.pdf` |
+| ` notes  draft .txt` | `notes-draft.txt` |
+| `photo.JPG` | unchanged |
+| `.env` | unchanged |
+
+This policy is a proposal, not an accepted requirement. Implementation should not begin until the owner accepts it or supplies a replacement rule.
+
+## 5. Workflow
+
+### FLOW-001 — Preview cleanup
+
+- **Actor and purpose:** A local user wants to inspect possible filename changes safely.
+- **Entry:** The user invokes the utility with one folder path and no apply option.
+- **Minimum input:** An existing, accessible directory.
+- **Sequence:**
+  1. Resolve and validate the supplied folder.
+  2. inspect only its immediate entries;
+  3. select regular files while excluding directories and symbolic links;
+  4. calculate proposed names using the accepted cleanup policy;
+  5. classify unchanged names, invalid results, duplicate proposed destinations, and destinations that already exist; and
+  6. print the complete plan and summary.
+- **Result:** No filesystem entry is changed.
+- **Failure behavior:** Invalid or inaccessible folders produce a clear error and non-zero exit status. Per-file inspection problems are reported and cause the plan to be unsafe to apply.
+- **Recovery:** Correct the folder, permissions, filename, or policy issue and run preview again.
+
+### FLOW-002 — Apply cleanup
+
+- **Actor and purpose:** A local user has chosen to perform the calculated cleanup.
+- **Entry:** The user invokes the separate explicit apply mode for one folder.
+- **Sequence:**
+  1. Recalculate the current plan from the live folder; a previous preview is informative but is not reused as stale authority.
+  2. Run all validation and conflict checks.
+  3. If any blocking conflict or inspection error exists, perform no renames.
+  4. For each valid planned change, create the destination without replacement semantics and remove the source only after destination creation succeeds.
+  5. Report every success and failure, followed by a summary.
+- **Result:** Successfully processed files have their proposed names; all unrelated entries remain unchanged.
+- **Failure behavior:** A destination that appears during apply must cause that item to fail without replacing the destination. Because ordinary filesystems do not provide a portable multi-file transaction, an operational failure can leave earlier items completed and later items untouched.
+- **Recovery:** The report identifies completed and uncompleted changes. Running preview again derives a plan from the current folder state, making retry safe for remaining work.
+
+## 6. Requirements
+
+### REQ-001 — Inspect one folder without recursion
+
+- **Status/source:** Accepted from the user request.
+- The utility must require one folder path.
+- It must inspect only entries directly contained in that folder.
+- It must consider regular files only.
+- It must not rename directories, symbolic links, or anything below a nested directory.
+- Missing, non-directory, or inaccessible input must result in a clear error and non-zero exit status.
+
+**Acceptance criteria**
+
+1. A nested file is never included in the plan.
+2. A directory or symbolic link in the selected folder is reported as skipped or omitted according to documented output behavior and is never changed.
+3. An invalid folder causes no mutation.
+
+### REQ-002 — Produce a deterministic cleanup plan
+
+- **Status/source:** Cleanup is accepted in principle; the exact transformation in Section 4 is proposed.
+- Applying the accepted cleanup policy to the same folder state must produce the same source-to-destination mappings.
+- Plan ordering must be stable, using filename ordering documented by the implementation.
+- A source must appear at most once.
+- An unchanged filename must not be treated as a rename.
+- An empty or otherwise invalid destination filename must be a blocking validation error.
+
+**Acceptance criteria**
+
+1. Repeated previews of an unchanged folder have the same planned mappings and order.
+2. Files whose names already satisfy the policy are not renamed.
+3. The program does not silently invent a destination for an invalid result.
+
+### REQ-003 — Preview without mutation
+
+- **Status/source:** Accepted from the user request.
+- Preview must be the default behavior.
+- It must show each proposed source and destination name clearly.
+- It must identify blocking conflicts before apply.
+- It must provide totals for proposed, unchanged or skipped, conflicting, and invalid entries.
+- Preview must not create, remove, rename, or modify any filesystem entry.
+
+**Acceptance criteria**
+
+1. Comparing the directory state before and after preview shows no changes.
+2. Every proposed rename is visible in output before any apply operation is requested.
+3. Conflicts produce visible diagnostics and a non-zero exit status when the plan is not safe to apply.
+
+### REQ-004 — Require explicit apply
+
+- **Status/source:** Accepted from the user request.
+- Mutation must occur only when the user supplies the documented explicit apply command or option.
+- Merely running preview, redirecting its output, or repeating preview must not authorize apply.
+- Apply must calculate and validate a fresh plan from current filesystem state.
+- Apply must not depend on an interactive interface.
+
+**Acceptance criteria**
+
+1. Omitting the apply argument never renames a file.
+2. Providing the apply argument invokes fresh validation before mutation.
+3. A folder changed between preview and apply is handled according to its current state, not the previous display.
+
+### REQ-005 — Never overwrite an existing path
+
+- **Status/source:** Accepted from the user request.
+- A proposed destination is conflicting when:
+  - a filesystem entry already exists at that path, including a path occupied by another planned source; or
+  - two or more sources produce the same destination.
+- The utility must not automatically number, delete, replace, or move a conflicting entry.
+- A pre-apply conflict must block the entire apply before any changes begin.
+- Apply must use a no-replacement operation for each destination; a check followed by a replacing rename is insufficient because another process could create the destination between those steps.
+- For supported regular files in the same folder, the proposed implementation is to create the destination as a hard link using an exclusive standard-library operation and unlink the source only after link creation succeeds. If the filesystem does not support this safely, the item must fail without deleting the source.
+- Source removal must never occur unless the corresponding destination was created successfully.
+
+**Acceptance criteria**
+
+1. If `clean-name.txt` exists, applying a plan that targets it leaves both the existing file and source file unchanged.
+2. Duplicate destination proposals block apply before mutation.
+3. A destination created concurrently during apply is not replaced.
+4. Failure to create a destination leaves the source intact.
+5. Tests verify destination contents and source preservation, not only emitted messages.
+
+### REQ-006 — Report partial operational failure honestly
+
+- **Status/source:** Proposed supporting behavior necessary for filesystem safety.
+- Validation conflicts must block all changes before apply begins.
+- Unexpected failures after mutation begins must stop further work unless continuing is demonstrably safer.
+- The program must report which mappings completed and which did not.
+- A partially completed run must return a non-zero exit status.
+- A subsequent preview must reflect actual current names and allow remaining valid work to be retried without repeating completed changes.
+
+**Acceptance criteria**
+
+1. A simulated failure after one successful change produces a non-zero exit status and an accurate per-item report.
+2. Successfully created destinations are not mislabeled as rolled back.
+3. Retrying does not overwrite completed destinations or lose unprocessed sources.
+
+## 7. Quality constraints
+
+| ID | Area | Requirement | Verification |
+| --- | --- | --- | --- |
+| QUAL-001 | Dependencies | Runtime code uses only the Python standard library. | Dependency and import inspection. |
+| QUAL-002 | Safety | Preview performs no writes; apply never replaces an existing path. | Filesystem integration tests. |
+| QUAL-003 | Portability | Supported Python versions and operating systems must be selected and tested before release; unsupported filesystem behavior fails safely. | Open decision plus platform test matrix. |
+| QUAL-004 | Clarity | Diagnostics name the affected source and destination and distinguish validation conflicts from operational failures. | Output tests and representative walkthrough. |
+| QUAL-005 | Privacy | Filenames remain local; the utility performs no network access or telemetry. | Code inspection and tests where useful. |
+| QUAL-006 | Maintainability | Transformation and planning logic remain separate from filesystem mutation. | Design and code review. |
+
+No specific runtime target is required. The implementation should process a normal human-managed folder promptly while favoring safety and clarity over optimization.
+
+## 8. Proposed technical direction
+
+This is a single local Python command-line utility. The Python standard library is an accepted constraint; the detailed structure remains proposed until implementation planning.
+
+### Minimal layout
+
+- `src/filename_cleanup/`
+  - `__init__.py` — package boundary without side effects.
+  - `__main__.py` — command-line entry point and exit-code handling.
+  - `cleanup.py` — pure filename transformation.
+  - `planning.py` — directory inspection, classification, and deterministic plan creation.
+  - `apply.py` — guarded filesystem mutations and per-item results.
+- `tests/`
+  - focused unit tests for cleanup and planning;
+  - temporary-directory integration tests for preview, conflicts, apply, and failure recovery.
+- `README.md` — supported environment, usage examples, safety behavior, and verified commands.
+- `PRD.md` — authoritative product requirements and decisions.
+- `AGENTS.md` — execution and governance rules.
+
+A flatter layout is acceptable if implementation remains equally clear; no framework, service boundary, database, or plugin system is warranted.
+
+### Responsibility boundaries
+
+- Cleanup logic accepts a filename and returns either the proposed filename or a validation result. It performs no I/O.
+- Planning owns directory inspection and collision analysis but performs no mutation.
+- Apply consumes a newly calculated valid plan and owns guarded filesystem operations.
+- Command-line handling translates inputs and results into human-readable output and stable exit behavior.
+- Filesystem state remains the source of truth. Preview output is not a durable transaction record.
+
+### Setup and verification approach
+
+Implementation should target a currently supported Python 3 version chosen before coding. Proposed commands must not be presented as verified until the program exists. Once implemented, verification should include unit tests and real temporary-directory checks on every supported platform, especially for no-replacement behavior.
+
+## 9. Delivery and validation
+
+### Delivery slices
+
+1. **Accepted cleanup contract**
+   - Outcome: The transformation rules and supported environment are approved.
+   - Requirements: REQ-002 and QUAL-003.
+   - Prerequisite: Owner decisions DEC-001 and DEC-002.
+   - Evidence: Updated approved requirements with representative examples.
+
+2. **Safe preview**
+   - Outcome: The utility validates one folder and displays a deterministic, non-mutating plan.
+   - Requirements: REQ-001 through REQ-003.
+   - Prerequisite: Accepted cleanup contract.
+   - Evidence: Automated tests plus a temporary-directory walkthrough showing no changes.
+
+3. **Guarded apply**
+   - Outcome: Explicit apply performs valid changes without replacing existing paths.
+   - Requirements: REQ-004 through REQ-006.
+   - Prerequisite: Safe preview and confirmed supported-filesystem strategy.
+   - Evidence: Conflict, concurrent-destination, successful apply, partial-failure, and retry tests.
+
+These slices guide later planning; they are not executable tasks and do not authorize implementation.
+
+### Validation policy
+
+For documentation, review terminology, requirement consistency, unresolved placeholders, scope boundaries, and representative scenarios. Documentation review does not validate a future program.
+
+For implementation, evidence must identify the revision, Python version, operating system/filesystem, date, checks run, results, and known gaps. Required coverage includes:
+
+- unchanged and whitespace-heavy names;
+- extension and dotfile behavior;
+- nested directories and symbolic links;
+- duplicate proposed destinations;
+- pre-existing and concurrently appearing destinations;
+- inaccessible or invalid folders;
+- successful apply;
+- failure before source removal;
+- partial operational failure and retry;
+- a filesystem that does not support the selected no-replacement technique.
+
+Final acceptance belongs to the project owner after the cleanup convention, supported environment, observable behavior, and required validation evidence are reviewed.
+
+## 10. Decisions, assumptions, and risks
+
+### Decisions
+
+| ID | Decision | Status | Recommendation and impact | Owner |
+| --- | --- | --- | --- | --- |
+| DEC-001 | Exact filename cleanup convention | Open | Accept Section 4’s conservative whitespace-only policy. Implementation is blocked until this is approved or replaced. | Project owner |
+| DEC-002 | Supported Python versions and operating systems | Open | Choose the environments actually needed before implementation and prove no-overwrite behavior on each. This blocks a portability claim, not document preparation. | Project owner |
+| DEC-003 | Non-recursive, regular-file-only scope | Accepted | Matches the requested small first version and limits accidental changes. | Project owner |
+| DEC-004 | Standard-library-only implementation | Accepted | Keeps installation and maintenance simple. | Project owner |
+| DEC-005 | Preview by default and explicit apply | Accepted | Makes mutation deliberate and reviewable. | Project owner |
+| DEC-006 | No overwrite or automatic collision resolution | Accepted | Preserves existing filesystem entries and surfaces ambiguity. | Project owner |
+
+### Assumptions
+
+- The selected source and destination are in the same folder and therefore on the same filesystem.
+- “Files” means regular files, not directories or symbolic links.
+- The utility may make partial progress after an unexpected runtime failure because portable multi-file filesystem transactions are unavailable.
+- The user will review a preview, but apply still revalidates current state instead of trusting that review as a lock.
+- Filename display must be unambiguous even for whitespace or unusual characters; an escaped or quoted representation is appropriate.
+
+### Material risks
+
+- **Platform differences:** Hard-link permissions and filesystem support vary. Mitigation: test each supported environment and fail without unlinking the source when safe destination creation is unavailable.
+- **Concurrent folder changes:** State can change after preflight. Mitigation: use exclusive no-replacement destination creation and preserve the source until it succeeds.
+- **Ambiguous cleanup expectations:** An overly aggressive policy could produce unwanted names. Mitigation: approve a small transformation contract with examples before implementation.
+- **Partial apply:** Power loss or an unexpected error can interrupt a multi-file operation. Mitigation: accurate per-file reporting and idempotent replanning from current state.
+````
+
+## `AGENTS.md`
+
+````markdown
+# AGENTS.md
+
+## Project and authoritative records
+
+Filename Cleanup Preview is a small Python standard-library utility that previews deterministic filename cleanup for regular files in one folder and performs changes only after explicit apply.
+
+| Record | Authority |
+| --- | --- |
+| `PRD.md` | Approved purpose, scope, behavior, constraints, and product decisions; proposed sections remain proposals. |
+| `AGENTS.md` | Execution, governance, validation, and delivery rules. |
+| Reviewed task briefs or a later explicitly selected task record | Current work, dependencies, implementation status, and known gaps. No external tracker is selected. |
+| `PRD.md` technical direction and decision register | Technical proposals and accepted decisions. |
+| Completion reports attached to the relevant revision | Observed validation evidence, including environment, date, coverage, results, and gaps. |
+
+Implementation status and historical test results do not silently amend requirements. The project owner controls product, scope, architecture, acceptance, and any publication decision.
+
+## Scope and safety rules
+
+- Preserve the accepted boundaries: one folder, no recursion, regular files only, preview by default, explicit apply, standard library only, and no overwrite.
+- Do not add an interface, server, database, external service, tracker, recursive operation, configuration system, or packaging workflow without an approved requirement change.
+- The filename transformation is not approved until PRD decision DEC-001 is resolved. Do not implement an invented cleanup rule.
+- Inspect relevant existing work before editing and preserve unrelated changes.
+- Make the smallest coherent change that satisfies the approved requirement and its acceptance criteria.
+- Keep cleanup, plan generation, and filesystem mutation separate. Pure planning code must not perform writes.
+- Never use a replacing rename operation where another filesystem entry could be lost. A prior existence check alone does not satisfy the no-overwrite requirement.
+- Preserve a source until its destination has been created successfully. Fail safely when the filesystem cannot provide the required behavior.
+- Never expose private filenames unnecessarily in logs or external systems. The program must not add telemetry or network access.
+- Store no credentials in project files. This project currently needs none.
+- Keep each fact in its authoritative record; link to PRD requirements instead of duplicating their full text.
+
+## Decision authority
+
+Agents may inspect context, draft artifacts, make routine reversible implementation choices within accepted requirements, fix in-scope defects, and run authorized local validation.
+
+The project owner must approve:
+
+- the exact cleanup convention;
+- supported Python and operating-system scope;
+- changes to product behavior or exclusions;
+- new dependencies or external connections;
+- final acceptance, publication, or release.
+
+Prepare concrete options and evidence before requesting a consequential decision. Continue independent work when an open decision does not block it. Do not infer authorization to implement, publish, create tasks, or release from document approval.
+
+## Planning new work
+
+1. Discuss one useful outcome or related group, beginning with the open cleanup and environment decisions when implementation is requested.
+2. Record explicitly accepted product changes in `PRD.md`.
+3. Draft task proposals with exact scope and exclusions, PRD references, observable acceptance criteria, dependencies, affected areas, and focused verification.
+4. Present the concrete proposal for review.
+5. Obtain explicit authorization before creating tasks in any selected system. No task system is currently selected, so task briefs remain in chat unless the owner later chooses one.
+6. Do not begin implementation merely because a task proposal was drafted or approved for creation.
+
+Reuse settled decisions and avoid reopening them without a conflict or new material evidence.
+
+## Task execution
+
+1. Read the request and relevant sections of `PRD.md`.
+2. Inspect the current workspace, applicable instructions, and unrelated changes before editing.
+3. Confirm that blocking decisions are resolved. In particular, do not implement filename transformation while DEC-001 is open.
+4. Plan briefly when the work spans multiple responsibilities or important failure paths.
+5. Implement only the authorized outcome and preserve all accepted boundaries.
+6. Run focused validation covering observable behavior, failure paths, and no-overwrite invariants.
+7. Self-review the complete change for correctness, scope, portability, privacy, and unsupported claims.
+8. Report what passed, failed, was blocked, or was not run. Identify the artifact revision and test environment.
+9. Stop at the applicable human review or acceptance gate. Readiness for review is not final acceptance or publication.
+
+## Validation and definition of done
+
+Documentation work must be checked for:
+
+- consistency between `PRD.md` and `AGENTS.md`;
+- unresolved placeholders or authoring notes;
+- clear distinction between accepted and proposed decisions;
+- representative walkthroughs for preview, conflict, apply, and partial failure;
+- internal links and stable requirement references.
+
+Documentation review does not prove runtime behavior.
+
+Software work must use the project’s actual verified commands once they exist and must include:
+
+- formatting or static checks adopted by the project;
+- unit tests for cleanup and deterministic planning;
+- temporary-directory integration tests for preview and apply;
+- proof that preview performs no mutation;
+- proof that pre-existing and concurrently created destinations are never replaced;
+- checks that directories, symbolic links, and nested entries are unchanged;
+- source-preservation checks when destination creation fails;
+- partial-failure and safe-retry checks;
+- validation on every environment claimed as supported.
+
+A test that checks only console text is insufficient for filesystem safety; inspect paths, identities or contents, and source preservation as applicable.
+
+Work is ready for final review only when its approved scope is satisfied, relevant documentation is current, required checks pass, and untested environments or unresolved decisions are explicit. Missing no-overwrite evidence blocks acceptance of apply behavior.
+
+## Communication
+
+- Read only the requirements and implementation areas relevant to the current outcome.
+- Use concise progress updates for substantial work.
+- Distinguish supplied facts, accepted decisions, recommendations, assumptions, implementation status, and observed evidence.
+- Do not fabricate commands, test results, filesystem guarantees, access, or completion.
+- Completion reports should state the outcome, validation performed, material gaps, affected artifact or revision, and any decision needed.
+- Do not invent a next task, create backlog items, or change unrelated status without authorization.
+````
+
+These are generated file contents only; no project, repository, task, or program was created. `PRD.md` is the project plan and behavioral contract. `AGENTS.md` contains the practical rules for planning, implementation, validation, and human approval.
+
+The material open decisions are the precise filename cleanup convention and the supported Python/operating-system range. The recommended first decision is to accept or adjust the conservative whitespace-only convention in the PRD. No repository, tracker, account, or external connection is needed or configured.
+
+For the separate brainstorming conversation, attach the actual `PRD.md` and `AGENTS.md` created from the contents above, then send:
+
+> Follow the task-planning instructions at https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/TASK_PLANNING.md. The project is Filename Cleanup Preview. The current project documents are the attached `PRD.md` and `AGENTS.md`; treat them as the project-specific records, not as templates. Start by discussing the proposed filename cleanup convention in PRD Section 4 and the supported Python/operating-system decision. Recommend a precise first-version choice, explain any no-overwrite portability tradeoff, and stop for my response before drafting tasks.

@@ -1,77 +1,43 @@
 # AGENTS.md
 
-> For the agent generating this file: resolve `{{placeholders}}` from the project context, remove this note, and retain only selected optional modules. Handle routine gaps yourself; record consequential unknowns as open decisions. Do not hand an unfinished template back to the user or activate unresolved commands. This reference does not grant external tool or release permission.
+> For the generating agent: resolve `{{placeholders}}`, remove authoring guidance, and deliver complete project-specific rules. Start with the compact core below. Add only optional modules needed by the selected workflow; combine or shorten them. For bounded work, use a default budget of up to 250 words; expand only for a real risk or workflow need and briefly explain why. Detailed product contracts and acceptance belong in the PRD, linked rather than repeated here. Risk determines rigor; user experience determines explanation style. This reference grants no tool, task, or release permission.
 
-## Project and authoritative records
+## Project and authority
 
 {{PROJECT_NAME}} exists to {{OUTCOME_FOR_INTENDED_AUDIENCE}}.
 
-| Record                              | Authority                                                                                               |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `PRD.md`                            | Approved purpose, scope, behavior, constraints, and product decisions. Draft sections remain proposals. |
-| `AGENTS.md`                         | Agent execution, governance, validation, and delivery rules.                                            |
-| {{TASK_RECORD}}                     | Current work, dependencies, implementation status, and known gaps; a tracker is optional.               |
-| {{TECHNICAL_RECORD_OR_PRD_SECTION}} | Accepted technical decisions and their rationale, without duplicating requirements.                     |
-| {{VALIDATION_RECORD}}               | Observed results tied to the artifact/version, environment, date, and coverage actually checked.        |
+- `PRD.md` owns approved purpose, scope, behavior, constraints, and product decisions. Proposals remain proposals.
+- `AGENTS.md` owns execution, validation, and delivery rules.
+- {{TASK_RECORD_OR_AUTHORIZED_REQUEST}} owns current work, dependencies, and implementation status; no tracker is required.
+- {{TECHNICAL_RECORD_OR_PRD_SECTION}} owns accepted technical decisions.
+- {{VALIDATION_RECORD}} owns observed results for the artifact/version, environment, date, and coverage checked.
 
-Implementation, task status, and historical evidence do not silently amend approved requirements. Honor explicit authorized changes and update the affected contract. Resolve ambiguous contradictions before dependent work; continue independent work.
+Implementation, task status, and historical evidence do not silently amend requirements. Reconcile contradictions before dependent work and continue independent work.
 
-## Working rules
+## Working boundaries
 
-- Preserve accepted decisions. Work within the requested scope and acceptance criteria.
-- Produce the smallest coherent solution. Preserve useful extension points without building deferred features or unused parallel systems.
-- Inspect relevant existing work before changing it. Preserve unrelated work and established conventions.
-- Keep distinct concepts, ownership boundaries, relationships, and states independent unless the PRD explicitly couples them.
-- Separate supplied facts, assumptions, recommendations, and confirmed decisions. Do not fabricate precision, evidence, tool access, or completion.
-- Prefer established, maintained dependencies where needed. Check installed versions and authoritative guidance before relying on unfamiliar or changing behavior.
-- Store secrets outside committed files and public artifacts. Do not expose credentials or private content through logs, examples, or completion reports.
-- Keep each fact in one authoritative place. Link requirements and decisions instead of copying them into task descriptions and runbooks.
+- Preserve accepted scope, existing conventions, unrelated work, and independent concepts/ownership/relationships. Make the smallest coherent change; do not build deferred features or parallel systems.
+- Follow {{IMPORTANT_PROJECT_BOUNDARIES_OR_PRD_REFERENCES}}. Keep these references concise instead of duplicating the requirements.
+- Separate facts, assumptions, proposals, accepted decisions, and observed results. Never fabricate research, access, commands, or completion. Keep credentials out of chat, documents, logs, and commits; use supported secret-entry flows.
+- Make routine reversible choices within the authorized scope. {{DECISION_OWNER}} controls consequential product, scope, architecture, and acceptance decisions. Respect prior authorization; prepare concrete work before final approval. Publication, merging, production changes, destructive operations, and spending follow their explicit policy.
 
-## Decision authority
+## Planning and execution
 
-- Agents may inspect context, draft artifacts, make routine reversible implementation choices, fix in-scope defects, and run authorized validation.
-- {{DECISION_OWNER}} decides material product, scope, architecture, and acceptance changes. {{RELEASE_OWNER}} controls release or publication where applicable.
-- Respect authorization already given; do not ask again for the same action. Ask only when an unresolved consequential decision, unavailable access, or an explicit gate blocks the next action.
-- Prepare the concrete proposal, evidence, or review artifact before requesting a final approval. Continue work that does not depend on the unresolved gate.
-- Merging, publishing, production changes, destructive operations, and spending outside the agreed budget follow the explicitly selected policy. Do not infer permission from a task's completion status.
+For new planning work: discuss one outcome with options and a recommendation, wait for feedback, record accepted decisions, then draft tasks with scope, acceptance, real dependencies/readiness, and verification. Obtain authorization before creating the concrete reviewed tasks. Reuse settled decisions and matching tasks; routine decomposition needs no repeated brainstorming. Task creation does not authorize implementation.
 
-## Planning new work
+For authorized execution: read relevant context and blockers, inspect the workspace, plan only as needed, produce the scoped change, validate affected behavior, self-review, and prepare the applicable review artifact. Preserve unrelated work. Update contracts only for authorized changes and update guidance when its instructions change.
 
-- When asked to plan new work, discuss one meaningful outcome or related task group before decomposing it. Bring options, recommendations, and focused questions; do not produce a complete backlog in the first brainstorming response.
-- Reuse agreed decisions and handle routine decomposition independently. Discuss an individual task again only when it exposes material uncertainty.
-- Record accepted product changes in the PRD. Keep task proposals separate from approved requirements and implementation status.
-- Draft concrete tasks with scope/exclusions, requirement references, acceptance criteria, real dependencies, readiness, and focused verification. Mark work blocked by unresolved decisions honestly.
-- Obtain explicit authorization before creating the reviewed tasks. Respect prior authorization for the same concrete batch; do not infer it from general agreement with the direction.
-- Reuse matching existing tasks and verify created content and dependencies. Without a selected task system or write access, provide complete briefs and state any precise write blocker. Do not begin implementation merely because tasks were created.
+## Validation and handoff
 
-## Task execution
+- Check observable outcomes and applicable permissions, integrity, and recovery contracts in the PRD. Use actual project commands from {{DEVELOPMENT_GUIDE_OR_VALIDATION_RECORD}}. For changed interfaces, exercise the relevant runtime and important accessibility, empty, and failure states where available.
+- Add tests for meaningful behavior/invariants, not incidental implementation details. Do not introduce broad infrastructure without need or policy; a new end-to-end suite requires a request or accepted testing policy.
+- For documents, check consistency, references, placeholders, and representative scenarios. Document review is not runtime validation. Report passed, failed, blocked, and untested checks honestly; distinguish simulations, live integrations, and deployed evidence. Historical checks do not validate a changed artifact.
+- Work is ready for review only when scope is met, documentation is current, required checks pass, and gaps are explicit. Final acceptance follows {{ACCEPTANCE_POLICY}}; review readiness, integration, and release remain distinct.
+- Read targeted context, communicate in the user's vocabulary, and keep progress/completion reports concise: outcome, evidence, material gaps, artifact link, and any decision needed. Do not invent follow-up tasks or change unrelated status.
 
-1. Read the request and relevant accepted requirements. If a task is referenced, inspect it and its blocking dependencies.
-2. Check the current workspace/artifact state and applicable instructions before editing. Identify scope, affected invariants, and any actual blockers.
-3. Make a short plan when complexity warrants it. Ask only for material missing information; record reversible assumptions and proceed with independent work.
-4. Implement or produce only the authorized deliverable. Update affected requirements when explicitly authorized, and update supporting guidance when its instructions change.
-5. Decide whether a user-facing change note or release identifier is required under the selected delivery policy.
-6. Run focused validation appropriate to the change. Check important failure paths and invariants; broaden checks when failures, dependencies, or policy justify it.
-7. Self-review the full change for correctness, scope, privacy, cost, consistency, and unsupported claims.
-8. Prepare the configured review or acceptance artifact and accurately update the task record. Report blockers and untested checks explicitly.
-9. Stop at the applicable human decision gate. Do not treat review readiness as merge, release, or final acceptance.
+---
 
-## Validation and definition of done
-
-- Verify observable outcomes and important business rules, permissions, data integrity, and recovery behavior.
-- For documentation work, check consistency, links, placeholders, and representative scenario walkthroughs. Documentation review does not prove product behavior.
-- For software work, run relevant formatting, linting, type checks, build checks, and focused tests when those checks exist. Use the project's actual commands, recorded in {{DEVELOPMENT_GUIDE_OR_VALIDATION_RECORD}}.
-- Exercise changed interfaces or workflows in an available browser or relevant runtime, including applicable accessibility, responsive, empty, and failure states.
-- Add automated tests where they protect meaningful behavior or invariants. Do not add broad test infrastructure or tests that merely mirror incidental implementation details. New end-to-end suites require an explicit request or an accepted testing policy.
-- Record what passed, failed, was blocked, or was not run, and why. Distinguish simulated checks from real integrations and local evidence from deployed evidence. Historical results do not validate a changed artifact.
-- Work is ready for final review when scope is satisfied, relevant documentation is current, required checks have passed, and unresolved decisions are clearly identified. If required evidence is missing, present a draft with its gaps rather than claiming completion. Final acceptance follows {{ACCEPTANCE_POLICY}}.
-
-## Context and communication
-
-- Read only relevant requirement sections and implementation areas. Avoid repeated broad scans and duplicate documentation.
-- Use brief progress updates for substantial work. Explain findings, remaining uncertainty, and the next useful step.
-- Keep completion reports short: outcome, validation, material gaps, artifact/review link, and any decision needed.
-- Do not invent a next task, create backlog items, or change unrelated statuses unless asked or authorized by the selected workflow.
+> Optional authoring modules: these are reference material, not part of the default output. Include only applicable, resolved rules below and remove this separator and guidance.
 
 ## Optional: interface and content
 
@@ -101,7 +67,7 @@ Retain only for projects with software, stored information, or external dependen
 Retain only when a tracker has been selected.
 
 - Tracker/project: {{TRACKER_AND_PROJECT_SCOPE}}.
-- Verify relevant authentication, target scope, and supported operations before task writes. If access is missing, help connect through supported tooling and user-controlled sign-in/consent; never request secrets in chat or create test tasks. Keep drafts useful when setup is deferred, and do not treat connection setup as task-creation authorization.
+- Verify relevant authentication, target scope, and supported operations when task reads or authorized writes need them. Do not interrupt product discussion or independent drafts to configure a tracker. If needed access is missing, help connect through supported tooling and user-controlled sign-in/consent; never request secrets in chat or create test tasks. Keep drafts useful when setup is deferred, and do not treat connection setup as task-creation authorization.
 - Use the task already referenced by the request. Create new tasks only when explicitly requested or authorized by {{ISSUE_CREATION_POLICY}}. Task size alone does not authorize creation.
 - Check actual blocking relationships before dependent implementation.
 - Lifecycle: {{ACTUAL_STATUS_MEANINGS_AND_TRANSITIONS}}. Distinguish work in progress, review readiness, integration, and release where the tool supports them.

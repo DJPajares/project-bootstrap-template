@@ -1,51 +1,27 @@
 # Contributing
 
-Keep this kit useful for a person who has an idea or an existing project and wants the agent to handle the preparation.
+Help someone turn an idea into a useful project foundation while keeping preparation and routine decisions with the agent.
 
-## Design rules
+## Product rules
 
-- Keep two separate workflows: project document generation, then conversational brainstorming and task planning. Each starts with a copy-ready prompt containing the instruction URL; unchanged attachments or pasted instructions are fallbacks for platforms without URL access.
-- Accept the user's idea dump, structured ideas, problem statement, or existing project context directly in the chat. Do not require downloads, template edits, intake fields, or a product questionnaire. The bootstrap asks for the delivery choice, missing service/destination choices, and unavoidable user authentication steps. The later planning workflow deliberately includes discussion and user feedback.
-- Let the user choose project creation/update or file generation before full delivery and target changes. Honor an explicit choice already supplied. Do not silently switch paths or treat a connected account as proof of repository creation/write capability.
-- Check repository and selected task-system access during initial setup. Discover supported connections before claiming they are unavailable, automate supported configuration, guide only user-controlled sign-in/consent/approval, and verify the result. Keep service selection optional, credential entry secure, and connection readiness separate from permission to create resources.
-- Discovery, recommendations, resolving reference placeholders, document writing, and validation belong to the agent.
-- Keep the README short and the generated working rules operational.
-- Reuse principles rather than a source project's domain, features, architecture, providers, or workflow syntax.
-- Make technology and delivery modules conditional. Do not make any external service a prerequisite for using the kit.
-- Preserve accepted decisions and useful existing documentation. Repeated runs must update the same records without creating duplicates.
-- Keep intended requirements, task status, observed behavior, and validation evidence distinct.
-- Add a file only when it has a distinct audience and an immediate use. Do not add daily execution prompts to this bootstrap kit.
-- Keep approval proportional to consequential decisions and actual access needs. Do not make the user repeat existing authorization or approve every reversible choice.
-- Bootstrap stops after documents. Planning waits for user feedback before producing the full task batch, and reviewed tasks are created only after explicit authorization. Do not equate agreement on product direction with permission to publish tasks.
-- Brainstorm one outcome or related group at a time. Reuse accepted decisions, handle routine decomposition independently, and return to discussion only for material uncertainty or changes.
+- Keep the URL-based starter short. The user supplies context, not edited templates or an intake form. Disclose URL failure and support pasted/attached instructions.
+- Give useful direction before setup: audience/problem, a recommended first version, exclusions, project shape, and material assumptions. A delivery-choice menu alone does not satisfy the first-response contract.
+- Preserve the user's two delivery paths and wait before target writes. Honor choices already supplied. File-only delivery makes no target changes, including connection configuration.
+- Keep initial capability checks quiet and bounded. Guide connections when the selected operation needs them or the user asks; do not lead with account setup or tracker selection. Verify actual access and never solicit secrets or create test resources.
+- Infer document depth from scope and risk, and explanation style from user context. Do not add an experience/complexity questionnaire or lower important safeguards for a novice.
+- Use templates as references. Omit or combine irrelevant core sections as well as optional modules. Do not transfer every register and identifier system into a small project.
+- Provide a concrete minimal structure and setup approach where useful, preserving existing constraints. Distinguish proposals from verified implementation and commands. Do not scaffold speculative application infrastructure.
+- Keep one authoritative home per fact. Preserve accepted requirements, useful history, unrelated work, and the difference between product intent, task status, and observed evidence.
+- End bootstrap with complete tailored documents and a personalized next-stage starter containing actual project references. Do not make the user reconstruct context or present temporary/local paths as universal URLs.
+- Keep task planning separate and conversational: discuss one outcome, record decisions, draft tasks, obtain authorization, then create only reviewed work. Reuse settled decisions and successful partial results; do not start implementation automatically.
+- Add files only for a distinct audience and immediate use. No mandatory tracker, model roster, platform, architecture, or daily-execution prompt belongs in the universal core.
 
-## Review checklist
+## Validation
 
-Walk through changes against these cases:
+Use the [evaluation guide](evaluations/README.md) and its [cases](evaluations/cases.json). They cover novice ideas, small projects, engineering constraints, existing systems, missing access, and the transition to planning.
 
-1. A short new-project idea with no chosen technology or connected tools.
-2. An existing project with useful requirements, setup guidance, and accepted delivery rules.
-3. An existing project with documentation gaps or a conflict between approved intent and implemented behavior.
-4. A repeated run against documents already generated by the kit.
-5. Read-only or chat-only access, including URL failure and the unchanged-attachment/pasted-content fallback.
-6. A project with no interface, accounts, persistent storage, external service, or issue tracker.
-7. The first planning response presents a direction and focused questions, then waits without drafting the full task batch or creating tasks.
-8. A settled outcome moves to a task proposal without repeating the same discussion; an accepted product change is reflected in the requirements.
-9. The user approves only a subset of reviewed tasks; the agent creates only that subset and its authorized relationships.
-10. Missing task-write access or a partially failed creation is reported accurately; a retry reuses successful results instead of duplicating them.
-11. The initial response retrieves available sources, briefly summarizes the project, presents the two delivery paths with actual capability limits, and waits for a choice without target writes.
-12. An explicit file-generation choice skips a repeated question and makes no target writes even when write tools are available.
-13. Project creation asks only for missing destination details; read-only GitHub access does not become a claim of repository creation capability or permission to publish publicly.
-14. An unsupported selected path is explained and an alternative offered without silently switching. A retry reconciles any partial project setup before creating a duplicate.
-15. GitHub and the selected task system are already connected: the agent verifies relevant scope/capabilities and avoids duplicate setup or broad unrelated discovery.
-16. A connection is missing, expired, or read-only: supported connection options are discovered, only necessary user steps are requested, and access is rechecked rather than assumed from a tool listing.
-17. The user chooses another task service, defers setup, or wants no external tracker. Document generation and task drafts still progress without forcing Linear or creating task resources.
-18. A later planning session has stale access, or connection configuration would modify a file-only target. The agent restores only authorized access, preserves task-review gates and no-target-writes rules, and reports remaining limitations.
+Check Markdown formatting, links, URL targets, one-line starters, template consistency, and leftover authoring placeholders in generated outputs. For workflow changes, record model/platform observations when possible, including the exact instruction fingerprint and coverage. Keep static assertions, instruction walkthroughs, controlled model tests, connected integrations, and user studies separate.
 
-Confirm that each short prompt contains the correct instruction URL and tells the agent to disclose retrieval failure. Check relative reference links against the instruction source and revision. The bootstrap uses reference templates; planning uses the project's current documents. Neither instruction source contains user intake fields. Unstructured context is sufficient to start, followed by the user's delivery choice or an explicit choice already supplied.
+Do not call a model run a user study, simulated permissions a verified integration, or a reviewed specification a working application. Failed or unavailable evaluations remain visible; report the exact limitation instead of inventing a pass.
 
-The agent must produce complete, appropriately sized documents on the selected path, record material unknowns with recommendations, preserve existing work, and distinguish prepared files from verified destination writes. Connection readiness must distinguish available tools, authentication, target scope, verified permissions, and unverified operations, without secret disclosure or test-resource creation. Keep bootstrap output distinct from a task batch. Planning must preserve the discuss/decide/draft/authorize boundaries, provide executable task briefs, and identify a ready first task or its exact blocker without starting implementation. Check links, Markdown formatting, leftover placeholders in generated outputs, and consistency between the instructions and templates.
-
-These walkthroughs review the instructions; they do not establish that a particular AI platform has executed the prompt successfully. Report actual runtime evaluations separately with the model/environment and inputs used.
-
-Use a branch and pull request for changes. Include a concise explanation and the validation performed. A human reviews and merges; do not enable automatic merging.
+Use a branch and pull request. Describe the concrete problem, resulting behavior, validation, and material gaps. A human reviews and merges; do not enable automatic merging.

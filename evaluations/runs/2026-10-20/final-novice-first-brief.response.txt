@@ -1,0 +1,22 @@
+You’re aiming to help small community clubs replace scattered messages and uncertain attendance with one clear place where organizers can publish activities and members can see what is happening and say they plan to join.
+
+For the first version, I recommend a simple shared activity board:
+
+- Organizers can create, edit, and cancel activities.
+- Each activity shows the time, place, description, organizer, and any attendance limit.
+- Members can browse upcoming activities and mark themselves as joining or no longer joining.
+- Everyone can see current attendance and whether an activity has changed or been cancelled.
+
+Start with one club and invitation-based access. This keeps the experience understandable and gives you something real to test with a few organizers and members.
+
+Features such as payments, group chat, recurring schedules, public discovery, recommendations, complex membership roles, and mobile apps should wait. They add substantial complexity before you know whether the basic activity-and-attendance flow solves the problem.
+
+The project should be organized around three simple areas: club access, activity management, and attendance. A responsive website is the most practical initial format because it can work on phones and computers without requiring an app download. That is a recommendation, not yet an approved technical decision.
+
+Important working assumptions are that activities are visible only to invited club members, joining is an indication rather than a paid booking, and a designated organizer controls activity details. We can revise these if your clubs work differently.
+
+How would you like me to deliver the project foundation?
+
+1. **Give me the files — recommended here.** I’ll provide the complete contents of `PRD.md` (the project plan and requirements) and `AGENTS.md` (working rules for anyone helping build it), ready to save or share.
+
+2. **Set up my project.** I’ll prepare those documents for an authorized project folder or repository. This chat currently has no writable project destination, so you would first need to choose and connect one. This establishes the project foundation; building the application comes afterward.
