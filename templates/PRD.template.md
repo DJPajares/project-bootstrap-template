@@ -1,247 +1,119 @@
 # {{PROJECT_NAME}} — Project Requirements Document
 
-> For the agent generating this file: resolve `{{placeholders}}` from the project context, remove this note, and delete irrelevant optional sections. Handle routine gaps yourself; record consequential unknowns as open decisions. Produce a complete project-specific document. A draft is not approved merely because this reference has been filled in.
+> For the generating agent: resolve `{{placeholders}}` and remove all authoring guidance. For bounded work, generate only the compact core below, with a default budget of up to 600 words. State each contract once. Expand only for material risk or complexity and briefly explain why; the optional modules are a reference library, not a required table of contents. Do not ask the user to select a mode or equate a novice with a simple project. Preserve useful existing sections and accepted contracts when updating a project.
 
-**Status:** {{DRAFT_OR_APPROVED_STATE}}
+**Status:** {{DOCUMENT_STATUS_AND_WHICH_PARTS_ARE_PROPOSED}}
 **Owner:** {{REQUIREMENTS_OWNER}}
 **Updated:** {{ISO_DATE}}
-**Approval source:** {{EXPLICIT_APPROVAL_REFERENCE_OR_NOT_YET_APPROVED}}
-**Current scope:** {{SCOPE_LABEL}}
+**Approval source:** {{ACTUAL_AUTHORIZATION_OR_NOT_YET_APPROVED}}
 
-This document defines the project's intended outcome and requirements. Approved sections are the product contract; proposals remain proposals. {{TASK_RECORD}} tracks implementation, dependencies, and known gaps. `AGENTS.md` defines execution and governance. {{VALIDATION_RECORD}} records observed evidence. Shipped behavior and task status do not silently amend requirements or prove launch readiness.
+This is the intended product/project contract. `AGENTS.md` owns execution rules; {{TASK_RECORD_OR_AUTHORIZED_REQUEST}} owns implementation status; {{VALIDATION_RECORD}} owns observed evidence. Intended behavior, shipped behavior, task status, and approval are distinct.
 
-## 1. Overview
+## Purpose and scope
 
-### Problem and context
+{{AUDIENCE_PROBLEM_USEFUL_OUTCOME_AND_WHY_THIS_APPROACH_FITS}}
 
-{{WHO_HAS_WHAT_PROBLEM_IN_WHAT_CONTEXT_AND_WHY_CURRENT_ALTERNATIVES_FALL_SHORT}}
+- **First useful result:** {{BOUNDED_CURRENT_DELIVERABLE_AND_NECESSARY_SUPPORTING_WORK}}
+- **Outside this version:** {{EXPLICIT_NON_GOALS_AND_MISREAD_BOUNDARIES}}
+- **Success evidence:** {{OBSERVABLE_OUTCOME_AND_HOW_IT_WILL_BE_ASSESSED}}
+- **Tradeoff principles:** {{ONLY_PRINCIPLES_THAT_HELP_CHOOSE_BETWEEN_REAL_OPTIONS}}
 
-### Direction
+Do not invent research, numeric targets, support platforms, or scale obligations. Distinguish supplied constraints from proposals. Deferred work is not a hidden prerequisite or an instruction to build extension infrastructure.
 
-{{CONCISE_VALUE_PROPOSITION_OR_PROJECT_OUTCOME}}
+## Requirements and acceptance
 
-### Audience and stakeholders
+Use a few stable references when useful. Each requirement serves the outcome and includes meaningful failure/recovery behavior. A compact list can replace this table.
 
-| Audience/role               | Need or responsibility     | Relevant constraints        |
-| --------------------------- | -------------------------- | --------------------------- |
-| {{AUDIENCE_OR_STAKEHOLDER}} | {{NEED_OR_RESPONSIBILITY}} | {{CONTEXT_AND_CONSTRAINTS}} |
+| Reference | Required behavior or output                                              | Observable acceptance and verification                 | Decision status/source               |
+| --------- | ------------------------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------ |
+| REQ-001   | {{BEHAVIOR_WITH_RELEVANT_PRECONDITIONS_BOUNDARIES_AND_FAILURE_RECOVERY}} | {{STARTING_CONDITION_ACTION_RESULT_AND_FOCUSED_CHECK}} | {{ACCEPTED_WITH_SOURCE_OR_PROPOSED}} |
 
-### Core principles
+Do not repeat the same contract in multiple registers. Preserve meaningful permissions, ownership, data integrity, and recovery safeguards even in a short plan. Add applicable quality thresholds here or in a focused section; vague promises are not acceptance criteria.
 
-{{A_SMALL_SET_OF_PROJECT_SPECIFIC_PRINCIPLES_THAT_RESOLVE_TRADEOFFS}}
+## Structure and approach
 
-Principles guide decisions within scope; they do not authorize additional features or override explicit requirements.
+{{MINIMAL_DELIVERABLE_OR_CODE_LAYOUT_WITH_EACH_AREA_PURPOSE_AND_REAL_RESPONSIBILITY_BOUNDARIES}}
 
-## 2. Outcomes and success
+{{ACCEPTED_CONSTRAINTS_AND_RECOMMENDED_APPROACH_WITH_RATIONALE}}
 
-| ID      | Desired outcome | Measure and evidence source | Target and evaluation window          | Status/owner                        |
-| ------- | --------------- | --------------------------- | ------------------------------------- | ----------------------------------- |
-| OUT-001 | {{OUTCOME}}     | {{OBSERVABLE_MEASURE}}      | {{TARGET_OR_OPEN_DECISION_REFERENCE}} | {{CONFIRMED_OR_PROPOSED_AND_OWNER}} |
+Reuse existing structure and public interfaces. A technology recommendation remains proposed until accepted. Non-software work needs deliverable organization, not invented code folders. Do not add accounts, services, storage, interfaces, or a release system without a current need.
 
-Separate outcome measures from delivery milestones. Do not invent numeric targets, baselines, or research findings. Mark unknown targets as decisions to resolve.
+Describe setup/verification where useful; put actual commands in existing setup guidance or a README when it has an immediate audience. Distinguish documented, proposed, and executed commands. Documentation-only setup is not a runnable application.
 
-## 3. Current scope and exclusions
+## Validation and delivery
 
-### Current capabilities or deliverables
+{{FOCUSED_BEHAVIORAL_EVIDENCE_NEEDED_AND_ANY_MATERIAL_ACCEPTANCE_GATE}}
 
-| ID        | Capability/deliverable        | Outcome served | Boundary                   | Requirement references | Decision status          |
-| --------- | ----------------------------- | -------------- | -------------------------- | ---------------------- | ------------------------ |
-| SCOPE-001 | {{CAPABILITY_OR_DELIVERABLE}} | OUT-001        | {{EXACT_CURRENT_BOUNDARY}} | REQ-001                | {{ACCEPTED_OR_PROPOSED}} |
+{{SMALL_SEQUENCE_OF_USEFUL_OUTCOMES_IF_NEEDED_WITH_REAL_PREREQUISITES}}
 
-Identify core work and necessary supporting work. Record approved extensions only when there is a real prior baseline and an explicit approval reference; a narrow extension does not authorize a broader deferred capability.
+Keep detailed test execution rules in `AGENTS.md`. Evidence names the artifact/version, environment, date, coverage, result, and gaps. A scenario walkthrough is not a runtime test, and passing implementation checks does not authorize publication. Outcome slices guide later planning; they are not executable tasks or authorization to create them.
 
-### Explicit non-goals
+## Decisions and uncertainty
 
-{{WHAT_THIS_SCOPE_DOES_NOT_PROVIDE_AND_ANY_EASY_TO_MISREAD_BOUNDARIES}}
+{{ACCEPTED_DECISIONS_WITH_ACTUAL_SOURCES_AND_MATERIAL_PROPOSALS_ASSUMPTIONS_RISKS}}
 
-### Deferred register
+For consequential open decisions, give a recommendation, owner, affected work, and what is actually blocked. Make routine reversible choices yourself. Never mark a new proposal approved merely because it was written into this document. Keep detailed decision history elsewhere only when size or audience warrants it.
 
-| Idea                     | Why outside current scope | Revisit condition               |
-| ------------------------ | ------------------------- | ------------------------------- |
-| {{DEFERRED_IDEA_IF_ANY}} | {{REASON}}                | {{EVIDENCE_OR_DECISION_NEEDED}} |
+---
 
-Deferred ideas are not requirements or instructions to build future infrastructure. Extend current concepts only when needed for accepted scope. Remove this table if there are no relevant deferred ideas.
+> Optional authoring modules: incorporate only those needed below. Remove this separator and guidance from generated output. Do not append every module to bounded projects. Use tables/registers only when they improve understanding.
 
-## 4. Concepts, ownership, and lifecycle
+## Optional: concepts, ownership, and lifecycle
 
-### Shared vocabulary
+Define concepts precisely when their distinctions affect behavior. Identify one authoritative owner/source, permissions, relationships, and independent states. Cover deletion versus unlinking, copying, history, and repeated/invalid actions where relevant. Do not collapse independent relationships or signals into a single flag; user declarations, inferred claims, computed results, and observed facts may have different authority.
 
-| Concept     | Meaning                | Ownership/authority               | Boundary or important distinction   |
-| ----------- | ---------------------- | --------------------------------- | ----------------------------------- |
-| {{CONCEPT}} | {{PRECISE_DEFINITION}} | {{OWNER_OR_AUTHORITATIVE_SOURCE}} | {{WHAT_IT_DOES_AND_DOES_NOT_IMPLY}} |
+For significant transitions, describe starting state, actor/trigger, preconditions, resulting state/effects, and failure/recovery. Use stable invariant references only when later requirements benefit from them.
 
-### Relationships and invariants
+## Optional: connected workflows and detailed requirements
 
-- INV-001: {{A_RULE_THAT_MUST_REMAIN_TRUE_AND_THE_REQUIREMENTS_IT_CONSTRAINS}}
-- {{INDEPENDENT_RELATIONSHIP_OR_SIGNAL_BOUNDARIES_IF_RELEVANT}}
-- {{DELETION_UNLINKING_COPYING_AND_HISTORY_BOUNDARIES_IF_RELEVANT}}
+For each important workflow: actor/purpose, entry/preconditions, minimum input, shortest useful path, result, meaningful alternate/failure states, recovery, and requirement references. Do not invent screens for work without an interface.
 
-### Lifecycle, if applicable
+For complex requirements, expand the core requirement entry with purpose/scope, decision source, trigger/preconditions, required output, applicable rules/invariants, failure/recovery, actual dependencies, acceptance, and focused verification. Every included field must clarify behavior rather than mirror implementation or task status.
 
-| From      | Trigger/actor                | Preconditions | To        | Effects and invalid/repeated-action behavior |
-| --------- | ---------------------------- | ------------- | --------- | -------------------------------------------- |
-| {{STATE}} | {{EXPLICIT_EVENT_OR_ACTION}} | {{GUARD}}     | {{STATE}} | {{OBSERVABLE_EFFECTS_AND_RECOVERY}}          |
+Add a deferred register only when it helps: idea, reason outside scope, and evidence/decision needed to revisit it. A narrow approved extension does not authorize a broader deferred feature.
 
-Do not collapse independent states into a single flag. Distinguish user-declared, inferred, computed, and observed state where it affects behavior. Do not infer permission or completion from an unrelated signal.
+## Optional: experience and quality
 
-## 5. Primary workflows
+Include only relevant, observable expectations and accepted thresholds:
 
-Repeat for each essential workflow or deliverable lifecycle. Use a workflow description rather than inventing an interface for a project that does not need one.
+- Interface/content: minimum input, progressive disclosure, navigation, clear loading/empty/error states, and preserved context.
+- Accessibility: target users, semantics, keyboard/focus, assistive technology, reduced motion, and a required standard only when specified.
+- Language/formatting: current language scope, units, numbers/dates, and time interpretation. Readiness to expand is not a commitment to every locale.
+- Privacy/security: private/public boundaries, authoritative permission enforcement, isolation, and destructive-action safeguards.
+- Reliability/performance/operations: workload assumptions, accepted resource ceilings, compatibility, observable health, recovery, and who responds to failure.
 
-### FLOW-001 — {{WORKFLOW_NAME}}
+Do not turn these categories into unsupported features, support matrices, or legal promises. Material unknowns remain explicit decisions.
 
-- **Actor and purpose:** {{WHO_IS_TRYING_TO_ACHIEVE_WHAT}}
-- **Entry/preconditions:** {{STARTING_CONTEXT_AND_REQUIRED_ACCESS}}
-- **Minimum input:** {{WHAT_IS_NECESSARY_TO_START_AND_WHAT_CAN_WAIT}}
-- **Sequence:** {{SHORTEST_COMPLETE_PATH}}
-- **Result:** {{OBSERVABLE_OUTPUT_AND_STATE_CHANGE}}
-- **Alternate/failure paths:** {{APPLICABLE_EMPTY_INVALID_DENIED_CANCELLED_INTERRUPTED_OR_UNAVAILABLE_STATES}}
-- **Recovery:** {{WHAT_IS_PRESERVED_AND_HOW_WORK_CAN_RESUME_OR_BE_RETRIED}}
-- **Requirement references:** {{REQ_IDS}}
+## Optional: technical and change contracts
 
-## 6. Requirements
+Preserve accepted responsibility boundaries and public interfaces. Specify applicable inputs/outputs, errors, authorization, concurrency/revision checks, idempotency, partial failure, and recovery. Do not introduce a second identity, ownership, or state system without a current requirement.
 
-Repeat this block for each meaningful behavior or deliverable in current scope. Keep IDs stable when editing. Include only applicable fields; move implementation detail elsewhere when it obscures the behavioral contract.
+For persistent changes, cover migration, backwards compatibility, external resource ownership, environment isolation, rollback/recovery, and any affected operational gates. Keep changing commands, environment/provider configuration, and model identifiers outside the enduring product contract unless explicitly constrained.
 
-### REQ-001 — {{REQUIREMENT_TITLE}}
+## Optional: information and external dependencies
 
-- **Decision status/source:** {{ACCEPTED_WITH_REFERENCE_OR_PROPOSED}}
-- **Purpose and scope:** {{OUTCOME_AND_SCOPE_IDS}}
-- **Trigger and preconditions:** {{WHEN_IT_APPLIES_AND_REQUIRED_ACCESS_OR_INPUT}}
-- **Required behavior/output:** {{PRECISE_OBSERVABLE_CONTRACT}}
-- **Rules and invariants:** {{VALIDATION_PRECEDENCE_OWNERSHIP_AND_RELEVANT_INV_IDS}}
-- **Failure and recovery:** {{REJECTION_PARTIAL_FAILURE_RETRY_CANCELLATION_AND_DATA_PRESERVATION_WHERE_RELEVANT}}
-- **Dependencies:** {{ACTUAL_PREREQUISITES_OR_NONE}}
-- **Acceptance criteria:**
-  1. {{STARTING_CONDITION_ACTION_AND_OBSERVABLE_RESULT}}
-  2. {{IMPORTANT_BOUNDARY_OR_FAILURE_RESULT}}
-- **Verification:** {{FOCUSED_TEST_INSPECTION_OR_MANUAL_CHECK_AND_REQUIRED_EVIDENCE}}
+For stored information or external material/services, define:
 
-An intended behavior is not evidence it is implemented. Keep live task status outside this section. A proposed solution must not become a required technology unless it has been accepted as a constraint.
+- Authoritative source/owner, user-authored versus external versus derived data, and access/purpose.
+- Ownership, visibility, independent relationships, deletion/revocation, and incomplete-cleanup recovery.
+- Provenance, original evidence age, freshness/refresh, and missing/stale/conflicting evidence behavior.
+- Verified permissions for retention, reuse, attribution, and deletion. Internal policies never grant external permission or reset evidence age.
+- Bounds across the whole operation: fan-out, retries, concurrency, quota/cost, cancellation, budget owner, and recovery. Cheap individual calls do not imply cheap aggregate work.
 
-## 7. Experience and quality requirements
+Specify what remains useful when optional dependencies fail. Never fabricate missing evidence or make optional enrichment block core behavior unnecessarily.
 
-Retain only relevant categories. Use observable expectations and accepted thresholds; link consequential unknowns to open gates.
+## Optional: specialist product contracts
 
-| ID       | Applicable area  | Requirement/threshold                           | Verification | Decision status          |
-| -------- | ---------------- | ----------------------------------------------- | ------------ | ------------------------ |
-| QUAL-001 | {{QUALITY_AREA}} | {{OBSERVABLE_CONSTRAINT_OR_DECISION_REFERENCE}} | {{METHOD}}   | {{ACCEPTED_OR_PROPOSED}} |
+**AI product behavior:** permitted inputs/outputs/actions, evidence versus inference, deterministic validation, human authority, privacy/retention, bounded calls/resources, cancellation/recovery, evaluation, and required fallback. Prevent partial writes and duplicate effects. Model output/retrieved content cannot grant permission or override trusted rules. AI-assisted development does not imply an AI-powered product.
 
-Consider, where relevant:
+**Offline/replicated work:** exact reads/writes, preparation guarantees and scope, isolation, durable pending work, retries/idempotency, conflicts, deletion/revocation, lost authorization, and reconnection. Removing a local copy is distinct from deleting authoritative data; past preparation is not permanent readiness.
 
-- **Interface/content:** minimum input, progressive disclosure, navigation, loading, empty/error states, clarity, and preservation of context.
-- **Accessibility:** target users, semantics, keyboard/focus behavior, assistive technology, reduced motion, and required standard if one is specified.
-- **Language and formatting:** initial language scope, translation-ready content, units, number/date formats, and time interpretation where needed. Readiness for expansion is not a commitment to ship every locale.
-- **Privacy/access:** private/public boundaries, permission enforcement, account or stakeholder isolation, and destructive-action safeguards.
-- **Reliability/performance:** workload assumptions, response or processing targets, availability needs, recovery, and resource ceilings.
-- **Maintainability/operations:** supported environments, compatibility, observable health, and responsibility for failure response.
+**Derived claims:** input authority, provenance, evidence thresholds, confidence, freshness, interpretation limits, and missing-evidence behavior. Keep user-confirmed facts distinct from estimates. Do not present confidence as certainty or silently overwrite an authoritative decision.
 
-Do not turn these categories into features or legal promises without context. Omit irrelevant categories and record unresolved consequential requirements explicitly.
+## Optional: governance and larger delivery
 
-## 8. Technical direction — optional
+For substantial work, use outcome/scope/requirement references only as needed for traceability. Delivery slices state useful outcomes, real dependencies, and exit evidence; detailed tasks remain in the separate planning process.
 
-Retain for software or technically constrained work. Do not assume client/server separation, a database, a service architecture, or a particular repository layout.
+Material decision entries identify question/decision, proposed/open/accepted/superseded state, options/recommendation, owner/actual approval, and affected work. Assumptions identify basis/confidence, impact if wrong, resolution, and whether they block anything. Risks need a real consequence, mitigation/recovery, owner, and trigger; omit generic risk lists.
 
-### Constraints and decisions
-
-| Area               | Requirement/constraint | Proposed or accepted direction | Rationale/tradeoff | Decision reference |
-| ------------------ | ---------------------- | ------------------------------ | ------------------ | ------------------ |
-| {{TECHNICAL_AREA}} | {{CONSTRAINT_OR_NEED}} | {{DIRECTION_AND_STATUS}}       | {{WHY_IT_FITS}}    | {{DEC_ID}}         |
-
-### Responsibilities and interfaces
-
-{{MINIMUM_STRUCTURE_NEEDED_FOR_CURRENT_SCOPE_WITH_CLEAR_OWNERSHIP_AND_BOUNDARIES}}
-
-{{APPLICABLE_INPUT_OUTPUT_ERROR_CONCURRENCY_IDEMPOTENCY_AND_AUTHORIZATION_CONTRACTS}}
-
-### Change and compatibility
-
-{{APPLICABLE_MIGRATION_EXTERNAL_RESOURCE_OWNERSHIP_BACKWARD_COMPATIBILITY_AND_RECOVERY_REQUIREMENTS}}
-
-Keep frequently changing commands, credentials, model identifiers, and environment configuration in supporting guidance. Do not create extension frameworks or extra systems solely for hypothetical future needs.
-
-## 9. Information and external dependencies — optional
-
-Retain for projects that store data, reuse external material, or call external services.
-
-| Information/dependency        | Authoritative source and owner | Access and purpose                | Provenance/freshness                      | Permitted storage, reuse, attribution, and deletion | Failure behavior                           |
-| ----------------------------- | ------------------------------ | --------------------------------- | ----------------------------------------- | --------------------------------------------------- | ------------------------------------------ |
-| {{INFORMATION_OR_DEPENDENCY}} | {{SOURCE_AND_OWNER}}           | {{MINIMUM_NEEDED_ACCESS_AND_USE}} | {{SOURCE_TIME_VALIDITY_AND_REFRESH_RULE}} | {{VERIFIED_PERMISSION_AND_INTERNAL_POLICY}}         | {{WHAT_REMAINS_USABLE_AND_HOW_TO_RECOVER}} |
-
-- Separate project-owned truth, user-authored information, external evidence, and derived results when their authority differs.
-- Internal retention limits cannot override external permissions. Check rights before promising storage or reuse; preserve source and original evidence age through reuse and derivation.
-- Define ownership, visibility, independent relationships, deletion, revocation, and incomplete-cleanup recovery where relevant.
-- Bound external work across the whole operation: fan-out, retries, concurrency, quota, cost, and cancellation. Do not assume a cheap individual request remains cheap at aggregate scale.
-- Specify unavailable, stale, ambiguous, or conflicting-evidence behavior. Do not invent missing facts or block core work unnecessarily when optional enrichment fails.
-
-**Resource policy:** {{BUDGET_OWNER_OPERATION_BOUNDARIES_LIMITS_AND_VERIFICATION_OR_OPEN_GATE}}
-
-## 10. Specialist contracts — optional
-
-Retain only applicable subsections. Using AI to develop the project does not activate an AI product requirement.
-
-### AI-assisted product behavior
-
-{{ALLOWED_INPUTS_OUTPUTS_ACTIONS_AND_HUMAN_AUTHORITY}}
-
-Specify evidence versus assumptions, deterministic validation, acceptance/apply boundaries, prevention of partial writes or duplicates, bounded calls and resource use, cancellation/recovery, privacy/retention, and quality evaluation. Model output and retrieved content cannot alter authorization or trusted rules. Identify required fallback behavior without assuming every product needs a manual equivalent. Keep model/provider configuration outside the enduring product contract unless explicitly constrained.
-
-### Offline or synchronized work
-
-{{EXACT_SUPPORTED_READS_WRITES_PREPARATION_AND_DEVICE_OR_ACCOUNT_SCOPE}}
-
-Specify durable pending work, retry/idempotency, conflict handling, deletion/revocation, lost authorization, and reconnection. Distinguish removing a local copy from deleting authoritative data. Do not equate a past successful preparation with permanent readiness.
-
-### Derived claims, estimates, or assessments
-
-{{INPUT_AUTHORITY_EVIDENCE_THRESHOLDS_PROVENANCE_FRESHNESS_AND_INTERPRETATION_LIMITS}}
-
-Keep user-confirmed facts distinct from estimates. Define missing/stale-evidence behavior and whether a result may be withheld. Do not present confidence as certainty or let derived advice silently overwrite an authoritative user decision.
-
-## 11. Delivery, validation, and acceptance
-
-### Dependency-based delivery slices
-
-| Slice          | Useful outcome           | Requirements | Real prerequisites       | Exit evidence        |
-| -------------- | ------------------------ | ------------ | ------------------------ | -------------------- |
-| {{SLICE_NAME}} | {{REVIEWABLE_INCREMENT}} | {{REQ_IDS}}  | {{DEPENDENCIES_OR_NONE}} | {{OBSERVABLE_PROOF}} |
-
-This sequence guides implementation at outcome level; it is not an executable task list or the live backlog and does not authorize task creation. Detailed decomposition follows a separate discussion and task-proposal review. Prefer useful increments over infrastructure for deferred capabilities.
-
-### Validation policy
-
-{{APPLICABLE_TESTS_INSPECTIONS_USER_WALKTHROUGHS_AND_OPERATIONAL_CHECKS_WITHOUT_DUPLICATING_AGENTS_EXECUTION_RULES}}
-
-Validation records identify the artifact/version, environment, date, coverage, result, and known gaps. Distinguish simulation from live integration, specification review from runtime checks, and implementation checks from launch gates. Revalidate affected requirements after changes; preserve historical results as historical.
-
-### Acceptance and release gates
-
-| Gate                   | Required evidence | Decision owner | Work it blocks       |
-| ---------------------- | ----------------- | -------------- | -------------------- |
-| {{GATE_IF_APPLICABLE}} | {{EVIDENCE}}      | {{OWNER}}      | {{DEPENDENT_ACTION}} |
-
-Define final acceptance against current requirements and outcome measures. For released or deployed work, identify applicable configuration, monitoring, resource controls, rollout, and recovery checks. Technical completion alone does not authorize publication or production changes.
-
-## 12. Decisions, assumptions, and risks
-
-### Decision register
-
-| ID      | Question/decision | Status                                   | Options and recommendation/rationale | Owner and approval source           | Affected requirements or blocked work |
-| ------- | ----------------- | ---------------------------------------- | ------------------------------------ | ----------------------------------- | ------------------------------------- |
-| DEC-001 | {{DECISION}}      | {{PROPOSED_OPEN_ACCEPTED_OR_SUPERSEDED}} | {{OPTIONS_TRADEOFFS_AND_REASON}}     | {{OWNER_AND_REFERENCE_IF_ACCEPTED}} | {{IMPACT}}                            |
-
-Only explicit authorization makes a decision accepted. Record meaningful changes and their impact; do not convert implementation drift into an approved requirement. Move detailed decision history to a separate record only when its size or audience warrants it.
-
-### Assumptions and open questions
-
-| ID      | Assumption/question        | Basis and confidence       | Impact if wrong | How to resolve/owner | Blocks work?                  |
-| ------- | -------------------------- | -------------------------- | --------------- | -------------------- | ----------------------------- |
-| ASM-001 | {{ASSUMPTION_OR_QUESTION}} | {{KNOWN_BASIS_OR_UNKNOWN}} | {{IMPACT}}      | {{RESOLUTION}}       | {{SPECIFIC_DEPENDENCY_OR_NO}} |
-
-### Risks
-
-| Risk              | Likelihood/impact | Mitigation or recovery     | Owner     | Trigger for action     |
-| ----------------- | ----------------- | -------------------------- | --------- | ---------------------- |
-| {{MATERIAL_RISK}} | {{ASSESSMENT}}    | {{PROPORTIONATE_RESPONSE}} | {{OWNER}} | {{OBSERVABLE_TRIGGER}} |
-
-Keep this register proportionate to the project. Do not add generic risks or approval gates that have no material consequence for the current work.
+For released/deployed work, identify applicable acceptance/release gates, their evidence and decision owner, configuration, monitoring, resource controls, rollout, and recovery. Technical completion, review readiness, integration, release, and final acceptance remain distinct events. Product intent does not authorize those actions.

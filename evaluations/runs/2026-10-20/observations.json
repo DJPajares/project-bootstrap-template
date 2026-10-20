@@ -1,0 +1,877 @@
+{
+  "runs": [
+    {
+      "case": "complex-existing-contracts",
+      "method": "controlled model run; supplied sources and mocked capabilities; no tools",
+      "date_utc": "2026-10-20T15:36:35.518938+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "ed66f3b3a69231a982aae6d65ba50fbb4884ee2b",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "0f469e4488fe717ffd8ed10ea66a33d8066a2a62b4c77dcbc61a3fe611fc19ca",
+        "TASK_PLANNING.md": "5cc3a8e0f8a2aa08f75c36be9638e1cc3e4a4df0dd9728a69af637fcd773969b",
+        "templates/AGENTS.template.md": "de24a32c84b734a556708408872b1ea9cffbe53a27348808694ace964e44db27",
+        "templates/PRD.template.md": "b8992b56a674d129797facc912f136245280bfe3891ed8a725fc43cbdf9cc529"
+      },
+      "input_sha256": "e0d4882e4d627c7610453ea5cbe079d66fdc6100187c34563db6fe9baa02d550",
+      "duration_seconds": 1.24,
+      "exit_code": 1,
+      "usage": null,
+      "errors": [
+        {
+          "type": "error",
+          "message": "exceeded retry limit, last status: 429 Too Many Requests"
+        },
+        {
+          "type": "turn.failed",
+          "error": {
+            "message": "exceeded retry limit, last status: 429 Too Many Requests"
+          }
+        }
+      ],
+      "response_exists": false,
+      "response_characters": 0,
+      "tool_items": [],
+      "round": "preliminary",
+      "user_message": "Give me revised documents only. I am the product owner, not an engineer. Preserve the approved service boundaries, privacy, identity, and independent record relationships. Make the concurrency, partial-failure recovery, and verification contracts concrete enough for engineers to implement. Do not add sharing, offline writes, a new stack, or a second state system. Do not implement the service or create tasks.",
+      "supplied_source_references": [
+        "PROJECT_BOOTSTRAP.md",
+        "templates/AGENTS.template.md",
+        "templates/PRD.template.md"
+      ],
+      "review": {
+        "status": "blocked",
+        "evidence": "HTTP 429 before a response; model compliance not tested."
+      }
+    },
+    {
+      "case": "engineer-existing-project",
+      "method": "controlled model run; supplied sources and mocked capabilities; no tools",
+      "date_utc": "2026-10-20T15:37:58.385211+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "ed66f3b3a69231a982aae6d65ba50fbb4884ee2b",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "0f469e4488fe717ffd8ed10ea66a33d8066a2a62b4c77dcbc61a3fe611fc19ca",
+        "TASK_PLANNING.md": "5cc3a8e0f8a2aa08f75c36be9638e1cc3e4a4df0dd9728a69af637fcd773969b",
+        "templates/AGENTS.template.md": "de24a32c84b734a556708408872b1ea9cffbe53a27348808694ace964e44db27",
+        "templates/PRD.template.md": "b8992b56a674d129797facc912f136245280bfe3891ed8a725fc43cbdf9cc529"
+      },
+      "input_sha256": "132deaa95eb96be1731035a47c3082e6ad21dad17581f3cc8f7a541882848d9f",
+      "duration_seconds": 100.38,
+      "exit_code": 0,
+      "usage": {
+        "input_tokens": 19760,
+        "cached_input_tokens": 8448,
+        "output_tokens": 4655,
+        "reasoning_output_tokens": 358
+      },
+      "errors": [],
+      "response_exists": true,
+      "response_characters": 23301,
+      "tool_items": [],
+      "round": "preliminary",
+      "user_message": "Update the documents and return file contents only. Keep Python standard library, rename_tool/ and tests/, the current CLI flags, and the accepted no-network/no-overwrite contract. Clarify recovery and verification. No new framework, repository, tracker, or migration.",
+      "supplied_source_references": [
+        "PROJECT_BOOTSTRAP.md",
+        "templates/AGENTS.template.md",
+        "templates/PRD.template.md"
+      ],
+      "response_file": "preliminary-engineer-existing-project.response.txt",
+      "response_sha256": "ca9e6b3529a4a4899564f4570b2ff674a7288ed7423305bb48410a94d2d307aa",
+      "review": {
+        "status": "partial",
+        "evidence": "Existing directories/flags/stdlib/unittest/no-network/no-overwrite and human review preserved; documented command not claimed executed. Nested fences impair copying. Handoff not scored because original user wording could exclude it."
+      }
+    },
+    {
+      "case": "novice-first-brief",
+      "method": "controlled model run; supplied sources and mocked capabilities; no tools",
+      "date_utc": "2026-10-20T15:34:17.876169+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "ed66f3b3a69231a982aae6d65ba50fbb4884ee2b",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "0f469e4488fe717ffd8ed10ea66a33d8066a2a62b4c77dcbc61a3fe611fc19ca",
+        "TASK_PLANNING.md": "5cc3a8e0f8a2aa08f75c36be9638e1cc3e4a4df0dd9728a69af637fcd773969b",
+        "templates/AGENTS.template.md": "de24a32c84b734a556708408872b1ea9cffbe53a27348808694ace964e44db27",
+        "templates/PRD.template.md": "b8992b56a674d129797facc912f136245280bfe3891ed8a725fc43cbdf9cc529"
+      },
+      "input_sha256": "c9efd976d93d6c41790f2596e1213cf77297957a94c2e3532bc0baa45110c295",
+      "duration_seconds": 16.04,
+      "exit_code": 0,
+      "usage": {
+        "input_tokens": 19689,
+        "cached_input_tokens": 8448,
+        "output_tokens": 494,
+        "reasoning_output_tokens": 45
+      },
+      "errors": [],
+      "response_exists": true,
+      "response_characters": 2392,
+      "tool_items": [],
+      "round": "preliminary",
+      "user_message": "I dream of making it easier for small community clubs to organize activities so people know what is happening and can join in. I am not technical and do not know where to start.",
+      "supplied_source_references": [
+        "PROJECT_BOOTSTRAP.md",
+        "templates/AGENTS.template.md",
+        "templates/PRD.template.md"
+      ],
+      "response_file": "preliminary-novice-first-brief.response.txt",
+      "response_sha256": "9eb5ab0135a52bfb31f3e43d67ff9d37c76117188e55ad19cd49e51d9bc8f262",
+      "review": {
+        "status": "pass",
+        "evidence": "Useful direction, bounded v1/exclusions, assumptions, two honest delivery paths; one intended choice after value; no premature setup or actions."
+      }
+    },
+    {
+      "case": "planning-first-turn",
+      "method": "controlled model run; supplied sources and mocked capabilities; no tools",
+      "date_utc": "2026-10-20T15:38:08.260935+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "ed66f3b3a69231a982aae6d65ba50fbb4884ee2b",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "0f469e4488fe717ffd8ed10ea66a33d8066a2a62b4c77dcbc61a3fe611fc19ca",
+        "TASK_PLANNING.md": "5cc3a8e0f8a2aa08f75c36be9638e1cc3e4a4df0dd9728a69af637fcd773969b",
+        "templates/AGENTS.template.md": "de24a32c84b734a556708408872b1ea9cffbe53a27348808694ace964e44db27",
+        "templates/PRD.template.md": "b8992b56a674d129797facc912f136245280bfe3891ed8a725fc43cbdf9cc529"
+      },
+      "input_sha256": "e296b33df7bc24cdd944679632b8cf199dc0d6410ec627e9db19c2d9e46d862c",
+      "duration_seconds": 1.26,
+      "exit_code": 1,
+      "usage": null,
+      "errors": [
+        {
+          "type": "error",
+          "message": "exceeded retry limit, last status: 429 Too Many Requests"
+        },
+        {
+          "type": "turn.failed",
+          "error": {
+            "message": "exceeded retry limit, last status: 429 Too Many Requests"
+          }
+        }
+      ],
+      "response_exists": false,
+      "response_characters": 0,
+      "tool_items": [],
+      "round": "preliminary",
+      "user_message": "Let's brainstorm the safe preview-and-apply behavior first. I am unsure how to handle collisions or a failure halfway through. Do not create tasks yet.",
+      "supplied_source_references": ["TASK_PLANNING.md"],
+      "review": {
+        "status": "blocked",
+        "evidence": "HTTP 429 before a response; model compliance not tested."
+      }
+    },
+    {
+      "case": "repository-missing-access",
+      "method": "controlled model run; supplied sources and mocked capabilities; no tools",
+      "date_utc": "2026-10-20T15:36:52.125771+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "ed66f3b3a69231a982aae6d65ba50fbb4884ee2b",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "0f469e4488fe717ffd8ed10ea66a33d8066a2a62b4c77dcbc61a3fe611fc19ca",
+        "TASK_PLANNING.md": "5cc3a8e0f8a2aa08f75c36be9638e1cc3e4a4df0dd9728a69af637fcd773969b",
+        "templates/AGENTS.template.md": "de24a32c84b734a556708408872b1ea9cffbe53a27348808694ace964e44db27",
+        "templates/PRD.template.md": "b8992b56a674d129797facc912f136245280bfe3891ed8a725fc43cbdf9cc529"
+      },
+      "input_sha256": "b3cc4a37f566c42de80829809d906bdaf1483d08c9768dd50c3a00bdd7d3d10b",
+      "duration_seconds": 18.1,
+      "exit_code": 0,
+      "usage": {
+        "input_tokens": 19718,
+        "cached_input_tokens": 8448,
+        "output_tokens": 613,
+        "reasoning_output_tokens": 262
+      },
+      "errors": [],
+      "response_exists": true,
+      "response_characters": 1841,
+      "tool_items": [],
+      "round": "preliminary",
+      "user_message": "Set up my project as a private GitHub repository named club-noticeboard under my account. My idea is a simple noticeboard for club activities. I have not connected GitHub yet and do not want to select a task tracker now.",
+      "supplied_source_references": [
+        "PROJECT_BOOTSTRAP.md",
+        "templates/AGENTS.template.md",
+        "templates/PRD.template.md"
+      ],
+      "response_file": "preliminary-repository-missing-access.response.txt",
+      "response_sha256": "e3ea1bde9f7ae4333afc3ff7b9b336b79478f70666442a943658d56f568b398e",
+      "review": {
+        "status": "pass",
+        "evidence": "Useful brief first, private destination respected, connection and creation capability unverified, supported user-controlled next step, tracker deferred; no secret request or write claim."
+      }
+    },
+    {
+      "case": "small-file-only",
+      "method": "controlled model run; supplied sources and mocked capabilities; no tools",
+      "date_utc": "2026-10-20T15:38:29.736545+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "ed66f3b3a69231a982aae6d65ba50fbb4884ee2b",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "0f469e4488fe717ffd8ed10ea66a33d8066a2a62b4c77dcbc61a3fe611fc19ca",
+        "TASK_PLANNING.md": "5cc3a8e0f8a2aa08f75c36be9638e1cc3e4a4df0dd9728a69af637fcd773969b",
+        "templates/AGENTS.template.md": "de24a32c84b734a556708408872b1ea9cffbe53a27348808694ace964e44db27",
+        "templates/PRD.template.md": "b8992b56a674d129797facc912f136245280bfe3891ed8a725fc43cbdf9cc529"
+      },
+      "input_sha256": "b3ae3e6de810f09d67abed2298026c0b2dc312b12da6f03ff9a15f536805becf",
+      "duration_seconds": 133.06,
+      "exit_code": 0,
+      "usage": {
+        "input_tokens": 19712,
+        "cached_input_tokens": 8448,
+        "output_tokens": 5900,
+        "reasoning_output_tokens": 312
+      },
+      "errors": [],
+      "response_exists": true,
+      "response_characters": 29857,
+      "tool_items": [],
+      "round": "preliminary",
+      "user_message": "Give me the files only. I want a small Python standard-library utility that previews filename cleanup for one folder and renames files only after an explicit apply. It must not overwrite existing files. No interface, server, database, external services, or tracker. Prepare the project documents, not the program itself.",
+      "supplied_source_references": [
+        "PROJECT_BOOTSTRAP.md",
+        "templates/AGENTS.template.md",
+        "templates/PRD.template.md"
+      ],
+      "response_file": "preliminary-small-file-only.response.txt",
+      "response_sha256": "6f2f96adf53ca3debba8d88b4d9f14338f7771217e5bf9e5f6a39f838f5340fc",
+      "review": {
+        "status": "fail",
+        "evidence": "Complete tailored documents and unverified structure, but excessive repetition, unsafe nesting of Markdown fences, and a handoff without the planning URL. No application, tasks, or target writes claimed."
+      }
+    },
+    {
+      "case": "unreadable-instruction-url",
+      "method": "controlled model run; supplied sources and mocked capabilities; no tools",
+      "date_utc": "2026-10-20T15:37:27.677484+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "ed66f3b3a69231a982aae6d65ba50fbb4884ee2b",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "0f469e4488fe717ffd8ed10ea66a33d8066a2a62b4c77dcbc61a3fe611fc19ca",
+        "TASK_PLANNING.md": "5cc3a8e0f8a2aa08f75c36be9638e1cc3e4a4df0dd9728a69af637fcd773969b",
+        "templates/AGENTS.template.md": "de24a32c84b734a556708408872b1ea9cffbe53a27348808694ace964e44db27",
+        "templates/PRD.template.md": "b8992b56a674d129797facc912f136245280bfe3891ed8a725fc43cbdf9cc529"
+      },
+      "input_sha256": "eb204342ee8569a63b591c28a868f89c06625015495075e881fc3c17dcd72faf",
+      "duration_seconds": 1.68,
+      "exit_code": 1,
+      "usage": null,
+      "errors": [
+        {
+          "type": "error",
+          "message": "exceeded retry limit, last status: 429 Too Many Requests"
+        },
+        {
+          "type": "turn.failed",
+          "error": {
+            "message": "exceeded retry limit, last status: 429 Too Many Requests"
+          }
+        }
+      ],
+      "response_exists": false,
+      "response_characters": 0,
+      "tool_items": [],
+      "round": "preliminary",
+      "user_message": "Read and follow https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/PROJECT_BOOTSTRAP.md using my context below. If you cannot retrieve that file, say so. My idea is a small activity noticeboard for a community club.",
+      "supplied_source_references": [],
+      "review": {
+        "status": "blocked",
+        "evidence": "HTTP 429 before a response; model compliance not tested."
+      }
+    },
+    {
+      "case": "small-file-only",
+      "method": "controlled model run; mocked capabilities; no tools",
+      "supplied_sources": [
+        "PROJECT_BOOTSTRAP.md",
+        "templates/AGENTS.template.md",
+        "templates/PRD.template.md",
+        "TASK_PLANNING.md"
+      ],
+      "date_utc": "2026-10-20T15:40:31.315953+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "ed66f3b3a69231a982aae6d65ba50fbb4884ee2b",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "5acd40f563779dc0fb2f945be8631b9fb11cff4356bf220184cb2f6299aab247",
+        "TASK_PLANNING.md": "5cc3a8e0f8a2aa08f75c36be9638e1cc3e4a4df0dd9728a69af637fcd773969b",
+        "templates/AGENTS.template.md": "0b25ba93e08e5198cbc0c7f498199c209163cef82a63befdd348de8e39f8168e",
+        "templates/PRD.template.md": "ffc39072813e49cba8f103c361e1a6c556a0b438ce03a3442075b27a5a6d8b7d"
+      },
+      "input_sha256": "40b60234559e58769209954f54099c6df20fa0fb80db7638b62189585994d23e",
+      "duration_seconds": 1.59,
+      "exit_code": 1,
+      "usage": null,
+      "errors": [
+        {
+          "type": "error",
+          "message": "exceeded retry limit, last status: 429 Too Many Requests"
+        },
+        {
+          "type": "turn.failed",
+          "error": {
+            "message": "exceeded retry limit, last status: 429 Too Many Requests"
+          }
+        }
+      ],
+      "response_exists": false,
+      "response_characters": 0,
+      "tool_items": [],
+      "round": "revised",
+      "user_message": "Give me the files only. I want a small Python standard-library utility that previews filename cleanup for one folder and renames files only after an explicit apply. It must not overwrite existing files. No interface, server, database, external services, or tracker. Prepare the project documents, not the program itself.",
+      "supplied_source_references": [
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/PROJECT_BOOTSTRAP.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/templates/AGENTS.template.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/templates/PRD.template.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/TASK_PLANNING.md"
+      ],
+      "review": {
+        "status": "blocked",
+        "evidence": "HTTP 429 before a response; model compliance not tested."
+      }
+    },
+    {
+      "case": "small-file-only",
+      "method": "controlled model run; mocked capabilities; no tools",
+      "supplied_sources": [
+        "PROJECT_BOOTSTRAP.md",
+        "templates/AGENTS.template.md",
+        "templates/PRD.template.md",
+        "TASK_PLANNING.md"
+      ],
+      "date_utc": "2026-10-20T15:43:45.401325+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "ed66f3b3a69231a982aae6d65ba50fbb4884ee2b",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "5acd40f563779dc0fb2f945be8631b9fb11cff4356bf220184cb2f6299aab247",
+        "TASK_PLANNING.md": "5cc3a8e0f8a2aa08f75c36be9638e1cc3e4a4df0dd9728a69af637fcd773969b",
+        "templates/AGENTS.template.md": "0b25ba93e08e5198cbc0c7f498199c209163cef82a63befdd348de8e39f8168e",
+        "templates/PRD.template.md": "ffc39072813e49cba8f103c361e1a6c556a0b438ce03a3442075b27a5a6d8b7d"
+      },
+      "input_sha256": "40b60234559e58769209954f54099c6df20fa0fb80db7638b62189585994d23e",
+      "duration_seconds": 128.21,
+      "exit_code": 0,
+      "usage": {
+        "input_tokens": 21679,
+        "cached_input_tokens": 8448,
+        "output_tokens": 6327,
+        "reasoning_output_tokens": 712
+      },
+      "errors": [],
+      "response_exists": true,
+      "response_characters": 30059,
+      "tool_items": [],
+      "round": "retry",
+      "user_message": "Give me the files only. I want a small Python standard-library utility that previews filename cleanup for one folder and renames files only after an explicit apply. It must not overwrite existing files. No interface, server, database, external services, or tracker. Prepare the project documents, not the program itself.",
+      "supplied_source_references": [
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/PROJECT_BOOTSTRAP.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/templates/AGENTS.template.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/templates/PRD.template.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/TASK_PLANNING.md"
+      ],
+      "response_file": "retry-small-file-only.response.txt",
+      "response_sha256": "26493659d44343a6ae408dc8ad60f67c85f7f1af28684b5d688a65ede5fd3b85",
+      "review": {
+        "status": "fail",
+        "evidence": "Correct outer fences and actual document names/planning URL/attachment handoff; scope and unverified implementation claims respected. Output remains disproportionate for bounded work."
+      }
+    },
+    {
+      "case": "complex-existing-contracts",
+      "method": "controlled model run; mocked capabilities; no tools",
+      "supplied_sources": [
+        "PROJECT_BOOTSTRAP.md",
+        "templates/AGENTS.template.md",
+        "templates/PRD.template.md",
+        "TASK_PLANNING.md"
+      ],
+      "date_utc": "2026-10-20T15:48:35.858790+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "ed66f3b3a69231a982aae6d65ba50fbb4884ee2b",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "5acd40f563779dc0fb2f945be8631b9fb11cff4356bf220184cb2f6299aab247",
+        "TASK_PLANNING.md": "5cc3a8e0f8a2aa08f75c36be9638e1cc3e4a4df0dd9728a69af637fcd773969b",
+        "templates/AGENTS.template.md": "85ccbf1101bf1f9482ad1f61e3102fde33b39de5342e8aad354ef82a04cbceab",
+        "templates/PRD.template.md": "3031060f5b969c3377484a66da3e41fd7b130f2a1bf972c30ccf0f8defdcb09f"
+      },
+      "input_sha256": "c4a19a3d8b0eabde7bf0a65a61575f3621bc13c7f79c487b7bd15f3af9f13cd0",
+      "duration_seconds": 2.86,
+      "exit_code": 1,
+      "usage": null,
+      "errors": [
+        {
+          "type": "error",
+          "message": "exceeded retry limit, last status: 429 Too Many Requests"
+        },
+        {
+          "type": "turn.failed",
+          "error": {
+            "message": "exceeded retry limit, last status: 429 Too Many Requests"
+          }
+        }
+      ],
+      "response_exists": false,
+      "response_characters": 0,
+      "tool_items": [],
+      "round": "final",
+      "user_message": "Give me revised documents only. I am the product owner, not an engineer. Preserve the approved service boundaries, privacy, identity, and independent record relationships. Make the concurrency, partial-failure recovery, and verification contracts concrete enough for engineers to implement. Do not add sharing, offline writes, a new stack, or a second state system. Do not implement the service or create tasks.",
+      "supplied_source_references": [
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/PROJECT_BOOTSTRAP.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/templates/AGENTS.template.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/templates/PRD.template.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/TASK_PLANNING.md"
+      ],
+      "review": {
+        "status": "blocked",
+        "evidence": "HTTP 429 before a response; model compliance not tested."
+      }
+    },
+    {
+      "case": "engineer-existing-project",
+      "method": "controlled model run; mocked capabilities; no tools",
+      "supplied_sources": [
+        "PROJECT_BOOTSTRAP.md",
+        "templates/AGENTS.template.md",
+        "templates/PRD.template.md",
+        "TASK_PLANNING.md"
+      ],
+      "date_utc": "2026-10-20T15:48:32.906092+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "ed66f3b3a69231a982aae6d65ba50fbb4884ee2b",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "5acd40f563779dc0fb2f945be8631b9fb11cff4356bf220184cb2f6299aab247",
+        "TASK_PLANNING.md": "5cc3a8e0f8a2aa08f75c36be9638e1cc3e4a4df0dd9728a69af637fcd773969b",
+        "templates/AGENTS.template.md": "85ccbf1101bf1f9482ad1f61e3102fde33b39de5342e8aad354ef82a04cbceab",
+        "templates/PRD.template.md": "3031060f5b969c3377484a66da3e41fd7b130f2a1bf972c30ccf0f8defdcb09f"
+      },
+      "input_sha256": "3549874e8f9f7545f5b88cd150c00bf861b0da6549d1e89f64e753cfbe3e3269",
+      "duration_seconds": 62.32,
+      "exit_code": 0,
+      "usage": {
+        "input_tokens": 19540,
+        "cached_input_tokens": 8448,
+        "output_tokens": 3281,
+        "reasoning_output_tokens": 153
+      },
+      "errors": [],
+      "response_exists": true,
+      "response_characters": 17136,
+      "tool_items": [],
+      "round": "final",
+      "user_message": "Update the documents using file delivery rather than modifying the project. Keep Python standard library, rename_tool/ and tests/, the current CLI flags, and the accepted no-network/no-overwrite contract. Clarify recovery and verification. No new framework, repository, tracker, or migration.",
+      "supplied_source_references": [
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/PROJECT_BOOTSTRAP.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/templates/AGENTS.template.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/templates/PRD.template.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/TASK_PLANNING.md"
+      ],
+      "response_file": "final-engineer-existing-project.response.txt",
+      "response_sha256": "3a8f745cec175998cf2636c1655837887219e4133d8c6760840aa8b2c2083c60",
+      "review": {
+        "status": "pass",
+        "evidence": "All supplied constraints and existing structure preserved; scoped recovery/verification with unexecuted test command; actual-document handoff and recovery focus. No reopened route, framework, migration, tracker, or write claim."
+      }
+    },
+    {
+      "case": "non-software-project",
+      "method": "controlled model run; mocked capabilities; no tools",
+      "supplied_sources": [
+        "PROJECT_BOOTSTRAP.md",
+        "templates/AGENTS.template.md",
+        "templates/PRD.template.md",
+        "TASK_PLANNING.md"
+      ],
+      "date_utc": "2026-10-20T15:48:43.776115+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "ed66f3b3a69231a982aae6d65ba50fbb4884ee2b",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "5acd40f563779dc0fb2f945be8631b9fb11cff4356bf220184cb2f6299aab247",
+        "TASK_PLANNING.md": "5cc3a8e0f8a2aa08f75c36be9638e1cc3e4a4df0dd9728a69af637fcd773969b",
+        "templates/AGENTS.template.md": "85ccbf1101bf1f9482ad1f61e3102fde33b39de5342e8aad354ef82a04cbceab",
+        "templates/PRD.template.md": "3031060f5b969c3377484a66da3e41fd7b130f2a1bf972c30ccf0f8defdcb09f"
+      },
+      "input_sha256": "1e2c035666b4a4cd920322d4cc3416766ad89be31af6855ff971f5f4889864ba",
+      "duration_seconds": 2.16,
+      "exit_code": 1,
+      "usage": null,
+      "errors": [
+        {
+          "type": "error",
+          "message": "exceeded retry limit, last status: 429 Too Many Requests"
+        },
+        {
+          "type": "turn.failed",
+          "error": {
+            "message": "exceeded retry limit, last status: 429 Too Many Requests"
+          }
+        }
+      ],
+      "response_exists": false,
+      "response_characters": 0,
+      "tool_items": [],
+      "round": "final",
+      "user_message": "Give me the files for a reusable community workshop program: a session guide, facilitator checklist, and feedback process. It is a small non-software project. No app, website, accounts, code, repository, or external tracker is needed.",
+      "supplied_source_references": [
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/PROJECT_BOOTSTRAP.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/templates/AGENTS.template.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/templates/PRD.template.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/TASK_PLANNING.md"
+      ],
+      "review": {
+        "status": "blocked",
+        "evidence": "HTTP 429 before a response; model compliance not tested."
+      }
+    },
+    {
+      "case": "novice-first-brief",
+      "method": "controlled model run; mocked capabilities; no tools",
+      "supplied_sources": [
+        "PROJECT_BOOTSTRAP.md",
+        "templates/AGENTS.template.md",
+        "templates/PRD.template.md",
+        "TASK_PLANNING.md"
+      ],
+      "date_utc": "2026-10-20T15:47:30.514513+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "ed66f3b3a69231a982aae6d65ba50fbb4884ee2b",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "5acd40f563779dc0fb2f945be8631b9fb11cff4356bf220184cb2f6299aab247",
+        "TASK_PLANNING.md": "5cc3a8e0f8a2aa08f75c36be9638e1cc3e4a4df0dd9728a69af637fcd773969b",
+        "templates/AGENTS.template.md": "85ccbf1101bf1f9482ad1f61e3102fde33b39de5342e8aad354ef82a04cbceab",
+        "templates/PRD.template.md": "3031060f5b969c3377484a66da3e41fd7b130f2a1bf972c30ccf0f8defdcb09f"
+      },
+      "input_sha256": "5930159923e9a77c8e6c7d1524988f0ee2d24facdbbccfef405f9cda4b7d5135",
+      "duration_seconds": 17.37,
+      "exit_code": 0,
+      "usage": {
+        "input_tokens": 19466,
+        "cached_input_tokens": 8448,
+        "output_tokens": 539,
+        "reasoning_output_tokens": 135
+      },
+      "errors": [],
+      "response_exists": true,
+      "response_characters": 2181,
+      "tool_items": [],
+      "round": "final",
+      "user_message": "I dream of making it easier for small community clubs to organize activities so people know what is happening and can join in. I am not technical and do not know where to start.",
+      "supplied_source_references": [
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/PROJECT_BOOTSTRAP.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/templates/AGENTS.template.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/templates/PRD.template.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/TASK_PLANNING.md"
+      ],
+      "response_file": "final-novice-first-brief.response.txt",
+      "response_sha256": "2c2a89e00e12620fc8d4958b6dfb9ca1fa5bf42e7982c6132b73dbf2ba3c8923",
+      "review": {
+        "status": "pass",
+        "evidence": "Audience/problem/outcome and recommended activity board with rationale, exclusions and material assumptions before one delivery choice. No stack/tracker/sign-in questions, full task batch, or creation claim."
+      }
+    },
+    {
+      "case": "planning-first-turn",
+      "method": "controlled model run; mocked capabilities; no tools",
+      "supplied_sources": ["TASK_PLANNING.md"],
+      "date_utc": "2026-10-20T15:48:46.486287+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "ed66f3b3a69231a982aae6d65ba50fbb4884ee2b",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "5acd40f563779dc0fb2f945be8631b9fb11cff4356bf220184cb2f6299aab247",
+        "TASK_PLANNING.md": "5cc3a8e0f8a2aa08f75c36be9638e1cc3e4a4df0dd9728a69af637fcd773969b",
+        "templates/AGENTS.template.md": "85ccbf1101bf1f9482ad1f61e3102fde33b39de5342e8aad354ef82a04cbceab",
+        "templates/PRD.template.md": "3031060f5b969c3377484a66da3e41fd7b130f2a1bf972c30ccf0f8defdcb09f"
+      },
+      "input_sha256": "db4bfe30c251b8a17add5016bc848e0b37cbad6fc45c9b91d784f1fbfcefa3dd",
+      "duration_seconds": 2.65,
+      "exit_code": 1,
+      "usage": null,
+      "errors": [
+        {
+          "type": "error",
+          "message": "exceeded retry limit, last status: 429 Too Many Requests"
+        },
+        {
+          "type": "turn.failed",
+          "error": {
+            "message": "exceeded retry limit, last status: 429 Too Many Requests"
+          }
+        }
+      ],
+      "response_exists": false,
+      "response_characters": 0,
+      "tool_items": [],
+      "round": "final",
+      "user_message": "Let's brainstorm the safe preview-and-apply behavior first. I am unsure how to handle collisions or a failure halfway through. Do not create tasks yet.",
+      "supplied_source_references": [
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/TASK_PLANNING.md"
+      ],
+      "review": {
+        "status": "blocked",
+        "evidence": "HTTP 429 before a response; model compliance not tested."
+      }
+    },
+    {
+      "case": "planning-settled-proposal",
+      "method": "controlled model run; mocked capabilities; no tools",
+      "supplied_sources": ["TASK_PLANNING.md"],
+      "date_utc": "2026-10-20T15:48:49.159125+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "ed66f3b3a69231a982aae6d65ba50fbb4884ee2b",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "5acd40f563779dc0fb2f945be8631b9fb11cff4356bf220184cb2f6299aab247",
+        "TASK_PLANNING.md": "5cc3a8e0f8a2aa08f75c36be9638e1cc3e4a4df0dd9728a69af637fcd773969b",
+        "templates/AGENTS.template.md": "85ccbf1101bf1f9482ad1f61e3102fde33b39de5342e8aad354ef82a04cbceab",
+        "templates/PRD.template.md": "3031060f5b969c3377484a66da3e41fd7b130f2a1bf972c30ccf0f8defdcb09f"
+      },
+      "input_sha256": "86170fd44019cb82818833929c959cb7e9c26155b86eae117c96760c6a3f89fd",
+      "duration_seconds": 2.61,
+      "exit_code": 1,
+      "usage": null,
+      "errors": [
+        {
+          "type": "error",
+          "message": "exceeded retry limit, last status: 429 Too Many Requests"
+        },
+        {
+          "type": "turn.failed",
+          "error": {
+            "message": "exceeded retry limit, last status: 429 Too Many Requests"
+          }
+        }
+      ],
+      "response_exists": false,
+      "response_characters": 0,
+      "tool_items": [],
+      "round": "final",
+      "user_message": "We have agreed the outcome and approach. Draft a small task proposal for that preview/apply slice with acceptance criteria and real dependencies. Do not publish the tasks yet.",
+      "supplied_source_references": [
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/TASK_PLANNING.md"
+      ],
+      "review": {
+        "status": "blocked",
+        "evidence": "HTTP 429 before a response; model compliance not tested."
+      }
+    },
+    {
+      "case": "repository-missing-access",
+      "method": "controlled model run; mocked capabilities; no tools",
+      "supplied_sources": [
+        "PROJECT_BOOTSTRAP.md",
+        "templates/AGENTS.template.md",
+        "templates/PRD.template.md",
+        "TASK_PLANNING.md"
+      ],
+      "date_utc": "2026-10-20T15:48:38.849205+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "ed66f3b3a69231a982aae6d65ba50fbb4884ee2b",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "5acd40f563779dc0fb2f945be8631b9fb11cff4356bf220184cb2f6299aab247",
+        "TASK_PLANNING.md": "5cc3a8e0f8a2aa08f75c36be9638e1cc3e4a4df0dd9728a69af637fcd773969b",
+        "templates/AGENTS.template.md": "85ccbf1101bf1f9482ad1f61e3102fde33b39de5342e8aad354ef82a04cbceab",
+        "templates/PRD.template.md": "3031060f5b969c3377484a66da3e41fd7b130f2a1bf972c30ccf0f8defdcb09f"
+      },
+      "input_sha256": "e9f902389d124e53a2b2c6b532905148306738e19e51a5db019cdd003c37f22d",
+      "duration_seconds": 2.93,
+      "exit_code": 1,
+      "usage": null,
+      "errors": [
+        {
+          "type": "error",
+          "message": "exceeded retry limit, last status: 429 Too Many Requests"
+        },
+        {
+          "type": "turn.failed",
+          "error": {
+            "message": "exceeded retry limit, last status: 429 Too Many Requests"
+          }
+        }
+      ],
+      "response_exists": false,
+      "response_characters": 0,
+      "tool_items": [],
+      "round": "final",
+      "user_message": "Set up my project as a private GitHub repository named club-noticeboard under my account. My idea is a simple noticeboard for club activities. I have not connected GitHub yet and do not want to select a task tracker now.",
+      "supplied_source_references": [
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/PROJECT_BOOTSTRAP.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/templates/AGENTS.template.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/templates/PRD.template.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/TASK_PLANNING.md"
+      ],
+      "review": {
+        "status": "blocked",
+        "evidence": "HTTP 429 before a response; model compliance not tested."
+      }
+    },
+    {
+      "case": "small-file-only",
+      "method": "controlled model run; mocked capabilities; no tools",
+      "supplied_sources": [
+        "PROJECT_BOOTSTRAP.md",
+        "templates/AGENTS.template.md",
+        "templates/PRD.template.md",
+        "TASK_PLANNING.md"
+      ],
+      "date_utc": "2026-10-20T15:47:13.074189+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "ed66f3b3a69231a982aae6d65ba50fbb4884ee2b",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "5acd40f563779dc0fb2f945be8631b9fb11cff4356bf220184cb2f6299aab247",
+        "TASK_PLANNING.md": "5cc3a8e0f8a2aa08f75c36be9638e1cc3e4a4df0dd9728a69af637fcd773969b",
+        "templates/AGENTS.template.md": "85ccbf1101bf1f9482ad1f61e3102fde33b39de5342e8aad354ef82a04cbceab",
+        "templates/PRD.template.md": "3031060f5b969c3377484a66da3e41fd7b130f2a1bf972c30ccf0f8defdcb09f"
+      },
+      "input_sha256": "5126eee07984e7702450996caef9494d9761f7986656911607b6759f4593a369",
+      "duration_seconds": 86.24,
+      "exit_code": 0,
+      "usage": {
+        "input_tokens": 19489,
+        "cached_input_tokens": 8448,
+        "output_tokens": 3822,
+        "reasoning_output_tokens": 99
+      },
+      "errors": [],
+      "response_exists": true,
+      "response_characters": 20000,
+      "tool_items": [],
+      "round": "final",
+      "user_message": "Give me the files only. I want a small Python standard-library utility that previews filename cleanup for one folder and renames files only after an explicit apply. It must not overwrite existing files. No interface, server, database, external services, or tracker. Prepare the project documents, not the program itself.",
+      "supplied_source_references": [
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/PROJECT_BOOTSTRAP.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/templates/AGENTS.template.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/templates/PRD.template.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/TASK_PLANNING.md"
+      ],
+      "response_file": "final-small-file-only.response.txt",
+      "response_sha256": "413149e1db11896318a256d7d0b00daee761a3a79d81307136d253264d644029",
+      "review": {
+        "status": "fail",
+        "evidence": "Simpler outline and complete core/handoff; no fake writes or checks. Still too verbose and adds proposed swaps/chains and staging/recovery behavior beyond the requested small utility. Prompt/templates were subsequently tightened; no causal claim from token-count differences."
+      }
+    },
+    {
+      "case": "unreadable-instruction-url",
+      "method": "controlled model run; mocked capabilities; no tools",
+      "supplied_sources": [],
+      "date_utc": "2026-10-20T15:48:41.547130+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "ed66f3b3a69231a982aae6d65ba50fbb4884ee2b",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "5acd40f563779dc0fb2f945be8631b9fb11cff4356bf220184cb2f6299aab247",
+        "TASK_PLANNING.md": "5cc3a8e0f8a2aa08f75c36be9638e1cc3e4a4df0dd9728a69af637fcd773969b",
+        "templates/AGENTS.template.md": "85ccbf1101bf1f9482ad1f61e3102fde33b39de5342e8aad354ef82a04cbceab",
+        "templates/PRD.template.md": "3031060f5b969c3377484a66da3e41fd7b130f2a1bf972c30ccf0f8defdcb09f"
+      },
+      "input_sha256": "eb204342ee8569a63b591c28a868f89c06625015495075e881fc3c17dcd72faf",
+      "duration_seconds": 2.64,
+      "exit_code": 1,
+      "usage": null,
+      "errors": [
+        {
+          "type": "error",
+          "message": "exceeded retry limit, last status: 429 Too Many Requests"
+        },
+        {
+          "type": "turn.failed",
+          "error": {
+            "message": "exceeded retry limit, last status: 429 Too Many Requests"
+          }
+        }
+      ],
+      "response_exists": false,
+      "response_characters": 0,
+      "tool_items": [],
+      "round": "final",
+      "user_message": "Read and follow https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/PROJECT_BOOTSTRAP.md using my context below. If you cannot retrieve that file, say so. My idea is a small activity noticeboard for a community club.",
+      "supplied_source_references": [],
+      "review": {
+        "status": "blocked",
+        "evidence": "HTTP 429 before a response; model compliance not tested."
+      }
+    },
+    {
+      "case": "small-file-only",
+      "method": "controlled model run; mocked capabilities; no tools",
+      "supplied_sources": [
+        "PROJECT_BOOTSTRAP.md",
+        "templates/AGENTS.template.md",
+        "templates/PRD.template.md",
+        "TASK_PLANNING.md"
+      ],
+      "date_utc": "2026-10-20T15:49:59.221416+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "ed66f3b3a69231a982aae6d65ba50fbb4884ee2b",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "e99900f8f9aee8419e9afc04a3935fc866ba2d9feaa3eae1f1e480a7818ff4d0",
+        "TASK_PLANNING.md": "5cc3a8e0f8a2aa08f75c36be9638e1cc3e4a4df0dd9728a69af637fcd773969b",
+        "templates/AGENTS.template.md": "e69b302eadef308186d6cd626cc22c8f5ef142cd7e0727a871bb9987120a5c9c",
+        "templates/PRD.template.md": "eca56ec01b423175b512694c4918889a973465f932733b317b2d0909ad65f97e"
+      },
+      "input_sha256": "a6aa857b0da5795c26856be06186cec02b7b9b2845eac53b2136799910865889",
+      "duration_seconds": 2.63,
+      "exit_code": 1,
+      "usage": null,
+      "errors": [
+        {
+          "type": "error",
+          "message": "exceeded retry limit, last status: 429 Too Many Requests"
+        },
+        {
+          "type": "turn.failed",
+          "error": {
+            "message": "exceeded retry limit, last status: 429 Too Many Requests"
+          }
+        }
+      ],
+      "response_exists": false,
+      "response_characters": 0,
+      "tool_items": [],
+      "round": "compact-budget",
+      "user_message": "Give me the files only. I want a small Python standard-library utility that previews filename cleanup for one folder and renames files only after an explicit apply. It must not overwrite existing files. No interface, server, database, external services, or tracker. Prepare the project documents, not the program itself.",
+      "supplied_source_references": [
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/PROJECT_BOOTSTRAP.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/templates/AGENTS.template.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/templates/PRD.template.md",
+        "https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/TASK_PLANNING.md"
+      ],
+      "review": {
+        "status": "blocked",
+        "evidence": "HTTP 429 before a response; model compliance not tested."
+      }
+    }
+  ]
+}

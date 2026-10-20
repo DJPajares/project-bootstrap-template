@@ -1,0 +1,2 @@
+# Preserve exact model captures, including Markdown's intentional trailing spaces.
+evaluations/runs/**/*.response.txt -whitespace

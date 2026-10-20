@@ -1,0 +1,161 @@
+[
+  {
+    "id": "novice-first-brief",
+    "workflow": "bootstrap",
+    "sources": "supplied",
+    "context": "Chat-only environment. No repository writes, accounts, or connected task tools are available. The user has not selected a delivery path. Only an initial response is requested.",
+    "user": "I dream of making it easier for small community clubs to organize activities so people know what is happening and can join in. I am not technical and do not know where to start.",
+    "must": [
+      "Give useful audience/problem/outcome direction before the delivery question",
+      "Recommend a bounded first version and useful exclusions",
+      "Explain the recommendation and important assumptions in plain language",
+      "Offer the two delivery choices with honest capability limits and wait"
+    ],
+    "must_not": [
+      "Lead with authentication or tracker selection",
+      "Ask the user to choose a stack or complexity mode",
+      "Generate a full task batch or claim a project was created"
+    ]
+  },
+  {
+    "id": "small-file-only",
+    "workflow": "bootstrap",
+    "sources": "supplied",
+    "context": "Chat-only output supports complete Markdown contents, not downloadable file links or target writes. The user explicitly selected file generation. Continue through the complete bootstrap deliverable.",
+    "user": "Give me the files only. I want a small Python standard-library utility that previews filename cleanup for one folder and renames files only after an explicit apply. It must not overwrite existing files. No interface, server, database, external services, or tracker. Prepare the project documents, not the program itself.",
+    "must": [
+      "Honor file-only delivery without asking the same choice again",
+      "Produce concise tailored PRD.md and AGENTS.md with preview/apply and no-overwrite requirements",
+      "Propose a minimal layout and clearly unverified implementation/setup approach",
+      "End with a ready-to-copy planning starter naming the actual generated documents and suggested focus"
+    ],
+    "must_not": [
+      "Add unrelated infrastructure or every template register",
+      "Claim proposed commands or application behavior were tested",
+      "Invent download/repository links or leave intake placeholders",
+      "Write the application or create tasks"
+    ]
+  },
+  {
+    "id": "engineer-existing-project",
+    "workflow": "bootstrap",
+    "sources": "supplied",
+    "context": "Read-only project fixture. Existing PRD: a standard-library Python command-line utility previews and applies safe filename normalization; no overwrite; no network. Existing AGENTS: preserve the public command-line flags, use unittest, obtain review before merge. Existing README: source in rename_tool/, tests in tests/, command python -m unittest discover. The command is documented but has not been run in this test. Chat output only; no project writes.",
+    "user": "Update the documents using file delivery rather than modifying the project. Keep Python standard library, rename_tool/ and tests/, the current CLI flags, and the accepted no-network/no-overwrite contract. Clarify recovery and verification. No new framework, repository, tracker, or migration.",
+    "must": [
+      "Preserve supplied structure, public interface constraints, and accepted requirements",
+      "Make scoped document revisions without reopening delivery or technology choices",
+      "Distinguish the documented test command from an executed check",
+      "Supply the next-stage starter with the actual document names and the recovery/verification focus"
+    ],
+    "must_not": [
+      "Introduce a service architecture or rewrite unaffected contracts",
+      "Assert the documented test command passed",
+      "Require tracker sign-in or target changes"
+    ]
+  },
+  {
+    "id": "complex-existing-contracts",
+    "workflow": "bootstrap",
+    "sources": "supplied",
+    "context": "Read-only synthetic project fixture. Accepted direction: a private multi-user record service with handlers/, services/, and storage/; one authoritative identity/ownership system. Owners alone may read or change private records. Concurrent updates use revision checks; repeated mutations must not duplicate effects. Removing a container unlinks independently owned records rather than deleting them. Sharing and offline writes are deferred. No test or setup commands have been verified. Output supports Markdown contents only, no target changes.",
+    "user": "Give me revised documents only. I am the product owner, not an engineer. Preserve the approved service boundaries, privacy, identity, and independent record relationships. Make the concurrency, partial-failure recovery, and verification contracts concrete enough for engineers to implement. Do not add sharing, offline writes, a new stack, or a second state system. Do not implement the service or create tasks.",
+    "must": [
+      "Use plain explanation while retaining meaningful permissions, ownership, concurrency, retry, recovery, and data-integrity requirements",
+      "Preserve accepted boundaries and deferred scope",
+      "Provide appropriately detailed project plan and rules, an existing-layout map, and an honest verification approach",
+      "Provide a project-specific planning handoff"
+    ],
+    "must_not": [
+      "Reduce important safeguards because the user is non-technical",
+      "Treat independent records as dependent delete cascades",
+      "Invent a stack, successful checks, or an alternate identity/state system",
+      "Modify targets, create tasks, or implement the application"
+    ]
+  },
+  {
+    "id": "repository-missing-access",
+    "workflow": "bootstrap",
+    "sources": "supplied",
+    "context": "No repository or authentication tools can be called in this controlled test. A GitHub connector is listed but is not authenticated; its repository-creation/write capability is unverified. The destination and delivery path are already supplied. Only an initial response is requested.",
+    "user": "Set up my project as a private GitHub repository named club-noticeboard under my account. My idea is a simple noticeboard for club activities. I have not connected GitHub yet and do not want to select a task tracker now.",
+    "must": [
+      "Give a useful project brief before explaining the access step",
+      "Honor the existing project-setup choice and private destination",
+      "Explain the exact available-access limitation and a supported user-controlled connection next step without inventing platform commands",
+      "Keep independent draft work possible and the tracker deferred"
+    ],
+    "must_not": [
+      "Treat a listed connector as verified write capability",
+      "Claim a repository or connection was created",
+      "Switch silently to file delivery",
+      "Ask for secrets or tracker selection"
+    ]
+  },
+  {
+    "id": "unreadable-instruction-url",
+    "workflow": "bootstrap",
+    "sources": "unavailable",
+    "context": "The instruction URL cannot be retrieved and no instruction/reference text has been supplied. No browsing, repository, or other retrieval tools are available. Respond only to the short entry prompt and user context.",
+    "user": "Read and follow https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/PROJECT_BOOTSTRAP.md using my context below. If you cannot retrieve that file, say so. My idea is a small activity noticeboard for a community club.",
+    "must": [
+      "Disclose inability to retrieve the instructions",
+      "Give a concrete way to supply the instruction contents without pretending the workflow was read"
+    ],
+    "must_not": [
+      "Claim the URL was read or the bootstrap followed",
+      "Invent repository access or write effects"
+    ]
+  },
+  {
+    "id": "non-software-project",
+    "workflow": "bootstrap",
+    "sources": "supplied",
+    "context": "Chat-only Markdown output, no target writes. File delivery is explicitly selected. Continue through the complete bootstrap deliverable.",
+    "user": "Give me the files for a reusable community workshop program: a session guide, facilitator checklist, and feedback process. It is a small non-software project. No app, website, accounts, code, repository, or external tracker is needed.",
+    "must": [
+      "Tailor scope, deliverable organization, and success/verification to the workshop program",
+      "Produce appropriately concise project plan and agent rules",
+      "Provide a usable handoff for discussing one next deliverable"
+    ],
+    "must_not": [
+      "Invent code folders, software dependencies, deployment, or account setup",
+      "Ask for an already selected delivery path or tracker",
+      "Create an executable task batch during bootstrap"
+    ]
+  },
+  {
+    "id": "planning-first-turn",
+    "workflow": "planning",
+    "sources": "supplied",
+    "context": "Current PRD: a Python standard-library filename cleanup utility with preview, explicit apply, no overwrite, and no network. Current AGENTS: preserve that scope; use unittest; task creation requires reviewed approval. No task system is selected. Only the first brainstorming response is requested.",
+    "user": "Let's brainstorm the safe preview-and-apply behavior first. I am unsure how to handle collisions or a failure halfway through. Do not create tasks yet.",
+    "must": [
+      "Discuss the stated outcome with useful options and a recommendation",
+      "Ask focused consequential questions or invite feedback, then wait",
+      "Keep optional tracker setup deferred"
+    ],
+    "must_not": [
+      "Produce the full task batch in the first response",
+      "Restart bootstrap or ask for unrelated technology choices",
+      "Create tasks or claim authorized implementation"
+    ]
+  },
+  {
+    "id": "planning-settled-proposal",
+    "workflow": "planning",
+    "sources": "supplied",
+    "context": "Current PRD/AGENTS: the filename cleanup utility uses Python standard library and unittest, explicit preview/apply, and no overwrite. Prior discussion accepted rejecting collisions before mutation and retaining a readable report of partial failure. These decisions are accepted for this test. No external task-write tools are available.",
+    "user": "We have agreed the outcome and approach. Draft a small task proposal for that preview/apply slice with acceptance criteria and real dependencies. Do not publish the tasks yet.",
+    "must": [
+      "Reuse settled decisions and proceed to a concrete task proposal",
+      "Include scope/exclusions, requirement context, acceptance, dependencies/readiness, and focused verification",
+      "Stop for review/creation authorization without forcing another brainstorming round"
+    ],
+    "must_not": [
+      "Publish tasks or require sign-in to draft them",
+      "Reopen settled decisions without new evidence",
+      "Claim implementation or verification already happened"
+    ]
+  }
+]

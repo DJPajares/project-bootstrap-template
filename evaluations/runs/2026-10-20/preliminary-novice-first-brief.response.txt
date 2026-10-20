@@ -1,0 +1,21 @@
+You’re aiming to help small community clubs replace scattered messages and uncertain plans with one simple, reliable way for people to see activities and join them.
+
+For the first version, I recommend a lightweight activity board where a club organizer can publish an activity and members can view the details and indicate that they plan to attend. Each activity should include only the essentials: title, date and time, location, short description, organizer contact, attendance limit if needed, and joining deadline. This is enough to test whether the idea genuinely improves participation without asking clubs to adopt a complicated management system.
+
+Keep these outside the first version: payments, membership administration, group chat, volunteer scheduling, recurring-event automation, native mobile apps, and integrations with calendars or social networks. They may become useful later, but they would make the initial product harder to learn and maintain.
+
+The project should be organized around three simple parts:
+
+- A public activity list that is easy to read on a phone.
+- A straightforward way for organizers to create and update activities.
+- A joining flow that confirms someone’s place and gives the organizer an accurate attendee list.
+
+My working assumptions are that each club initially has a small number of trusted organizers, most members will arrive through a shared link, and joining should require minimal personal information. I recommend starting with a single pilot club and a mobile-friendly website rather than building an app. One important decision for the project plan will be whether activities are publicly visible or restricted to people with a club link; my initial recommendation is link-based access for a friendlier balance of simplicity and privacy.
+
+How would you like me to deliver the project foundation?
+
+1. **Set up my project** — I’ll prepare `PRD.md` (the project plan and requirements) and `AGENTS.md` (working rules for future development) for an authorized project location. Application building comes later. This chat currently has no connected project location, so you would need to provide one before setup.
+
+2. **Give me the files (recommended)** — I’ll provide the complete contents of both Markdown documents here, ready for you to save or hand to a developer. Nothing will be created or changed elsewhere.
+
+Reply with **1** or **2**.

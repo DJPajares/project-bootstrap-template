@@ -1,0 +1,20 @@
+You’re building a lightweight noticeboard where club organizers can publish activity details and members can quickly see what is happening.
+
+For the first version, I recommend:
+
+- A single chronological list of notices with title, date/time, location, description, and organizer contact.
+- A simple way for organizers to add, edit, and remove notices.
+- Clear handling for upcoming, past, and cancelled activities.
+- A mobile-friendly, accessible reading experience.
+
+Search, RSVPs, reminders, comments, member profiles, and multiple clubs should wait until the basic publishing workflow proves useful. The project should remain one small application, with display, notice management, and data access kept as clear responsibilities rather than introducing multiple services prematurely.
+
+One important assumption remains open: a private GitHub repository controls access to the source code, not access to the finished noticeboard. I recommend deciding later whether the noticeboard itself is public to anyone with the link or restricted to club members; that choice will determine whether accounts and sign-in are necessary.
+
+I’ll set up the foundation as:
+
+- `PRD.md` — the project plan, requirements, boundaries, and acceptance criteria.
+- `AGENTS.md` — practical rules for implementing and validating the project.
+- A concise `README.md` if needed for orientation once the implementation approach is accepted.
+
+GitHub readiness: **not connected**. I cannot verify your account or create `club-noticeboard` until you connect the GitHub integration through the platform’s connection controls. Please connect the GitHub account that should own the repository, then tell me when it is ready. I’ll verify the selected account and repository-creation capability before creating the repository as **private**. No task tracker will be configured.

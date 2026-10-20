@@ -1,96 +1,77 @@
 # Project Bootstrap Template
 
-Paste a short prompt with a URL, add your project context, and choose how the agent should deliver the result: create the project in a workspace/repository, or generate the files for you. In a separate conversation, brainstorm outcomes and turn agreed decisions into reviewed tasks.
+**Bring the idea. Get a clear direction, a well-structured project foundation, and an easy next step.**
 
-**No template downloads or edits are needed when the AI platform can read URLs.** The same flow works for new and existing projects. A GitHub connection is optional and usable only for operations its tools and permissions actually support.
+You do not need to know the technology, write requirements, or choose development tools first. The agent does the discovery, makes recommendations, and creates the appropriate documents. Existing projects and engineering constraints are supported too.
 
-## 1. Generate the project documents
+## Start with your idea
 
-1. Copy this prompt into your AI platform:
+Copy this prompt into an AI platform that can read URLs:
 
-   ```text
-   Read and follow [PROJECT_BOOTSTRAP.md](https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/PROJECT_BOOTSTRAP.md) using my project context below. If you cannot retrieve that file, say so.
-   ```
+```text
+Read and follow [PROJECT_BOOTSTRAP.md](https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/PROJECT_BOOTSTRAP.md) using my project context below. If you cannot retrieve that file, say so.
+```
 
-2. Add your idea dump, structured ideas, problem statement, or existing project context below it and send.
-3. Choose the delivery path the agent presents:
-   - **Create the project:** initialize a project folder or create/populate a GitHub repository when supported. For an existing project, update its documents in place.
-   - **Generate the files:** receive downloadable documents where supported, otherwise complete Markdown contents. No target-project or repository changes are made.
+Add your idea dump, problem statement, structured requirements, or existing project context beneath it and send. A paragraph is enough. No template downloads or edits are needed.
 
-A paragraph is enough to start. The agent reads the URL and retrieves the reference templates itself. It checks repository and task-system access, then asks for your delivery choice and only missing service/destination details. A connected account alone does not guarantee the required operations or target permissions.
+## What happens first
 
-## Initial access setup
+The agent gives you a short, useful project brief before asking about setup: who the project serves, what it should achieve, a recommended first version, what can wait, and important assumptions. It recommends a direction instead of handing every decision back to you.
 
-The agent checks GitHub and your chosen task/issue destination, such as Linear or another service. It reuses known choices and existing connections. If you have not chosen a task system, it asks where tasks should live; you can decide later or keep task briefs without an external tracker.
+Then you choose how to receive the result:
 
-When access is missing, the agent looks for a supported connection method, handles the configuration it can, and guides you through only the necessary sign-in, consent, or organization-approval step. It then verifies the connection and target scope. It never asks you to paste credentials into chat or creates test issues/repositories to prove access.
+- **Set up my project:** write the documents into an authorized project folder or supported repository, or update an existing project in place.
+- **Give me the files:** receive downloadable documents where supported, otherwise complete Markdown contents. Your project and repositories remain untouched.
 
-You receive a short readiness summary with any exact next action. Setup does not create task projects, issues, or automations, and does not authorize later task creation. Missing or deferred connections do not block file generation. File-only delivery still leaves target-project files untouched, including connection configuration.
+If you already supplied the choice and destination, the agent continues without asking again. It makes no target writes before your choice. Project setup creates the documentation foundation; building the application comes later.
 
-No product questionnaire or template editing is required. The agent organizes your context, handles routine gaps, and records consequential unknowns with recommendations. Creating the project initializes its documents; it does not build an application. This workflow stops after the documents and handoff, without drafting or creating implementation tasks.
+## What you receive
 
-If the platform cannot read the URL, use pasted instructions or attach [PROJECT_BOOTSTRAP.md](PROJECT_BOOTSTRAP.md) and its [agent-rules](templates/AGENTS.template.md) and [requirements](templates/PRD.template.md) references unchanged. The agent must disclose unread sources instead of claiming it followed them.
+- **A project plan (`PRD.md`):** purpose, users, current scope, requirements, important boundaries, and decisions.
+- **Agent working rules (`AGENTS.md`):** practical instructions for future planning, implementation, validation, and human review.
+- **An appropriate structure:** a minimal proposed layout and setup approach where useful, preserving existing structure and constraints. A small utility gets concise documents; complex work gets the detail its risks need.
+- **Supporting guidance only when useful:** such as a README explaining the project and how its actual setup works. Proposed commands are distinguished from verified ones.
+- **A personalized handoff:** file/project links, material open decisions, and a ready-to-copy prompt for the next planning conversation, with your actual project references filled in.
 
-## What the agent produces
+You do not need to select a document mode or identify as a beginner or expert. The agent adjusts its explanations and preserves the necessary rigor. It does not introduce accounts, databases, multiple services, or elaborate infrastructure without a current need.
 
-- **`PRD.md`** — the project's purpose, audience, current scope, requirements, constraints, and decisions.
-- **`AGENTS.md`** — practical rules for agents working on that project, including validation and human decision boundaries.
-- **Supporting guidance when needed** — such as setup instructions, a technical decision record, or an operational runbook. Existing documents are updated instead of duplicated.
-- **A short handoff** — what changed, what was checked, repository/task-system readiness, any exact setup step or decision still needed, and a suggested outcome to discuss next.
+## Connections when you need them
 
-On the creation/update path, the agent writes and verifies the documents in the agreed destination. On the file-generation path, it returns the files without modifying a target project. Draft decisions stay visibly distinct from approved ones.
+The agent quietly checks existing capabilities. It helps connect repository access when the selected delivery or inspection needs it, and your chosen task system when you want to configure task delivery or publish reviewed tasks. You can request setup earlier, or defer it. GitHub, Linear, and other services are optional.
 
-## 2. Brainstorm and plan the tasks
+The agent handles supported configuration, guides only necessary sign-in/consent steps, and verifies relevant access. A listed connector does not guarantee write permissions or repository creation capability. Missing optional access does not block the brief, independent drafts, or file generation. File-only delivery also leaves target configuration untouched.
 
-Start a separate conversation when you are ready to plan work:
+If the AI cannot read the instruction URL, paste the instructions or attach [PROJECT_BOOTSTRAP.md](PROJECT_BOOTSTRAP.md) unchanged; its [agent-rules](templates/AGENTS.template.md) and [requirements](templates/PRD.template.md) references are optional fallbacks. The agent must disclose unread sources and actual capability limits.
 
-1. Copy this prompt into the chat:
+## Brainstorm the work next
 
-   ```text
-   Read and follow [TASK_PLANNING.md](https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/TASK_PLANNING.md) to brainstorm the next outcome with me using my current project documents. If you cannot retrieve that file, say so.
-   ```
+Use the personalized starter in your handoff for a **separate planning conversation**. It already names your project/current documents and a suggested starting outcome. When generated files have no stable links, the handoff tells you to attach those actual project documents; you do not need to reconstruct the context.
 
-2. Add the outcome, problem, or improvement you want to explore, and the project location or document links if they are not already available. The agent reads the current project `PRD.md` and `AGENTS.md`; these are not the bootstrap templates. If you have no starting point, it recommends one.
+You can also use this general starter and provide the project location or current documents:
 
-Attachments or pasted project documents remain available when URL or repository access is unavailable.
+```text
+Read and follow [TASK_PLANNING.md](https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/TASK_PLANNING.md) to brainstorm the next outcome with me using my current project documents. If you cannot retrieve that file, say so.
+```
 
-This stage is a conversation: **discuss → decide → draft tasks → approve creation**. The agent brings options, recommendations, and focused questions, then waits for your response. It explores one outcome or related task group at a time, records accepted decisions, and prepares task briefs with scope, acceptance criteria, dependencies, and verification.
+The process is **discuss → decide → draft tasks → approve creation**. The agent brings options and focused questions, waits for feedback, records accepted decisions, and prepares tasks with scope, acceptance criteria, dependencies, and verification. It explores one useful outcome or related group at a time and handles routine decomposition itself.
 
-You review the concrete proposal before authorizing task creation. Once authorized, the agent rechecks access, helps restore a missing connection if needed, and creates or updates only the approved tasks. No tracker is required: reviewed briefs can remain the deliverable. Missing or deferred access is reported honestly, without blocking discussion or drafts.
+Only the reviewed tasks you authorize are created in the selected system. Without a tracker, the briefs remain useful output. Task creation does not start implementation automatically, and settled decisions do not need repeated brainstorming.
 
-Repeat this cycle for later outcomes. Routine task breakdown stays with the agent; individual tasks need more brainstorming only when they reveal material uncertainty. Creating tasks does not start implementation automatically.
+## Existing projects and engineering constraints
 
-## New project
+Provide the repository/workspace and any constraints already decided. The agent reads relevant context, preserves approved requirements and unrelated work, reuses the established layout, and updates existing documents rather than generating competing versions. Explicit delivery and technology choices are respected. No new stack or workflow is imposed by this kit.
 
-Describe the outcome you want and any decisions already made. The agent proposes the smallest useful scope, recommends a suitable structure, and writes project-specific documents. Unknowns become clearly stated assumptions or decision points.
+## Files and evaluation
 
-## Existing project
+| File                                                         | Purpose                                                            |
+| ------------------------------------------------------------ | ------------------------------------------------------------------ |
+| [PROMPT_TEMPLATE.md](PROMPT_TEMPLATE.md)                     | The short bootstrap prompt to copy.                                |
+| [PROJECT_BOOTSTRAP.md](PROJECT_BOOTSTRAP.md)                 | Deeper instructions retrieved by the agent.                        |
+| [templates/PRD.template.md](templates/PRD.template.md)       | Requirements reference, scaled to each project.                    |
+| [templates/AGENTS.template.md](templates/AGENTS.template.md) | Working-rules reference, with conditional modules.                 |
+| [TASK_PLANNING_PROMPT.md](TASK_PLANNING_PROMPT.md)           | General starter for the later planning conversation.               |
+| [TASK_PLANNING.md](TASK_PLANNING.md)                         | Discussion, task review, and authorized creation.                  |
+| [Evaluation guide](evaluations/README.md)                    | Maintainer scenarios, evidence requirements, and recorded results. |
+| [CONTRIBUTING.md](CONTRIBUTING.md)                           | Rules for improving this kit.                                      |
 
-Open the project workspace, share its repository, or provide the relevant documents with your chat context when available. The agent inspects existing direction, rules, structure, and delivery conventions. Choose project creation/update to apply the document changes, or file generation to receive the revised documents without changing the project.
-
-It preserves accepted decisions, useful setup instructions, unrelated work, and the distinction between intended behavior and what has actually shipped. It reconciles outdated or conflicting guidance rather than appending another competing rule set. Repeated runs reuse existing destinations and documents rather than creating duplicates.
-
-## What the agent handles
-
-1. **Understand:** inspect the supplied idea, existing material, and available tools.
-2. **Shape:** define scope and requirements, make recommendations, and surface consequential decisions.
-3. **Write:** create or update the tailored documents and remove irrelevant template sections.
-4. **Check:** validate document consistency, references, and scope, then hand off to the separate planning conversation.
-
-The agent owns the legwork. You remain the decision-maker for material scope or architecture choices and any required acceptance or release approval. Existing authorization is respected; routine reversible choices do not need repeated confirmation.
-
-Project document generation with connection assistance and conversational task planning are separate workflows. Daily task execution, application implementation, unrelated account/infrastructure changes, and deployment happen only when separately requested or already authorized by the project's rules.
-
-## Files
-
-| File                                                         | Purpose                                                                      |
-| ------------------------------------------------------------ | ---------------------------------------------------------------------------- |
-| [PROJECT_BOOTSTRAP.md](PROJECT_BOOTSTRAP.md)                 | Main instructions, linked from the URL-based prompt.                         |
-| [PROMPT_TEMPLATE.md](PROMPT_TEMPLATE.md)                     | Copy-ready prompt containing the bootstrap URL.                              |
-| [TASK_PLANNING.md](TASK_PLANNING.md)                         | Separate instructions for brainstorming, task review, and approved creation. |
-| [TASK_PLANNING_PROMPT.md](TASK_PLANNING_PROMPT.md)           | Copy-ready prompt containing the planning URL.                               |
-| [templates/AGENTS.template.md](templates/AGENTS.template.md) | Structural reference for the agent generating working rules.                 |
-| [templates/PRD.template.md](templates/PRD.template.md)       | Structural reference for the agent generating direction and requirements.    |
-| [CONTRIBUTING.md](CONTRIBUTING.md)                           | Guidance for improving this kit.                                             |
-
-The agent selects relevant modules for interfaces, technical design, data, external dependencies, AI product behavior, or delivery governance. None is assumed simply because the project uses an AI development assistant.
+The instructions define the intended experience. Evaluation records distinguish static checks, controlled model runs, connected integrations, and actual user studies; none alone proves every platform or project works.

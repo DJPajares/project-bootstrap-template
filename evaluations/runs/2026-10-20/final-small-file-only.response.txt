@@ -1,0 +1,237 @@
+Recommended direction: build a single-folder, non-recursive Python CLI that computes a deterministic rename plan, previews every change, and performs no filesystem writes unless invoked with an explicit apply option. The first version should handle ordinary files, skip unsafe or ambiguous renames, and never overwrite any path. Recursive traversal, undo, configurable rule engines, GUIs, services, and packaging can wait.
+
+## `PRD.md`
+
+````markdown
+# Filename Cleanup Preview — Project Requirements Document
+
+**Status:** Draft for owner approval; requirements and technical direction are proposed from the supplied brief  
+**Owner:** Project owner  
+**Updated:** 2026-10-20  
+**Approval source:** The user requested project-document preparation and specified the core constraints; detailed cleanup rules remain proposed
+
+This document is the intended project contract. `AGENTS.md` owns execution rules; the current authorized request owns implementation status; dated validation reports attached to future changes own observed evidence. Intended behavior, implemented behavior, task status, and approval are distinct.
+
+## Purpose and scope
+
+Filename Cleanup Preview is a small command-line utility for people who want to normalize filenames in one folder without accidentally overwriting or silently changing files. It first presents a complete rename plan and changes filenames only when the user explicitly requests apply mode.
+
+- **First useful result:** A Python standard-library CLI that accepts one folder, inspects its immediate regular files, calculates deterministic cleanup names, previews the plan by default, and applies safe renames only after an explicit `--apply`.
+- **Outside this version:** Recursive traversal, directory renaming, graphical or web interfaces, servers, databases, external services, accounts, trackers, background watching, content modification, undo history, interactive prompts, and a configurable rule language.
+- **Success evidence:** Representative temporary-folder tests demonstrate correct cleanup, preview-only behavior, collision rejection, preservation of file contents, and explicit application of a safe plan. A manual command-line walkthrough confirms readable output and exit behavior.
+- **Tradeoff principles:** Safety and predictability take priority over renaming as many files as possible. Ambiguous cases fail without filesystem changes. The implementation should remain small enough to understand and maintain with Python’s standard library.
+
+The current scope is non-recursive: only immediate regular files in the selected folder are candidates. Symbolic links, directories, and other special entries are not renamed.
+
+## Filename cleanup contract
+
+The following cleanup policy is recommended and remains proposed until approved:
+
+1. Preserve the final filename extension exactly, including its case. For names with multiple suffixes, only the final suffix is treated as the extension.
+2. Normalize the stem by:
+   - trimming leading and trailing whitespace;
+   - replacing each run of whitespace, underscores, or hyphens with one hyphen;
+   - removing leading or trailing hyphens;
+   - converting letters to lowercase.
+3. Leave a file unchanged when the resulting name equals its current name.
+4. Reject a candidate when cleanup would produce an empty stem, `.` or `..`, a path separator, or an invalid single filename.
+5. Do not change file contents, metadata intentionally, or parent directories.
+
+Examples under the proposed policy:
+
+| Original | Proposed result |
+| --- | --- |
+| `Quarterly Report.PDF` | `quarterly-report.PDF` |
+| ` project__notes .txt` | `project-notes.txt` |
+| `already-clean.csv` | unchanged |
+
+Operating-system-specific filename restrictions beyond Python and filesystem validation are not broadened into a cross-platform compatibility guarantee for the first version.
+
+## Requirements and acceptance
+
+| Reference | Required behavior or output | Observable acceptance and verification | Status/source |
+| --- | --- | --- | --- |
+| REQ-001 | Accept exactly one existing folder as the target and inspect only its immediate regular files. Do not follow or rename symbolic links. | A test folder containing files, a subfolder, and a symlink shows only immediate regular files as candidates. A missing path or non-directory produces a clear error and no changes. | Core scope accepted from user; detailed boundary proposed |
+| REQ-002 | Preview mode is the default. It reports each proposed `old → new` mapping, unchanged-file count, skipped entries, conflicts, and whether applying the plan would be safe. | Running without `--apply` leaves directory entries and file contents unchanged while producing a readable plan and summary. | Accepted from user |
+| REQ-003 | Apply mode requires an explicit `--apply` option. No prompt response, environment variable, or implicit default may enable writes. | The same invocation without `--apply` performs no rename; adding `--apply` is necessary before any rename operation is attempted. | Accepted from user |
+| REQ-004 | The utility must never overwrite an existing path. Before applying, it validates the entire plan for duplicate targets, targets occupied by non-participating entries, and platform-relevant name equivalence. | Collision scenarios exit nonzero without renaming any file. Existing target contents remain unchanged. | Accepted from user |
+| REQ-005 | A rename plan must support safe name swaps or chains without overwriting. Application uses unique temporary names in the same folder and checks that those names are unused. | Tests for `a → b`, `b → c` and a two-name swap complete without lost or replaced content when the plan is otherwise valid. | Proposed safety design |
+| REQ-006 | Immediately before each filesystem operation, verify that its source still exists and its destination does not. Use a filesystem operation that refuses replacement where the platform permits. | If the folder changes after planning or a temporary/final destination appears, application stops nonzero and does not overwrite the new entry. Completed operations are reported accurately. | Proposed safety design |
+| REQ-007 | Apply output distinguishes renamed, unchanged, skipped, failed, and not-attempted entries. A partial operational failure must not be reported as success. | Injected rename failure produces a nonzero exit and an exact summary of completed and remaining work. | Proposed |
+| REQ-008 | Cleanup is deterministic for a fixed directory snapshot and rule set. Candidate processing and displayed plans use stable ordering. | Repeated previews of an unchanged folder produce identical mappings and order. | Proposed |
+| REQ-009 | The CLI provides concise built-in help and uses nonzero exit status for invalid input, unsafe plans, or apply failures. | Help identifies preview default, `--apply`, non-recursive scope, and no-overwrite behavior; automated checks assert success and failure exit codes. | Proposed |
+| REQ-010 | The implementation uses only the Python standard library and requires no network access or persistent project data. | Dependency inspection finds no third-party runtime packages or external calls. | Accepted from user |
+
+## Safety and recovery
+
+Plan validation is all-or-nothing: known conflicts prevent the apply phase from starting. This avoids predictable partial changes.
+
+Unexpected operating-system or concurrent filesystem failures can still occur during application. The implementation should:
+
+- stage affected files through unique temporary names within the same folder;
+- record completed operations in memory;
+- attempt best-effort restoration when a later operation fails and restoration would not overwrite anything;
+- stop rather than overwrite when safe restoration is impossible;
+- report the actual final paths and provide clear manual recovery information.
+
+The first version does not promise transactional filesystem behavior or durable crash recovery. A process interruption may leave reserved temporary names behind; those names must be recognizable and reported as conflicts on a later run rather than silently reused or deleted.
+
+## Structure and technical direction
+
+This is a small Python command-line utility, not a service or multi-package system. The proposed layout is:
+
+```text
+.
+├── AGENTS.md                 # Working, validation, and delivery rules
+├── PRD.md                    # Approved product behavior and boundaries
+├── README.md                 # Future user setup and CLI usage
+├── src/
+│   └── filename_cleanup.py   # Argument parsing, planning, validation, and apply logic
+└── tests/
+    └── test_filename_cleanup.py  # Standard-library unittest coverage
+```
+
+The implementation should use a few explicit responsibility boundaries inside the module:
+
+- **Cleanup function:** converts one filename to its proposed filename without touching the filesystem.
+- **Planner:** reads one directory snapshot and returns ordered candidate, unchanged, and skipped records.
+- **Validator:** rejects invalid, duplicate, occupied, or unsafe destinations before application.
+- **Applier:** performs guarded staging and final renames while producing an accurate operation report.
+- **CLI adapter:** parses arguments, renders the plan, selects preview or apply mode, and maps outcomes to exit codes.
+
+`argparse`, `pathlib`/`os`, `uuid` or `secrets` for unique temporary names, and `unittest` are suitable standard-library tools. Exact commands belong in `README.md` when implementation begins; no application or runnable commands have yet been created or verified.
+
+## Validation and delivery
+
+Required evidence for an implementation includes:
+
+- Unit tests for cleanup transformations and rejected output names.
+- Temporary-directory tests proving that preview makes no changes.
+- Tests for unchanged files, duplicate generated names, occupied destinations, symlinks, subdirectories, swaps, chains, and injected operation failures.
+- Content-identity checks showing that renamed files retain the correct bytes.
+- A manual preview followed by explicit apply in a disposable folder.
+- A source inspection confirming standard-library-only runtime imports.
+
+Validation records must identify the revision or artifact, Python version, operating system/filesystem, date, checks performed, results, and gaps. Tests on one filesystem do not prove identical case-sensitivity or atomicity behavior on every supported platform.
+
+A sensible delivery sequence is:
+
+1. Establish deterministic cleanup and plan generation.
+2. Add complete collision validation and preview reporting.
+3. Add guarded apply behavior with recovery reporting.
+4. Verify the full workflow and document real usage.
+
+These are outcome slices for later planning, not executable tasks or authorization to implement them.
+
+## Decisions and uncertainty
+
+### Accepted constraints
+
+- The product is a small Python standard-library utility.
+- It operates on one folder.
+- Preview precedes any explicitly requested apply operation.
+- Existing files must never be overwritten.
+- There is no interface beyond the CLI, server, database, external service, or tracker.
+- This bootstrap prepares documents only; it does not implement the program.
+
+### Proposed decisions awaiting owner approval
+
+- Process only immediate regular files and never follow symlinks.
+- Use the cleanup policy documented above.
+- Preserve the final extension’s spelling and case while lowercasing the stem.
+- Treat any known collision as invalidating the entire plan.
+- Support swaps and rename chains through same-folder temporary names.
+- Provide best-effort restoration and an exact recovery report rather than claiming full transactionality.
+
+The cleanup policy is the only material product decision needed before implementation planning. If a different convention is desired—such as preserving stem case, replacing spaces without collapsing underscores, or handling multiple suffixes as a unit—REQ-002 through REQ-008 remain applicable, but transformation examples and tests must be revised first.
+
+### Material risks
+
+- **Case sensitivity varies by filesystem.** Validation must conservatively detect names that may collide on the active filesystem; cross-platform behavior must be tested rather than assumed.
+- **The directory can change between preview and apply.** Apply mode must build and validate a fresh plan for that invocation and recheck paths during execution. A previous preview is informative, not authorization for or a guarantee about a later apply.
+- **Interruption can prevent complete restoration.** Temporary naming and accurate recovery output reduce harm, but durable crash-safe transactions are outside the first version.
+````
+
+## `AGENTS.md`
+
+````markdown
+# AGENTS.md
+
+## Project and authority
+
+Filename Cleanup Preview is a small Python standard-library CLI that helps users safely preview filename normalization in one folder and perform renames only after explicit apply authorization.
+
+- `PRD.md` owns approved purpose, scope, behavior, constraints, cleanup rules, and product decisions. Proposals remain proposals until the project owner accepts them.
+- `AGENTS.md` owns execution, validation, and delivery rules.
+- The current explicitly authorized user request owns active work, dependencies, and implementation status; no tracker is used.
+- The “Structure and technical direction” section of `PRD.md` owns accepted technical decisions.
+- Dated validation reports accompanying a change own observed results for the identified revision, environment, and coverage.
+
+Implementation, task status, and historical evidence do not silently amend requirements. Reconcile contradictions before dependent work and continue independent work where possible.
+
+## Working boundaries
+
+- Preserve the small, local, standard-library-only design. Do not add recursion, directory renaming, third-party dependencies, an interactive or graphical interface, a server, database, external service, account system, tracker, or background process without an approved requirement change.
+- Follow the filename cleanup, no-overwrite, preview/apply, recovery, and non-recursive contracts in `PRD.md`.
+- Make the smallest coherent change and preserve unrelated work. Do not introduce parallel planning, configuration, or state systems.
+- Separate facts, assumptions, proposals, accepted decisions, implementation state, and observed results. Never fabricate commands, platform behavior, access, or validation.
+- Keep credentials and private file contents out of source, documentation, logs, fixtures, and reports. This project should not require secrets.
+- Make routine reversible implementation choices within authorized scope. The project owner controls consequential behavior, scope, architecture, cleanup-policy, and final-acceptance decisions.
+- Do not publish, merge, release, perform destructive cleanup, or operate on a user’s real files without explicit authorization and the applicable safeguards.
+
+## Planning and execution
+
+For new planning work:
+
+1. Discuss one useful outcome and present a recommendation where a material choice exists.
+2. Record accepted decisions in `PRD.md`; keep unaccepted changes visibly proposed.
+3. Draft task briefs containing scope, exclusions, requirement references, acceptance criteria, real dependencies, and verification.
+4. Obtain explicit authorization before creating reviewed tasks anywhere. This project currently has no tracker.
+
+Task creation would not authorize implementation.
+
+For authorized implementation:
+
+1. Read the relevant `PRD.md` requirements and current request.
+2. Inspect the actual workspace and preserve unrelated changes.
+3. Confirm that any product decision needed by the work is approved.
+4. Implement only the scoped behavior with clear separation between transformation, planning, validation, application, and CLI concerns.
+5. Validate affected behavior in disposable temporary directories.
+6. Self-review for overwrite hazards, path-handling errors, race windows, partial-failure reporting, unintended traversal, and third-party dependencies.
+7. Report the result, observed evidence, gaps, and any decision still needed.
+
+Never test apply behavior against valuable or user-owned files. Use isolated temporary fixtures whose loss would be harmless.
+
+## Filesystem safety
+
+- Preview is the default and must perform no rename, deletion, content write, or metadata write.
+- Only an explicit apply option may enter the mutation path.
+- Validate the complete plan before its first mutation. Duplicate or occupied destinations invalidate the plan.
+- Never use replacement semantics to resolve collisions. Recheck sources and destinations as close as practical to every operation.
+- Do not follow symlinks or rename directories or special filesystem entries.
+- Preserve file contents and identities through swaps and chains; use unique, unused, same-folder staging names when required.
+- Do not delete an unfamiliar temporary-looking entry. Treat it as occupied and report it.
+- On operational failure, attempt only restoration steps that cannot overwrite another entry. Report completed, restored, failed, and unresolved paths exactly.
+- Do not describe the workflow as transactional or crash-proof unless later evidence and an approved contract support that claim.
+
+## Validation and handoff
+
+- Use the verification contract in `PRD.md`. Prefer standard-library `unittest` and `tempfile`; do not add a test framework without an approved reason.
+- Cover transformation boundaries, invalid results, stable ordering, preview immutability, collisions, symlinks, subdirectories, swaps, chains, concurrent destination appearance, and partial failure.
+- Verify observable behavior and content preservation, not incidental internal call sequences.
+- Exercise CLI help, normal preview, safe apply, unsafe apply, and error exit paths in a disposable runtime environment.
+- Check behavior on the actual supported operating systems and filesystems when compatibility is claimed. Document untested platform behavior explicitly.
+- When implementation creates real commands, place them in `README.md` and use those commands for validation. Until then, do not invent verified setup instructions.
+- For document-only changes, check consistency, requirement references, unresolved placeholders, and representative scenarios. Document review is not runtime validation.
+- Report checks as passed, failed, blocked, or untested. Include the revision or artifact, Python version, operating system/filesystem, date, coverage, and material gaps.
+- Work is ready for review only when authorized scope is met, documentation is current, required checks pass, and gaps are explicit. The project owner provides final acceptance; review readiness, integration, release, and acceptance remain distinct.
+- Keep communication concise and use links to `PRD.md` rather than duplicating its detailed product contract.
+````
+
+The recommended first outcome is a deterministic, non-recursive preview that rejects the entire plan when any destination is unsafe; guarded apply behavior follows from that foundation. `PRD.md` is the project plan and product contract. `AGENTS.md` contains the working and validation rules. No files, repository resources, tracker items, or program code were created.
+
+The material open decision is whether to approve the proposed filename cleanup policy, particularly lowercasing stems while preserving the final extension’s case.
+
+For the separate brainstorming conversation, attach the generated `PRD.md` and `AGENTS.md`, then send:
+
+> Follow the task-planning instructions at https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/TASK_PLANNING.md. I have attached the current `PRD.md` and `AGENTS.md` for Filename Cleanup Preview. Start by discussing the first useful outcome: deterministic cleanup and non-mutating plan generation for immediate regular files in one folder. Review the proposed cleanup policy, recommend any necessary adjustment, and stop for my feedback before drafting tasks.
