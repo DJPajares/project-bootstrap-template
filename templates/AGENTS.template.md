@@ -35,7 +35,16 @@ Implementation, task status, and historical evidence do not silently amend appro
 - Prepare the concrete proposal, evidence, or review artifact before requesting a final approval. Continue work that does not depend on the unresolved gate.
 - Merging, publishing, production changes, destructive operations, and spending outside the agreed budget follow the explicitly selected policy. Do not infer permission from a task's completion status.
 
-## Task workflow
+## Planning new work
+
+- When asked to plan new work, discuss one meaningful outcome or related task group before decomposing it. Bring options, recommendations, and focused questions; do not produce a complete backlog in the first brainstorming response.
+- Reuse agreed decisions and handle routine decomposition independently. Discuss an individual task again only when it exposes material uncertainty.
+- Record accepted product changes in the PRD. Keep task proposals separate from approved requirements and implementation status.
+- Draft concrete tasks with scope/exclusions, requirement references, acceptance criteria, real dependencies, readiness, and focused verification. Mark work blocked by unresolved decisions honestly.
+- Obtain explicit authorization before creating the reviewed tasks. Respect prior authorization for the same concrete batch; do not infer it from general agreement with the direction.
+- Reuse matching existing tasks and verify created content and dependencies. Without a selected task system or write access, provide complete briefs and state any precise write blocker. Do not begin implementation merely because tasks were created.
+
+## Task execution
 
 1. Read the request and relevant accepted requirements. If a task is referenced, inspect it and its blocking dependencies.
 2. Check the current workspace/artifact state and applicable instructions before editing. Identify scope, affected invariants, and any actual blockers.

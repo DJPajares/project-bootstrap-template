@@ -11,6 +11,7 @@ Own the legwork: inspect the available context, research material unknowns when 
 - Infer what the user is trying to achieve, distinguish current priorities from possible future ideas, and use the context throughout the generated package.
 - Read the attached references when available. This file also defines the required structure, so a missing optional reference must not prevent useful output.
 - Complete a useful bootstrap draft without requiring follow-up answers. Record consequential unknowns as open decisions with recommendations and their impact on later implementation. Do not invent approval or perform a gated action to avoid a question.
+- This first workflow ends with project documents. Do not begin the interactive brainstorming workflow, draft executable task batches, or create external tasks in the bootstrap response. Task planning happens in a separate conversation after the documents are available.
 
 ## 1. Understand the project
 
@@ -50,7 +51,7 @@ Include enough detail for someone to implement the current scope and independent
 7. **Requirements:** stable identifiers, required behavior/output, preconditions, meaningful rules, actual dependencies, failure handling, and observable acceptance criteria. Trace each requirement to an intended outcome.
 8. **Applicable constraints:** experience, accessibility, language/content, privacy, security, performance, reliability, and operational needs. Use meaningful thresholds or explicit open gates rather than vague promises.
 9. **Technical direction when needed:** real constraints, responsibility boundaries, recommended structure, and material tradeoffs. Separate accepted constraints from proposed technology choices.
-10. **Delivery and validation:** a short dependency-based sequence of useful increments, acceptance evidence, any applicable launch gates, and the first implementation slice. This is not a duplicate live backlog.
+10. **Delivery and validation:** a short indicative sequence of useful outcomes, acceptance evidence, and any applicable launch gates. Keep this at direction level; executable task decomposition belongs to the later planning workflow.
 11. **Decisions and uncertainty:** accepted decisions, assumptions, material risks, open questions, owners, and what each unresolved gate blocks.
 
 Add specialist contracts only when justified by this project:
@@ -70,6 +71,7 @@ Keep the generated file compact and operational. Include:
 - Rules for following accepted decisions, controlling scope, preserving unrelated work, protecting secrets, and making the smallest sufficient change.
 - Decision boundaries: what agents may do independently, what requires an explicit human decision, and how prior authorization is respected. Prepare concrete reviewable work before asking for final approval.
 - A simple task loop: read the request and relevant requirements, check actual blockers and workspace state, make the scoped change, validate, self-review, and present the result.
+- A separate planning loop for new work: discuss one outcome, record accepted decisions, draft a task proposal, and obtain authorization before creating the reviewed tasks. Do not force renewed brainstorming for settled decisions or routine decomposition.
 - Meaningful validation: focus on observable behavior and important invariants, start with narrow checks, broaden when justified, and use the relevant runtime for interactive changes. Do not introduce broad test infrastructure without a need.
 - Honest completion: distinguish passed, failed, blocked, and untested checks. Tie evidence to the version and environment checked. Missing required evidence prevents a claim of completion.
 - Documentation and context discipline: targeted reads, concise updates, stable references, and no duplicated product specification or task-state mirror.
@@ -95,6 +97,6 @@ Keep changing setup commands and environment configuration out of the enduring p
 - With read-only or chat-only access, complete all possible discovery and provide the full document contents as downloadable artifacts when supported, otherwise separately labeled Markdown code blocks. State the precise access limitation. Do not claim remote files were changed.
 - Check terminology, authority, scope, requirement coverage, acceptance criteria, cross-references, and selected workflow consistency. Verify that deferred work has not become a hidden prerequisite.
 - For an existing project, check that useful requirements and setup instructions survived, repeated runs update the same files, and active guidance no longer contradicts itself.
-- Report the files created or updated, what was checked, any decisions or access still needed, and the first useful implementation step with its acceptance criteria and real prerequisites. If none is unblocked, identify the exact gate instead of inventing a ready task.
+- Report the files created or updated, what was checked, any decisions or access still needed, and a suggested outcome to explore in the later brainstorming conversation. Do not turn that suggestion into a task proposal or claim it is approved.
 
-End after the bootstrap package and handoff. Application implementation, external backlog creation, account/integration setup, merging, publication, and deployment require a separate request or existing explicit authorization. Do not propose a long manual setup checklist just to use this kit.
+End after the bootstrap package and handoff. The separate `TASK_PLANNING.md` attachment governs the later conversational planning process; do not run it automatically. Application implementation, account/integration setup, merging, publication, and deployment require a separate request or existing explicit authorization. Do not propose a long manual setup checklist just to use this kit.
