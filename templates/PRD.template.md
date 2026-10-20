@@ -206,7 +206,7 @@ Keep user-confirmed facts distinct from estimates. Define missing/stale-evidence
 | -------------- | ------------------------ | ------------ | ------------------------ | -------------------- |
 | {{SLICE_NAME}} | {{REVIEWABLE_INCREMENT}} | {{REQ_IDS}}  | {{DEPENDENCIES_OR_NONE}} | {{OBSERVABLE_PROOF}} |
 
-This sequence guides implementation; it is not the live backlog and does not authorize task creation. Prefer useful increments over infrastructure for deferred capabilities.
+This sequence guides implementation at outcome level; it is not an executable task list or the live backlog and does not authorize task creation. Detailed decomposition follows a separate discussion and task-proposal review. Prefer useful increments over infrastructure for deferred capabilities.
 
 ### Validation policy
 
