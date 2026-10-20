@@ -4,8 +4,9 @@ Keep this kit useful for a person who has an idea or an existing project and wan
 
 ## Design rules
 
-- Keep one entry prompt for both new and existing projects. It must work without attachments or access to this repository.
-- Require only a short project description or existing project context. Discovery, recommendations, document writing, and validation belong to the agent.
+- Keep one Markdown instruction attachment and a short chat line for both new and existing projects. The attached files must work without access to this repository.
+- Accept the user's idea dump, structured ideas, problem statement, or existing project context directly in the chat. Do not require attachment edits, intake fields, or a follow-up questionnaire to produce a draft.
+- Discovery, recommendations, resolving reference placeholders, document writing, and validation belong to the agent.
 - Keep the README short and the generated working rules operational.
 - Reuse principles rather than a source project's domain, features, architecture, providers, or workflow syntax.
 - Make technology and delivery modules conditional. Do not make any external service a prerequisite for using the kit.
@@ -25,7 +26,7 @@ Walk through changes against these cases:
 5. Read-only or chat-only access.
 6. A project with no interface, accounts, persistent storage, external service, or issue tracker.
 
-Confirm that the agent produces complete, appropriately sized documents, asks only material questions, preserves existing work, and identifies a useful first step or its exact blocker. Check links, Markdown formatting, leftover placeholders in generated outputs, and consistency between the prompt and templates.
+Confirm that the short chat line names the three attachments correctly, the main instruction file contains no user intake fields, and unstructured context is sufficient to start. The agent must produce complete, appropriately sized documents, record material unknowns with recommendations, preserve existing work, and identify a useful first step or its exact blocker. Check links, Markdown formatting, leftover placeholders in generated outputs, and consistency between the instructions and templates.
 
 These walkthroughs review the instructions; they do not establish that a particular AI platform has executed the prompt successfully. Report actual runtime evaluations separately with the model/environment and inputs used.
 
