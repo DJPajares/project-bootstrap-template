@@ -1,0 +1,68 @@
+Proposal `NOTE-7-T1` — Safe private-note edits with revision and mutation reconciliation
+
+## Description
+
+Implement safe editing and saving of an owner’s private note under approved requirement NOTE-7.
+
+A save must enforce the existing ownership guard and revision check. If the submitted revision is stale, reject the save without replacing or discarding the editor’s unsaved draft. If a save result is uncertain, look up the mutation ID before retrying so one user action cannot create duplicate note revisions.
+
+Requirements: NOTE-7, approved. This draft follows the supplied retrieved task-planning instructions and task template.
+
+## Scope
+
+**Included**
+
+- Connect the existing note editor to the ownership-protected save flow.
+- Submit the editor’s base revision and a stable mutation ID with each save action.
+- Reject stale-revision saves while retaining the user’s unsaved draft.
+- After an uncertain save result, reconcile the mutation ID before deciding whether to retry.
+- Return or restore the already-created result when that mutation succeeded.
+- Retry only when reconciliation establishes that the mutation was not applied.
+- Add focused automated coverage for authorization, revision conflicts, uncertain outcomes, and duplicate prevention.
+
+**Excluded**
+
+- Note sharing or editing by non-owners.
+- Offline writes, offline queues, or multi-device synchronization.
+- A new ownership, revisioning, or idempotency mechanism.
+- Unrelated editor redesign or note-history UI.
+
+## Suggested Models & Reasoning
+
+- **Platform/model:** Coding-capable model suitable for localized TypeScript changes; exact current model name is unverified because no model catalog is available.
+- **Reasoning:** Medium.
+- **Reason:** The work is bounded but requires careful state handling across permission checks, optimistic concurrency, uncertain results, and idempotent retry behavior.
+
+## Acceptance Criteria
+
+1. Given an authenticated note owner editing the current revision, when they save a changed private note, exactly one new revision is created and the editor reflects the successful saved revision.
+2. Given a caller who does not own the note, when they attempt to save it, the existing ownership guard rejects the request and neither note content nor revision history changes.
+3. Given an editor whose base revision has become stale, when the owner attempts to save, the revision check rejects the mutation, no revision is created, and the complete unsaved draft remains available in the editor.
+4. Given a stale-revision rejection, when the editor presents the conflict, it does not silently replace the draft with the latest persisted content or automatically resubmit it.
+5. Given an uncertain result after a save was submitted, when recovery begins, the system looks up that save’s mutation ID before issuing another mutation.
+6. If mutation-result lookup shows that the original save succeeded, the editor adopts that existing result and does not create or request another revision.
+7. If mutation-result lookup establishes that the original save was not applied, a retry may proceed using the same logical mutation identity; the resulting user action creates at most one revision.
+8. If mutation-result lookup cannot determine whether the save was applied, the editor preserves the draft and reports an unresolved save state without blindly retrying.
+9. Automated tests cover successful owner save, non-owner rejection, stale-revision draft preservation, successful reconciliation after an uncertain response, confirmed-not-applied retry, and inconclusive reconciliation without retry.
+
+## Dependencies
+
+- **Blocked by:** None. Ownership task REC-12 is merged, and NOTE-7’s behavior and solution are approved.
+- **Blocking:** None known.
+- **Readiness:** Ready for implementation. The editor, ownership guard, revision check, and mutation-result lookup already exist and are to be reused.
+
+## Execution Context and Verification
+
+- **Read/reuse:** NOTE-7; the existing ownership guard, revision check, and mutation-result lookup; inspected areas `notes/editor.ts`, `notes/save.ts`, and `tests/note-save.test.ts`.
+- **Checks:** Extend focused note-save tests to prove state and revision counts before and after each success or failure path. Verify that the same mutation cannot produce two revisions and that rejected or unresolved saves leave the draft intact.
+- **Commands:** No project test commands were supplied or executed. Before implementation verification, establish the repository’s documented command for running `tests/note-save.test.ts`; record the command and passing output as completion evidence.
+
+## Manual Test
+
+1. As a note owner, open a private note in the existing editor, change its text, and save. Confirm the new text is shown as saved and only one revision is added.
+2. Open the same note in two browser sessions. Save a change in the first, then attempt to save a different draft from the second. Confirm the second save is rejected as stale and its full draft remains in the editor.
+3. Exercise the uncertain-result test path for a submitted save. Confirm reconciliation finds an already-applied mutation without creating another revision.
+4. Exercise an inconclusive lookup result. Confirm no blind retry occurs and the draft remains available for recovery.
+5. Attempt a save as a non-owner. Confirm access is rejected and the note and its revision history remain unchanged.
+
+This is a draft only; it has not been published or implemented.

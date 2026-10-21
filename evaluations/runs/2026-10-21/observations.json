@@ -1,0 +1,329 @@
+{
+  "runs": [
+    {
+      "case": "small-file-only",
+      "method": "controlled model run; mocked capabilities; no tools",
+      "supplied_sources": [
+        "PROJECT_BOOTSTRAP.md",
+        "templates/AGENTS.template.md",
+        "templates/CLAUDE.template.md",
+        "templates/PRD.template.md",
+        "templates/TASK.template.md",
+        "TASK_PLANNING.md"
+      ],
+      "date_utc": "2026-10-21T12:13:05.967574+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "b61247647ac5317bbb540e50c2fb2619ef29ead5",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "817f7f49f9a0d9f851263eeef209944069548524ea8aa516fe9b664e33c2b95f",
+        "TASK_PLANNING.md": "78b5d330ae495e7a0f960a260d7bcd8bc1050d34cd82ebec69b01f4ff71797fa",
+        "templates/AGENTS.template.md": "99e86532f6466c979c87394557c954c6042c48a78301663aa809f2808a338224",
+        "templates/PRD.template.md": "cb23f5e1c950b00fb32a3160b2285f04e68b499879e6267449d6e1f824e3a30a",
+        "templates/CLAUDE.template.md": "ecea02706081683381ba267b459809b16aef34660c62c3ed25cbb585456d4bcf",
+        "templates/TASK.template.md": "9a73e28cee2488349768af6843569603b5b3b5b6093bc97ec2075751159ee130"
+      },
+      "input_sha256": "ef0de50772f7f95ed6c81503137f31adeec8b024da703e0eac82bda6f291f180",
+      "duration_seconds": 127.47,
+      "exit_code": 0,
+      "usage": {
+        "input_tokens": 22005,
+        "cached_input_tokens": 8448,
+        "output_tokens": 5748,
+        "reasoning_output_tokens": 753
+      },
+      "errors": [],
+      "response_exists": true,
+      "response_characters": 27084,
+      "tool_items": [],
+      "round": "repair",
+      "case_user": "Give me the files only. I want a small Python standard-library utility that previews filename cleanup for one folder and renames files only after an explicit apply. It must not overwrite existing files. No interface, server, database, external services, or tracker. Prepare the project documents, not the program itself.",
+      "case_context": "Chat-only output supports complete Markdown contents, not downloadable file links or target writes. The user explicitly selected file generation. Continue through the complete bootstrap deliverable.",
+      "response_file": "repair-small-file-only.response.txt",
+      "response_sha256": "b8e0502607a71592c02a87b2e57636dfd20a06eaa77257a3bf3b43cfafe017c8",
+      "structural_checks": {
+        "structured_rule_sections": "pass",
+        "task_fields_and_current_next": "pass",
+        "numbered_execution": "pass",
+        "standalone_claude_import": "pass",
+        "no_authoring_placeholders_or_template_relative_links": "pass",
+        "explicit_e2e_gate": "missing"
+      },
+      "source_snapshot": "bootstrap-817f7f49f9a0.source.txt",
+      "review": {
+        "status": "partial",
+        "evidence": "Three core files, structured rules/task fields/numbered loop/Current-Next and a handoff were produced. The explicit no-new-E2E policy was omitted from the new-project rules, so heading presence alone did not pass policy retention."
+      }
+    },
+    {
+      "case": "specific-task-proposal",
+      "method": "controlled model run; mocked capabilities; no tools",
+      "supplied_sources": ["TASK_PLANNING.md", "templates/TASK.template.md"],
+      "date_utc": "2026-10-21T12:14:16.481626+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "b61247647ac5317bbb540e50c2fb2619ef29ead5",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "817f7f49f9a0d9f851263eeef209944069548524ea8aa516fe9b664e33c2b95f",
+        "TASK_PLANNING.md": "78b5d330ae495e7a0f960a260d7bcd8bc1050d34cd82ebec69b01f4ff71797fa",
+        "templates/AGENTS.template.md": "99e86532f6466c979c87394557c954c6042c48a78301663aa809f2808a338224",
+        "templates/PRD.template.md": "cb23f5e1c950b00fb32a3160b2285f04e68b499879e6267449d6e1f824e3a30a",
+        "templates/CLAUDE.template.md": "ecea02706081683381ba267b459809b16aef34660c62c3ed25cbb585456d4bcf",
+        "templates/TASK.template.md": "9a73e28cee2488349768af6843569603b5b3b5b6093bc97ec2075751159ee130"
+      },
+      "input_sha256": "b1a957f296e757e7ddf821ae7768565038cb8438efb01959c0973a09b0b6cede",
+      "duration_seconds": 31.74,
+      "exit_code": 0,
+      "usage": {
+        "input_tokens": 13495,
+        "cached_input_tokens": 8448,
+        "output_tokens": 1154,
+        "reasoning_output_tokens": 100
+      },
+      "errors": [],
+      "response_exists": true,
+      "response_characters": 5475,
+      "tool_items": [],
+      "round": "repair",
+      "case_user": "We agreed the behavior and solution. Draft one executable task for safe note edits under NOTE-7. Do not publish or implement it.",
+      "case_context": "Synthetic task-planning fixture. Approved requirement NOTE-7: an owner edits a private note; a stale revision is rejected while preserving the unsaved draft; after an uncertain save result reconcile the mutation ID before retrying so one action cannot create duplicate revisions. No sharing or offline writes. The agreed solution reuses the existing ownership guard, revision check, and mutation-result lookup. Inspected areas: notes/editor.ts, notes/save.ts, tests/note-save.test.ts. Existing ownership task REC-12 is merged, so it is not an active blocker. The editor already exists and permits meaningful browser checks. Existing agent rules require Description, Scope, Suggested Models & Reasoning, numbered Acceptance Criteria, real Dependencies/readiness, Execution Context and Verification, and Manual Test. No model catalog is available; exact model names must remain unverified while capability/reasoning is recommended. No real issue-write tools are available. No test commands were supplied or executed.",
+      "response_file": "repair-specific-task-proposal.response.txt",
+      "response_sha256": "96b5542385de7d38e43c9af895385088e9f76d4c5d785bed0687fcb77dd12be3",
+      "structural_checks": {
+        "required_task_sections": "pass",
+        "exact_model_unverified_disclosed": "pass",
+        "concrete_acceptance_dependencies_and_manual_steps": "qualitative review passed"
+      },
+      "review": {
+        "status": "pass",
+        "evidence": "Concrete owner-save, stale-revision draft preservation, and mutation-result recovery criteria; real inspected fixture paths, completed prerequisite, capability/medium reasoning with exact model unverified, focused checks and meaningful two-session manual steps. No invented commands or published/implemented work."
+      }
+    },
+    {
+      "case": "structured-rule-retention",
+      "method": "controlled model run; mocked capabilities; no tools",
+      "supplied_sources": [
+        "PROJECT_BOOTSTRAP.md",
+        "templates/AGENTS.template.md",
+        "templates/CLAUDE.template.md",
+        "templates/PRD.template.md",
+        "templates/TASK.template.md",
+        "TASK_PLANNING.md"
+      ],
+      "date_utc": "2026-10-21T12:16:09.518122+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "b61247647ac5317bbb540e50c2fb2619ef29ead5",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "817f7f49f9a0d9f851263eeef209944069548524ea8aa516fe9b664e33c2b95f",
+        "TASK_PLANNING.md": "78b5d330ae495e7a0f960a260d7bcd8bc1050d34cd82ebec69b01f4ff71797fa",
+        "templates/AGENTS.template.md": "99e86532f6466c979c87394557c954c6042c48a78301663aa809f2808a338224",
+        "templates/PRD.template.md": "cb23f5e1c950b00fb32a3160b2285f04e68b499879e6267449d6e1f824e3a30a",
+        "templates/CLAUDE.template.md": "ecea02706081683381ba267b459809b16aef34660c62c3ed25cbb585456d4bcf",
+        "templates/TASK.template.md": "9a73e28cee2488349768af6843569603b5b3b5b6093bc97ec2075751159ee130"
+      },
+      "input_sha256": "001a5065f1b05cf8a26ce1c4e0e0b0c8b02f4b2221fca1cea35f6b25f64bb915",
+      "duration_seconds": 57.7,
+      "exit_code": 0,
+      "usage": {
+        "input_tokens": 22167,
+        "cached_input_tokens": 8448,
+        "output_tokens": 5037,
+        "reasoning_output_tokens": 151
+      },
+      "errors": [],
+      "response_exists": true,
+      "response_characters": 26438,
+      "tool_items": [],
+      "round": "repair",
+      "case_user": "Refresh the project documents using file delivery. Preserve the approved note behavior and existing operating conventions. Do not implement the application or create tasks.",
+      "case_context": "Synthetic existing software project. Current PRD: private revisioned notes; only owners may edit; conflicting saves preserve the unsaved draft; deleting a tag never deletes independent notes. Existing agent policy has separate Working Rules, Task Workflow, Task Structure, Repository Rules, Completion Response, Context Efficiency, Testing, and Human Control sections. Direct chat implementation requests do not create issues. Tracker scope is Core / Notes; states are Queued, Active, Review, Done; issue-backed changes use the issue-supplied branch name, open and link a human-reviewed PR, enter Review, and become Done only after merge. Never commit to the integration branch main; check before first edit and every commit/push. No automatic merge or new end-to-end suite without authorization. Task fields include model/reasoning recommendations, observable acceptance, real dependencies, and concrete manual checks. Issue completion uses Current (PR/task/validation) and Next (approved unblocked task/model/reason) sections. CLAUDE.md currently has the tool-specific instruction to use concise progress updates. Read-only context; output complete Markdown contents, no actual writes or service access.",
+      "response_file": "repair-structured-rule-retention.response.txt",
+      "response_sha256": "f5634c5b3f4e600a43b5c0d0e2239c943e5518eaf85df8f3e23d0b560ff1cc05",
+      "structural_checks": {
+        "structured_rule_sections": "pass",
+        "task_fields_and_current_next": "pass",
+        "numbered_execution": "pass",
+        "standalone_claude_import": "pass",
+        "no_authoring_placeholders_or_template_relative_links": "pass",
+        "explicit_e2e_gate": "pass",
+        "fixture_lifecycle_and_claude_addition": "pass"
+      },
+      "source_snapshot": "bootstrap-817f7f49f9a0.source.txt",
+      "review": {
+        "status": "pass",
+        "evidence": "Existing Core/Notes scope and Queued/Active/Review/Done states retained; issue-supplied branch naming, checks before edit/commit/push, human review, no auto-merge, merge-only completion, no unrequested E2E suite, task/model/manual-check fields, Current/Next, ownership/revision/tag independence, and Claude-specific concise-progress addition preserved."
+      }
+    },
+    {
+      "case": "small-file-only",
+      "method": "controlled model run; mocked capabilities; no tools",
+      "supplied_sources": [
+        "PROJECT_BOOTSTRAP.md",
+        "templates/AGENTS.template.md",
+        "templates/CLAUDE.template.md",
+        "templates/PRD.template.md",
+        "templates/TASK.template.md",
+        "TASK_PLANNING.md"
+      ],
+      "date_utc": "2026-10-21T12:21:01.061749+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "b61247647ac5317bbb540e50c2fb2619ef29ead5",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "b1dc571484228a21cc1470a797e6636110026dcafff385387f13f17c30db79c6",
+        "TASK_PLANNING.md": "78b5d330ae495e7a0f960a260d7bcd8bc1050d34cd82ebec69b01f4ff71797fa",
+        "templates/AGENTS.template.md": "99e86532f6466c979c87394557c954c6042c48a78301663aa809f2808a338224",
+        "templates/PRD.template.md": "cb23f5e1c950b00fb32a3160b2285f04e68b499879e6267449d6e1f824e3a30a",
+        "templates/CLAUDE.template.md": "ecea02706081683381ba267b459809b16aef34660c62c3ed25cbb585456d4bcf",
+        "templates/TASK.template.md": "9a73e28cee2488349768af6843569603b5b3b5b6093bc97ec2075751159ee130"
+      },
+      "input_sha256": "1d31931bf886a60b6fa8b892870694edd22039c46f66dfc794fd5a76092aaa81",
+      "duration_seconds": 93.32,
+      "exit_code": 0,
+      "usage": {
+        "input_tokens": 22074,
+        "cached_input_tokens": 8448,
+        "output_tokens": 4794,
+        "reasoning_output_tokens": 351
+      },
+      "errors": [],
+      "response_exists": true,
+      "response_characters": 24093,
+      "tool_items": [],
+      "round": "policy-guard",
+      "case_user": "Give me the files only. I want a small Python standard-library utility that previews filename cleanup for one folder and renames files only after an explicit apply. It must not overwrite existing files. No interface, server, database, external services, or tracker. Prepare the project documents, not the program itself.",
+      "case_context": "Chat-only output supports complete Markdown contents, not downloadable file links or target writes. The user explicitly selected file generation. Continue through the complete bootstrap deliverable.",
+      "response_file": "policy-guard-small-file-only.response.txt",
+      "response_sha256": "9aad8ae4c5382b1bf695a324b3ddd19663d83ff23ff910d0b4030a6aee73dd3d",
+      "structural_checks": {
+        "structured_rule_sections": "pass",
+        "task_fields_and_current_next": "pass",
+        "numbered_execution": "pass",
+        "standalone_claude_import": "pass",
+        "no_authoring_placeholders_or_template_relative_links": "pass",
+        "explicit_e2e_gate": "pass"
+      },
+      "source_snapshot": "bootstrap-b1dc57148422.source.txt",
+      "review": {
+        "status": "partial",
+        "evidence": "Structured rules, three files, real import, and explicit E2E policy retained. No handoff in the literal files-only response. Proposed swaps/staging exceeded the bounded brief and conflicted with conservative preflight behavior; not scored as a full-case pass."
+      }
+    },
+    {
+      "case": "small-file-only",
+      "method": "controlled model run; mocked capabilities; no tools",
+      "supplied_sources": [
+        "PROJECT_BOOTSTRAP.md",
+        "templates/AGENTS.template.md",
+        "templates/CLAUDE.template.md",
+        "templates/PRD.template.md",
+        "templates/TASK.template.md",
+        "TASK_PLANNING.md"
+      ],
+      "date_utc": "2026-10-21T12:25:49.300652+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "b61247647ac5317bbb540e50c2fb2619ef29ead5",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "3c14a6c32b8cf027732798e79af1d2bbf3c42fa720b61f30b348a1cac590bd13",
+        "TASK_PLANNING.md": "78b5d330ae495e7a0f960a260d7bcd8bc1050d34cd82ebec69b01f4ff71797fa",
+        "templates/AGENTS.template.md": "99e86532f6466c979c87394557c954c6042c48a78301663aa809f2808a338224",
+        "templates/PRD.template.md": "cb23f5e1c950b00fb32a3160b2285f04e68b499879e6267449d6e1f824e3a30a",
+        "templates/CLAUDE.template.md": "ecea02706081683381ba267b459809b16aef34660c62c3ed25cbb585456d4bcf",
+        "templates/TASK.template.md": "9a73e28cee2488349768af6843569603b5b3b5b6093bc97ec2075751159ee130"
+      },
+      "input_sha256": "db727085bc72c6d36d91e70c2b6d5d37886f9478c5c1717f1aa03acb1cdf03be",
+      "duration_seconds": 76.47,
+      "exit_code": 0,
+      "usage": {
+        "input_tokens": 22196,
+        "cached_input_tokens": 8448,
+        "output_tokens": 5328,
+        "reasoning_output_tokens": 516
+      },
+      "errors": [],
+      "response_exists": true,
+      "response_characters": 25859,
+      "tool_items": [],
+      "round": "delivery-check",
+      "case_user": "Give me the files only. I want a small Python standard-library utility that previews filename cleanup for one folder and renames files only after an explicit apply. It must not overwrite existing files. No interface, server, database, external services, or tracker. Prepare the project documents, not the program itself.",
+      "case_context": "Chat-only output supports complete Markdown contents, not downloadable file links or target writes. The user explicitly selected file generation. Continue through the complete bootstrap deliverable.",
+      "response_file": "delivery-check-small-file-only.response.txt",
+      "response_sha256": "aef552da62b154992a61537920152f8ab919d329914290acbcb3d885be0133e2",
+      "structural_checks": {
+        "structured_rule_sections": "pass",
+        "task_fields_and_current_next": "pass",
+        "numbered_execution": "pass",
+        "standalone_claude_import": "pass",
+        "no_authoring_placeholders_or_template_relative_links": "pass",
+        "explicit_e2e_gate": "pass"
+      },
+      "review": {
+        "status": "partial",
+        "evidence": "Required artifacts/sections/import and E2E policy retained. The literal files-only response again omitted the handoff, and proposed cycles/rollback remained excessive. Retained as incomplete evidence rather than a passing complete bootstrap."
+      }
+    },
+    {
+      "case": "small-file-only",
+      "method": "controlled model run; mocked capabilities; no tools",
+      "supplied_sources": [
+        "PROJECT_BOOTSTRAP.md",
+        "templates/AGENTS.template.md",
+        "templates/CLAUDE.template.md",
+        "templates/PRD.template.md",
+        "templates/TASK.template.md",
+        "TASK_PLANNING.md"
+      ],
+      "date_utc": "2026-10-21T12:29:12.823478+00:00",
+      "platform": "Codex CLI 0.144.5",
+      "model": "not reported by CLI events; default selection, no override",
+      "configuration": "ephemeral; ignore user config; read-only; integrations, execution, browser, hooks and delegation disabled",
+      "base_revision": "b61247647ac5317bbb540e50c2fb2619ef29ead5",
+      "source_sha256": {
+        "PROJECT_BOOTSTRAP.md": "3c14a6c32b8cf027732798e79af1d2bbf3c42fa720b61f30b348a1cac590bd13",
+        "TASK_PLANNING.md": "78b5d330ae495e7a0f960a260d7bcd8bc1050d34cd82ebec69b01f4ff71797fa",
+        "templates/AGENTS.template.md": "99e86532f6466c979c87394557c954c6042c48a78301663aa809f2808a338224",
+        "templates/PRD.template.md": "cb23f5e1c950b00fb32a3160b2285f04e68b499879e6267449d6e1f824e3a30a",
+        "templates/CLAUDE.template.md": "ecea02706081683381ba267b459809b16aef34660c62c3ed25cbb585456d4bcf",
+        "templates/TASK.template.md": "9a73e28cee2488349768af6843569603b5b3b5b6093bc97ec2075751159ee130"
+      },
+      "input_sha256": "c847d3d0d47d140c1a1b75c047cc39d2814f3080c9b85188d3ae3c783c727fd0",
+      "duration_seconds": 111.35,
+      "exit_code": 0,
+      "usage": {
+        "input_tokens": 22194,
+        "cached_input_tokens": 8448,
+        "output_tokens": 5361,
+        "reasoning_output_tokens": 607
+      },
+      "errors": [],
+      "response_exists": true,
+      "response_characters": 25780,
+      "tool_items": [],
+      "round": "route-choice",
+      "case_user": "Use file delivery. I want a small Python standard-library utility that previews filename cleanup for one folder and renames files only after an explicit apply. It must not overwrite existing files. No interface, server, database, external services, or tracker. Prepare the project documents, not the program itself.",
+      "case_context": "Chat-only output supports complete Markdown contents, not downloadable file links or target writes. The user explicitly selected file generation. Continue through the complete bootstrap deliverable.",
+      "response_file": "route-choice-small-file-only.response.txt",
+      "response_sha256": "885f6334900b6d99e1a67b01ae90fc82a15e117da5f8e7a4e156d52166b98167",
+      "structural_checks": {
+        "structured_rule_sections": "pass",
+        "task_fields_and_current_next": "pass",
+        "numbered_execution": "pass",
+        "standalone_claude_import": "pass",
+        "no_authoring_placeholders_or_template_relative_links": "pass",
+        "explicit_e2e_gate": "pass",
+        "planning_url_and_document_attachment_handoff": "pass"
+      },
+      "review": {
+        "status": "pass",
+        "evidence": "Unambiguous file-delivery fixture produced the three core documents, individual rules, 12-step task workflow, required task fields, Current/Next, explicit E2E policy, no-overwrite/preview/apply boundaries, proposed/unverified structure, and a document-named planning-URL starter. No tasks, implementation, target writes, or successful runtime checks claimed. Detailed technical proposals remain unverified and are not accepted automatically."
+      }
+    }
+  ]
+}

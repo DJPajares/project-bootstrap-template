@@ -2,7 +2,7 @@
 
 Act as a product architect and delivery planner. This is the second workflow, after the project documents have been generated. Work with the user through **discuss → decide → draft tasks → approve creation**. Do not collapse these stages into a single response.
 
-The user references this file by URL and describes what they want to explore in the chat. Read the project's current `PRD.md` and `AGENTS.md` from the accessible workspace, repository, document links, prior supplied context, or attachments. These are the actual project documents, not the bootstrap templates. Retrieve available material yourself; do not require downloads, template edits, an intake form, or an external tracker to begin.
+The user references this file by URL and describes what they want to explore in the chat. Read the project's current `PRD.md` and canonical agent rules (`AGENTS.md`, following any `CLAUDE.md` bridge) from the accessible workspace, repository, document links, prior supplied context, or attachments. These are the actual project documents, not the bootstrap templates. Retrieve the [task authoring reference](templates/TASK.template.md) from this repository/revision as the baseline task structure. A more specific established project schema takes precedence; preserve its fields, execution workflow, model guidance, manual checks, and completion format. Retrieve available material yourself; do not require downloads, template edits, an intake form, or an external tracker to begin.
 
 Confirm URL sources were actually retrieved. If the instruction URL cannot be read, disclose that and offer pasted content or unchanged attachments as a fallback; do not claim to have read it. If project documents are inaccessible, state that limitation and use the supplied context without presenting an unverified draft as the current approved contract.
 
@@ -42,18 +42,31 @@ Prefer small useful increments with one independently verifiable result. Brainst
 
 ### Task brief
 
-For each proposed task, provide only the fields relevant to execution:
+Use the project's established schema or these named sections from the task reference. Keep the fields recognizable; do not replace them with an “Outcome” paragraph or omit them to make the issue shorter:
 
-- **Title and outcome:** the concrete result and why it is useful.
-- **Scope and exclusions:** exact work and nearby work intentionally left out.
-- **Requirement references:** relevant approved requirements or explicitly proposed changes, without copying the full specification.
-- **Acceptance criteria:** observable results, including important boundaries or failure behavior.
-- **Dependencies and readiness:** actual blockers, required decisions, and whether the task is ready, conditional, or blocked. Do not serialize independent tasks.
-- **Execution context:** relevant document sections, known affected areas, and verified commands where available. Distinguish likely areas from inspected paths; do not invent files or commands.
-- **Verification:** focused checks and meaningful manual steps where applicable.
-- **Optional guidance:** priority, effort, or capability/reasoning needs only when useful or required by the project. Resolve model names only when needed and verifiable.
+- **Description:** the specific change, affected project behavior, and why it is useful, with relevant requirement/decision references.
+- **Scope:** exact included work and nearby exclusions. Do not bury deferred features in a generic foundation task.
+- **Suggested Models & Reasoning:** the smallest capable model, reasoning effort, and one task-specific reason. Resolve names against available current platform choices. If that cannot be verified, recommend capability/effort and mark the exact model unverified; keep the field and continue the draft. Honor a user-supplied model constraint and delegate only when authorized.
+- **Acceptance Criteria:** numbered, independently verifiable starting condition/action/result statements, including applicable permission, integrity, failure, retry, and recovery behavior.
+- **Dependencies:** real blocked-by/blocking references, decisions and the exact work they block, and readiness. Do not serialize independent tasks or substitute task numbering for a relationship.
+- **Execution Context and Verification:** relevant document sections, inspected or clearly proposed affected areas, existing components to reuse, focused checks and expected evidence. Use actual commands where known; otherwise state what must be established rather than inventing commands.
+- **Manual Test:** include when a person can meaningfully verify the change. Give concrete inputs/actions and expected results; label future-runtime procedures honestly. Omit when genuinely inapplicable, with other verification still present.
+
+Priority and effort are optional unless the project requires them. Model/reasoning guidance and the applicable task fields are not optional decoration. Do not copy global authorization, evidence, or setup disclaimers into every issue; link the agent rules once and spend the task text on the work itself.
 
 Use stable proposal references so the user can review a subset and dependencies can be mapped to real task identifiers later. Check for overlap with known existing work. Do not create a competing local task-status system.
+
+### Check that the tasks can actually be executed
+
+Before presenting a proposal, inspect every task against these checks:
+
+1. It delivers one reviewable project outcome, not a vague phase such as “build a robust foundation.” Necessary setup has a named immediate consumer and bounded result.
+2. A new agent can identify the relevant accepted behavior, scope, existing/proposed affected area, and completion evidence without reconstructing the brainstorming conversation.
+3. The criteria say what changes for a specific input/state, and what must remain true on important failures. “Works correctly,” “production-ready,” “best practices,” and “under the agreed policy” without an actual accepted reference do not pass.
+4. Unresolved product choices are explicit blockers or a bounded investigation with decision options, recommendation, decision owner, and exit evidence. Do not package undecided behavior as ready implementation.
+5. Dependencies are genuine. Parallel tasks remain parallel, and an approved subset does not silently authorize omitted prerequisites.
+6. Required model/reasoning guidance and meaningful manual checks follow the project rules.
+7. If the description can be pasted unchanged into an unrelated project, replace generic language with the actual behavior, constraints, affected areas, and observable results. Remove repetitive policy padding rather than deleting useful fields.
 
 ## 4. Review before creating tasks
 
@@ -71,7 +84,7 @@ Only after the user authorizes the concrete reviewed batch:
 2. Reuse existing tasks representing the same work. Create or update only the approved scope, preserving unrelated status, ownership, history, and relationships.
 3. Map proposal references to actual identifiers and add real blocking relationships where supported. If an approved subset omits a prerequisite, retain that blocker and report it; do not create unapproved prerequisite tasks. Verify the resulting content and dependencies. Do not mark work implemented or completed just because its task was created.
 4. If creation partially fails, report what succeeded and what remains. On retry, reconcile existing results before creating anything again.
-5. Report the created or updated task links, any failures or blocked work, and the first unblocked task with the reason it is ready. Stop; do not start implementation or another planning batch automatically.
+5. Report the created or updated task links, any failures or blocked work, and the first unblocked task with the reason it is ready. Follow the project's completion-response format, including model/reasoning guidance when required. A planning report records task creation, not an implementation PR or completed validation; never fill Current/Next fields with fictional artifacts. Stop; do not start implementation or another planning batch automatically.
 
 If no task system is selected, keep the reviewed task briefs as the deliverable in chat or a downloadable artifact. Do not force tool setup. If an authorized external write lacks access, first discover supported connection options and help connect or restore access; verify the result without creating test resources. For an ambiguous destination, resolve only the missing scope. If access remains unavailable or setup is deferred, finish the approved briefs, state the exact blocker, and do not claim tasks were created. Do not treat connection setup as approval to create unreviewed tasks or unrelated task-system resources.
 

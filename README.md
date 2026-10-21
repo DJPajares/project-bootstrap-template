@@ -28,7 +28,8 @@ If you already supplied the choice and destination, the agent continues without 
 ## What you receive
 
 - **A project plan (`PRD.md`):** purpose, users, current scope, requirements, important boundaries, and decisions.
-- **Agent working rules (`AGENTS.md`):** practical instructions for future planning, implementation, validation, and human review.
+- **Agent working rules (`AGENTS.md`):** structured working rules, numbered execution workflows, task fields, testing/review policy, and a completion-response format. The agent preserves useful existing rules rather than summarizing them away.
+- **A Claude entry file (`CLAUDE.md`):** imports `AGENTS.md` so shared rules have one authoritative home.
 - **An appropriate structure:** a minimal proposed layout and setup approach where useful, preserving existing structure and constraints. A small utility gets concise documents; complex work gets the detail its risks need.
 - **Supporting guidance only when useful:** such as a README explaining the project and how its actual setup works. Proposed commands are distinguished from verified ones.
 - **A personalized handoff:** file/project links, material open decisions, and a ready-to-copy prompt for the next planning conversation, with your actual project references filled in.
@@ -53,7 +54,7 @@ You can also use this general starter and provide the project location or curren
 Read and follow [TASK_PLANNING.md](https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/TASK_PLANNING.md) to brainstorm the next outcome with me using my current project documents. If you cannot retrieve that file, say so.
 ```
 
-The process is **discuss → decide → draft tasks → approve creation**. The agent brings options and focused questions, waits for feedback, records accepted decisions, and prepares tasks with scope, acceptance criteria, dependencies, and verification. It explores one useful outcome or related group at a time and handles routine decomposition itself.
+The process is **discuss → decide → draft tasks → approve creation**. The agent brings options and focused questions, waits for feedback, records accepted decisions, and prepares concrete tasks using the project's schema: description, scope, suggested models/reasoning, observable acceptance criteria, real dependencies, execution context/verification, and meaningful manual tests. It explores one useful outcome or related group at a time and handles routine decomposition itself. Generic tasks that could be pasted unchanged into another project need revision before publication.
 
 Only the reviewed tasks you authorize are created in the selected system. Without a tracker, the briefs remain useful output. Task creation does not start implementation automatically, and settled decisions do not need repeated brainstorming.
 
@@ -68,7 +69,9 @@ Provide the repository/workspace and any constraints already decided. The agent 
 | [PROMPT_TEMPLATE.md](PROMPT_TEMPLATE.md)                     | The short bootstrap prompt to copy.                                |
 | [PROJECT_BOOTSTRAP.md](PROJECT_BOOTSTRAP.md)                 | Deeper instructions retrieved by the agent.                        |
 | [templates/PRD.template.md](templates/PRD.template.md)       | Requirements reference, scaled to each project.                    |
-| [templates/AGENTS.template.md](templates/AGENTS.template.md) | Working-rules reference, with conditional modules.                 |
+| [templates/AGENTS.template.md](templates/AGENTS.template.md) | Structured operating rules, task workflow, and response format.    |
+| [templates/CLAUDE.template.md](templates/CLAUDE.template.md) | One-way import of the authoritative agent rules.                   |
+| [templates/TASK.template.md](templates/TASK.template.md)     | Concrete task fields and pre-publication quality checks.           |
 | [TASK_PLANNING_PROMPT.md](TASK_PLANNING_PROMPT.md)           | General starter for the later planning conversation.               |
 | [TASK_PLANNING.md](TASK_PLANNING.md)                         | Discussion, task review, and authorized creation.                  |
 | [Evaluation guide](evaluations/README.md)                    | Maintainer scenarios, evidence requirements, and recorded results. |

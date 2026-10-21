@@ -1,0 +1,387 @@
+## `PRD.md`
+
+````markdown
+# Filename Cleanup Preview — Project Requirements Document
+
+**Status:** Draft project contract; user-supplied constraints are accepted, while the cleanup transformation policy remains proposed pending approval.
+**Owner:** Project owner
+**Updated:** 2026-10-21
+**Approval source:** The project constraints were supplied directly by the project owner. Proposed cleanup rules require approval before implementation.
+
+This document owns product direction, scope, behavior, and decisions. `AGENTS.md` owns execution rules. An authorized chat request owns work status until another task system is explicitly selected. Validation reports attached to a change own observed evidence. Intended behavior, implementation status, validation, and approval are distinct.
+
+## Purpose and scope
+
+Filename Cleanup Preview is a small command-line utility for people who want to clean up filenames in one local folder without risking an unexpected bulk rename.
+
+The first version should make the proposed changes visible before touching the filesystem. Applying those changes must require a separate, explicit command. The utility should be conservative: ambiguous or unsafe changes are reported and skipped rather than guessed.
+
+- **First useful result:** A Python standard-library command that scans one explicitly selected folder, prints a deterministic rename plan, and performs exactly that plan only after an explicit apply request.
+- **Outside this version:** A graphical interface, server, database, external service, task-system integration, recursive traversal, background monitoring, content modification, directory renaming, undo history, automatic conflict resolution, and cross-folder moves.
+- **Success evidence:** Representative temporary-folder tests show accurate previews, no mutation during preview, explicit application, protection against overwrites and collisions, and useful failure reporting.
+- **Tradeoff principles:** Prefer safety over renaming more files; keep preview and apply behavior consistent; avoid hidden filesystem effects; use only the Python standard library.
+
+## Concepts and invariants
+
+- A **target folder** is the single directory explicitly supplied by the user.
+- A **candidate file** is a direct child of that folder that is a regular file. Subdirectories and their contents are not candidates.
+- A **cleanup policy** is the deterministic transformation from a current filename to a proposed filename.
+- A **rename plan** records each original path, proposed path, and whether the change is safe, unchanged, or blocked.
+- A **conflict** exists when multiple source files resolve to the same destination or a destination is occupied by a path that is not safely moved as part of the same plan.
+
+The following invariants apply:
+
+1. Preview mode never changes the filesystem.
+2. Apply mode is entered only through an explicit apply option; omission of that option always means preview.
+3. The utility never overwrites an existing file or directory.
+4. Only direct regular-file children of the selected folder are eligible.
+5. The filename extension and file contents remain unchanged unless a later approved requirement explicitly says otherwise.
+6. A blocked or invalid plan produces no partial batch of renames.
+7. Re-running preview against an unchanged folder produces the same plan and ordering.
+8. Applying a plan successfully leaves a subsequent preview with no remaining changes under the same cleanup policy.
+
+## Requirements and acceptance
+
+| Reference | Required behavior or output | Observable acceptance and verification | Decision status/source |
+| --- | --- | --- | --- |
+| REQ-001 | Accept exactly one target-folder path and inspect only its direct regular-file children. Reject a missing, inaccessible, or non-directory path without changing anything. | Tests cover valid folders, missing paths, file paths, inaccessible paths where the platform permits, and nested content. Nested files are never proposed. | Accepted from user scope; detailed error wording is proposed. |
+| REQ-002 | Preview is the default behavior. It prints a stable plan showing each proposed source and destination plus unchanged or blocked outcomes where useful. Preview performs no rename or other filesystem mutation. | A before/after directory snapshot is identical after preview, and repeated preview output is deterministic for an unchanged folder. | Accepted from explicit-preview requirement. |
+| REQ-003 | Rename files only when an explicit `--apply` option is supplied. Apply must recompute and validate the plan against the current folder state before changing anything. | Running without `--apply` changes nothing. Running with it applies a valid plan. A state change detected before execution causes refusal rather than use of stale assumptions. | Accepted intent; command spelling and recomputation mechanism are proposed. |
+| REQ-004 | Never overwrite an existing file or directory. Detect destinations already present and multiple sources resolving to the same destination. | Conflict fixtures retain every original path and byte-for-byte file content; the command reports the conflicts and exits unsuccessfully. | Accepted from user constraint. |
+| REQ-005 | Treat the rename set as one validated batch. If any proposed destination is invalid, occupied, duplicated, or otherwise unsafe, perform no renames. | A folder containing one valid proposal and one conflict remains completely unchanged after apply. | Proposed conservative safety policy. |
+| REQ-006 | Support rename cycles and swaps safely when every involved path belongs to the validated plan, using temporary names that cannot collide with existing paths. Recover to original names if a rename step fails. | Tests cover a two-file swap, a longer cycle, temporary-name collision avoidance, and an injected mid-operation failure with successful restoration. Any incomplete restoration is reported precisely. | Proposed mechanism needed to uphold no-overwrite and batch-integrity rules. |
+| REQ-007 | Produce concise output suitable for a terminal and distinct successful, no-change, blocked, and usage-error exit results. | Tests assert meaningful summaries and documented exit codes without depending on incidental formatting. | Proposed interface contract. |
+| REQ-008 | Use only the Python standard library at runtime. | Source inspection and a clean-environment runtime check show no third-party imports or required services. | Accepted from user constraint. |
+
+## Proposed cleanup policy
+
+The exact meaning of “cleanup” is the only material product decision still open. The recommended first policy is deliberately narrow:
+
+1. Operate on the filename stem while preserving the final extension exactly.
+2. Remove leading and trailing whitespace from the stem.
+3. Replace each internal run of whitespace with a single hyphen.
+4. Leave letter case, punctuation other than whitespace, Unicode characters, and dotfiles unchanged.
+5. Skip a result that would be empty, `.` or `..`, identical to the original name, or invalid on the current platform.
+6. Do not transliterate Unicode, strip accents, renumber duplicates, or append conflict suffixes.
+
+Examples under this proposal:
+
+| Current name | Proposed name |
+| --- | --- |
+| `  trip photo  .jpg` | `trip-photo.jpg` |
+| `Quarterly   Notes.txt` | `Quarterly-Notes.txt` |
+| `résumé  final.pdf` | `résumé-final.pdf` |
+| `already-clean.txt` | unchanged |
+| `.gitignore` | unchanged |
+
+Approval of this policy is required before implementation because a different policy would change filenames and test expectations. It does not block preparation of the project foundation.
+
+## Structure and approach
+
+The proposed implementation remains intentionally small:
+
+```text
+filename-cleanup-preview/
+├── PRD.md
+├── AGENTS.md
+├── CLAUDE.md
+├── README.md
+├── filename_cleanup.py
+└── tests/
+    └── test_filename_cleanup.py
+```
+
+- `filename_cleanup.py` will contain argument parsing, candidate discovery, the pure cleanup transformation, plan construction, conflict validation, reporting, and guarded application.
+- `tests/test_filename_cleanup.py` will use `unittest`, `tempfile`, and filesystem snapshots to verify behavior.
+- `README.md` will contain supported Python versions, invocation examples, exit codes, the approved cleanup rules, and platform limitations.
+- `PRD.md` remains the authority for product behavior.
+- `AGENTS.md` remains the authority for implementation and delivery discipline.
+- `CLAUDE.md` provides the one-way Claude bridge to `AGENTS.md`.
+
+The implementation should separate pure plan construction from filesystem mutation. Apply must consume a freshly validated plan rather than interpret terminal output or rely on a previously saved plan.
+
+Python version support is not yet accepted. The recommendation is one currently maintained Python 3 version available in the eventual target environment, with the exact minimum recorded in `README.md` before implementation.
+
+No command has been implemented or executed. The following are proposed verification commands once the files exist:
+
+```bash
+python -m unittest discover -s tests -v
+python -m compileall filename_cleanup.py tests
+```
+
+## Validation and delivery
+
+Implementation acceptance requires evidence from isolated temporary directories; tests must never rename uncontrolled user files.
+
+Required scenarios include:
+
+- Empty folder and folder with no applicable changes.
+- A single safe rename and several independent safe renames.
+- Preview followed by a filesystem snapshot proving no mutation.
+- Apply followed by content and filename verification.
+- Existing destination conflicts.
+- Two or more sources mapping to one destination.
+- Files whose names differ only by filesystem case behavior.
+- Nested directories and symbolic links, which remain untouched.
+- Rename swaps or cycles if REQ-006 is approved.
+- A failure during application and restoration to the original state.
+- A second preview after successful apply reporting no changes.
+- Invalid, missing, and inaccessible target paths.
+
+Evidence must name the code revision or artifact, Python version, operating system/filesystem, date, scenarios covered, results, and gaps. Documentation review alone is not runtime validation.
+
+A sensible delivery sequence is:
+
+1. Approve the cleanup policy, supported Python baseline, symlink treatment, and conservative all-or-nothing behavior.
+2. Implement deterministic discovery, transformation, plan validation, and preview output.
+3. Add explicit application with collision-safe execution and recovery.
+4. Validate the complete behavior and document actual commands and limitations.
+
+These are outcome slices for later planning, not executable tasks and not authorization to implement them.
+
+## Decisions and uncertainty
+
+### Accepted decisions
+
+- The deliverable will be a small Python utility.
+- Runtime dependencies are limited to the Python standard library.
+- It operates on one folder.
+- Preview precedes mutation, and mutation requires explicit apply.
+- Existing files must never be overwritten.
+- There is no graphical interface, server, database, external service, or tracker.
+- This bootstrap prepares project documents only; it does not implement the utility.
+
+### Proposed decisions
+
+- Preview is the default and `--apply` is the explicit mutation option.
+- Traversal is non-recursive.
+- Only direct regular files are eligible; symbolic links are not followed or renamed.
+- Any conflict blocks the entire apply operation.
+- The recommended narrow cleanup policy is used.
+- A collision-safe temporary-name sequence supports valid rename cycles.
+- Tests use only `unittest`, `tempfile`, and other standard-library modules.
+
+### Open gates
+
+- **Cleanup transformation:** The project owner must approve or replace the proposed policy before implementation. This blocks transformation code and its expected results.
+- **Python baseline:** Select the minimum supported Python version from the actual target environment before implementation. This affects syntax and compatibility checks.
+- **Platform scope:** The recommendation is to support the platform used for initial development and treat broader Windows/macOS/Linux compatibility as unverified until tested. Claiming cross-platform support is blocked pending evidence.
+- **Apply recovery:** The recommended cycle-safe, rollback-capable batch behavior should be approved with REQ-005 and REQ-006. A simpler refusal of cycles is also safe but less capable.
+````
+
+## `AGENTS.md`
+
+````markdown
+# AGENTS.md
+
+## Project
+
+Filename Cleanup Preview exists to help people inspect and safely apply predictable filename cleanup within one local folder.
+
+- `PRD.md` owns approved product direction, scope, behavior, and decisions; proposals remain proposals.
+- `AGENTS.md` owns agent execution and delivery rules.
+- `CLAUDE.md` imports this file; maintain shared rules here once.
+- An authorized direct chat request owns work status and dependencies until another task source is explicitly selected.
+- Accepted technical decisions belong in `PRD.md`; implementation-specific rationale that does not change product behavior belongs near the relevant code.
+- Validation reports in the review or completion record own observed evidence.
+- Implementation and task status do not silently amend the product contract.
+
+## Working Rules
+
+- Follow accepted decisions and distinguish them from the proposed cleanup policy and other open gates in `PRD.md`.
+- Do not implement filename transformations until the cleanup policy is approved.
+- Make the smallest coherent change that meets the request and applicable acceptance criteria.
+- Do not build recursive traversal, an interface, server, database, external integration, tracker integration, persistent rename history, or speculative extension system.
+- Inspect affected files before editing. Preserve unrelated work and established conventions.
+- Separate facts, assumptions, proposals, approved decisions, implementation status, and observed evidence.
+- Keep credentials out of chat, files, logs, and commits. This project should not need credentials or network access.
+- Make routine reversible choices within authorization. Ask only about consequential uncertainty or a real blocker.
+- Never test against uncontrolled personal files. Use temporary directories and generated fixtures.
+- Preview must remain the default. Filesystem mutation requires explicit apply.
+- Never overwrite an existing path, silently choose a suffix, or omit a conflict from the plan.
+- Preserve file contents, extensions, and out-of-scope paths.
+- Keep terminal output concise and deterministic. Errors must identify the affected path and safe next action without claiming changes that did not occur.
+
+## Tech Direction
+
+- Language: Python 3.
+- Runtime dependencies: Python standard library only.
+- Project type: a small command-line utility, not a service or package ecosystem.
+- Proposed implementation home: `filename_cleanup.py`.
+- Proposed tests: `tests/test_filename_cleanup.py`, using `unittest`, `tempfile`, and filesystem snapshots.
+- Setup and invocation guidance belongs in `README.md` once implementation begins.
+- The minimum supported Python version must be resolved from the actual target environment before implementation; do not invent compatibility claims.
+- Proposed checks, to be confirmed against the implementation:
+
+```bash
+python -m unittest discover -s tests -v
+python -m compileall filename_cleanup.py tests
+```
+
+Do not add third-party packages, packaging infrastructure, continuous delivery, or release tooling without an accepted need.
+
+## Architecture Principles
+
+- Keep cleanup transformation and plan construction pure and independently testable.
+- Treat the target folder as an explicit boundary; do not recurse or follow paths outside it.
+- Build one complete plan before mutation. Validate every destination and relationship before the first rename.
+- Preview and apply must use the same discovery, transformation, and validation logic.
+- Apply must recompute the plan from current filesystem state rather than trust stale displayed output.
+- An unsafe or conflicting plan must leave the folder unchanged.
+- Existing destinations are authoritative filesystem facts. Never overwrite them or assume permission from a proposed name.
+- Preserve independent plan states: unchanged, safe rename, blocked, and invalid are not interchangeable.
+- If rename cycles are approved, use collision-proof temporary paths and attempt restoration after a mid-operation failure.
+- Never report full success after a partial failure. Report the paths restored, paths still displaced, and required manual recovery.
+- Treat filesystem case sensitivity and platform filename restrictions as observed environment behavior, not universal assumptions.
+- Symbolic links and directories are outside the first version unless the PRD is explicitly amended.
+
+## Task Workflow
+
+### Requests made directly in chat
+
+- Implement a direct implementation request within its authorized scope. Do not require issue creation or a brainstorming ceremony first.
+- Create external tasks only when explicitly requested and after the concrete batch is reviewed and approved.
+- If a request references an existing task, use that task and do not create a duplicate.
+- For planning requests, use discuss → decide → draft tasks → approve creation.
+- Task creation does not authorize implementation.
+- For this project, no tracker is selected. Keep task briefs in the conversation unless the project owner selects and authorizes another destination.
+
+### Task-backed execution
+
+1. Read the existing task, accepted `PRD.md` requirements, open gates, and actual dependencies. Create a task first only when explicitly authorized.
+2. Check the workspace and current branch before editing. If no repository exists, record that and continue only when the requested work does not require repository delivery.
+3. Enter the selected active-work state only when a task system is later selected and write access is authorized.
+4. Read only the relevant requirements, decisions, implementation areas, and tests.
+5. Implement only the task scope. Do not treat proposed PRD decisions as approved behavior.
+6. Run focused validation and the applicable project checks using controlled temporary directories.
+7. Self-review the complete change for scope, correctness, filesystem safety, unsupported platform claims, and truthful failure reporting.
+8. If a repository and review workflow exist, check the branch again, commit and push through that workflow, and use the task-supplied branch name or established convention.
+9. Create or update the review artifact and verified task link only when applicable and authorized.
+10. Move a task to review rather than completion when a review is opened.
+11. Identify a next approved, genuinely unblocked task only when the selected workflow asks for it. Do not create it or change its status without authorization.
+12. Stop for human review. Completion follows the accepted integration or acceptance event, not merely a passing local check.
+
+No tracker, repository destination, lifecycle mapping, or task-linking mechanism is currently selected. Resolve those details before the first corresponding write; do not guess names or create test resources.
+
+For direct chat work without a task, skip tracker reads and writes. Still follow scope, workspace/branch checks where applicable, validation, self-review, and human-review rules.
+
+## Task Structure
+
+Every executable task uses the following sections.
+
+### Description
+
+State the concrete change, affected filename-cleanup behavior, and why it matters. Reference applicable `PRD.md` requirements and distinguish approved behavior from proposals.
+
+### Scope
+
+List exact included work and nearby exclusions. Identify paths as inspected or proposed. Do not hide recursive traversal, new cleanup transformations, packaging, or release work inside a foundation task.
+
+### Suggested Models & Reasoning
+
+Recommend the smallest capable model and suitable reasoning effort for the available platform, with one task-specific reason. Resolve model names when drafting the task. If current names cannot be verified, state the needed capability and effort and mark the exact model unverified. Delegate only when authorized.
+
+### Acceptance Criteria
+
+Use numbered, independently verifiable starting-condition/action/result statements. Include applicable no-mutation, no-overwrite, collision, rollback, content-integrity, and platform boundaries. Do not use “works correctly,” “robust,” or “best practices” as criteria.
+
+### Dependencies
+
+Record actual blocked-by and blocking task references, or state that none are known. Name unresolved decisions and the exact work they block. Do not use task order as a substitute for a real dependency.
+
+### Execution Context and Verification
+
+Reference relevant requirements and decisions, affected files, existing components to reuse, focused checks, and expected evidence. Include commands only after they are grounded in the project. Do not imply tests have run when they have not.
+
+### Manual Test
+
+Include this section when a person can meaningfully verify the change. Use a disposable temporary folder, concrete filenames, the exact preview/apply commands, expected output, and expected directory contents. Include a conflict case proving that no files are changed. Omit this section only when no meaningful manual check exists.
+
+## Repository Rules
+
+These rules apply once the project is placed in a version-controlled repository.
+
+- Resolve and record the repository, protected integration branch, branch naming, review artifact, and completion event before the first repository write.
+- Never commit or push directly to a protected integration branch.
+- Check the current branch before the first edit and immediately before every commit and every push. An earlier check is not proof of the current branch.
+- Use an isolated change branch and preserve unrelated local work. Do not reset, discard, or move it without authorization.
+- Deliver changes through the repository’s established human-review mechanism, including the problem, resulting behavior, validation, material gaps, and meaningful manual checks.
+- Use only verified issue, branch, and linking conventions. Do not assume an attachment or keyword changes task status.
+- Never enable automatic merge.
+- A human reviews and merges unless they explicitly authorize another integration action.
+- Review readiness is not integration, release, or final acceptance.
+
+## Completion Response
+
+Keep completion responses short and use only actual links and observed results.
+
+For direct chat work without a tracker task, state:
+
+- What changed.
+- What validation ran and its observed result.
+- A review link if one was actually created.
+- Material gaps, blocked checks, or untested environments.
+
+Do not add Current/Next task links or advance backlog work unless requested.
+
+For task-backed execution, use:
+
+### Current
+
+- **Review:** Actual review link, or the precise blocker preventing one.
+- **Task:** Actual current task link.
+- **Validation:** Short observed result plus material gaps.
+
+### Next
+
+- **Task:** Actual approved and unblocked task link, or “None identified.”
+- **Model:** Currently verified model and reasoning setting, or an unverified capability/effort recommendation.
+- **Reason:** One short reason the task is ready, or the actual blocker.
+
+Never invent a task, review, validation result, model availability, or next action.
+
+## Context Efficiency
+
+- Read relevant requirement sections and affected code instead of repeatedly scanning the whole project.
+- Prefer focused checks before broader required suites.
+- Keep one authoritative home for each fact.
+- Do not copy the PRD into tasks or create a local mirror of a future backlog.
+- Keep chat updates concise.
+- Remove repetition without deleting workflows, task fields, testing obligations, completion formats, or human gates.
+
+## Testing
+
+- Validate observable behavior, no-overwrite rules, plan integrity, deterministic output, failure recovery, and preservation of file contents.
+- Use controlled temporary directories for automated and manual tests.
+- Exercise preview and apply in the actual Python runtime when available.
+- Include empty, unchanged, successful, conflicting, invalid-path, cycle, and failure-recovery scenarios when their requirements are approved.
+- Add focused tests for meaningful behavior rather than incidental implementation details.
+- Do not introduce an end-to-end testing framework unless requested or required by an accepted policy.
+- Use the project’s adopted standard-library checks once established. The proposed initial commands are:
+
+```bash
+python -m unittest discover -s tests -v
+python -m compileall filename_cleanup.py tests
+```
+
+- Do not claim a command ran merely because it is documented.
+- For documentation, check consistency, references, unresolved placeholders, code examples, and representative scenarios. Document review is not runtime validation.
+- Record artifact or revision, Python version, operating system/filesystem, date, coverage, result, and gaps.
+- Missing required evidence prevents a completion claim.
+
+## Human Control
+
+The project owner is the final decision-maker for the cleanup transformation, supported environments, scope changes, architecture changes, review approval, integration, publication, and release.
+
+Agents may make routine reversible implementation choices after the applicable product behavior is approved. They must stop for a decision when filename semantics, filesystem safety, compatibility claims, or authorized scope would materially change.
+````
+
+## `CLAUDE.md`
+
+````markdown
+# CLAUDE.md
+
+@AGENTS.md
+
+Shared project and workflow rules are maintained in `AGENTS.md`. Follow that file; do not create a second copy of its rules here.
+````

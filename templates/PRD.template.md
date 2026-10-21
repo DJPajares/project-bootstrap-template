@@ -1,6 +1,6 @@
 # {{PROJECT_NAME}} — Project Requirements Document
 
-> For the generating agent: resolve `{{placeholders}}` and remove all authoring guidance. For bounded work, generate only the compact core below, with a default budget of up to 600 words. State each contract once. Expand only for material risk or complexity and briefly explain why; the optional modules are a reference library, not a required table of contents. Do not ask the user to select a mode or equate a novice with a simple project. Preserve useful existing sections and accepted contracts when updating a project.
+> For the generating agent: resolve `{{placeholders}}` and remove all authoring guidance. For bounded work, start with the focused core below and state each contract once. Expand for material risk or complexity; the optional modules are a reference library, not a required table of contents. Do not impose a word budget that drops real contracts. Do not ask the user to select a mode or equate a novice with a simple project. Preserve useful existing sections and accepted contracts when updating a project. PRD depth and the structured operating rules in `AGENTS.md` are separate concerns.
 
 **Status:** {{DOCUMENT_STATUS_AND_WHICH_PARTS_ARE_PROPOSED}}
 **Owner:** {{REQUIREMENTS_OWNER}}
