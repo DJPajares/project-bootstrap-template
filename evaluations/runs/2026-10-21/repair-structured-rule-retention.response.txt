@@ -1,0 +1,412 @@
+Below are the refreshed file-delivery versions. They preserve the approved note behavior and operating conventions. No application changes, task creation, repository writes, or runtime validation were performed.
+
+## `PRD.md`
+
+````markdown
+# Revisioned Notes — Project Requirements Document
+
+**Status:** Approved product behavior; technical implementation details remain to be established
+**Owner:** Project owner
+**Updated:** 2026-10-21
+**Approval source:** Existing project PRD and the approved constraints supplied for this refresh
+
+This document owns approved product direction, scope, behavior, and decisions. `AGENTS.md` owns execution rules. Direct authorized requests or issues in Core / Notes own implementation status and dependencies. Pull requests and recorded validation own implementation evidence. Intended behavior, implemented behavior, task status, and observed validation remain distinct.
+
+## Purpose and scope
+
+Revisioned Notes enables people to maintain private notes without losing work during concurrent editing or accidentally deleting notes through tag management.
+
+The first useful result is a dependable note workflow in which:
+
+- Notes are private to their owners.
+- Only a note’s owner may edit it.
+- Each accepted save creates or advances revisioned state.
+- A conflicting save does not overwrite newer stored content or discard the user’s unsaved draft.
+- Tags remain independent from notes, so deleting a tag never deletes an otherwise independent note.
+
+This version does not add collaboration, public sharing, shared ownership, automatic conflict merging, offline synchronization, or a new release system. Those features require separate approval.
+
+Success is demonstrated through focused runtime checks showing that authorized note operations succeed, unauthorized edits are rejected, conflicts preserve both authoritative content and the attempted draft, and tag deletion leaves notes intact.
+
+When implementation choices compete, prefer data integrity, privacy, understandable recovery, and a small coherent change over convenience or speculative extensibility.
+
+## Concepts, ownership, and invariants
+
+### Note
+
+A note is private, owner-controlled content with a stable identity and revision state.
+
+- A note has exactly one authoritative owner.
+- Visibility and edit authorization derive from authoritative ownership, not client-supplied claims.
+- Only the owner may read or edit a private note unless a later approved requirement explicitly introduces another permission.
+- An accepted content change advances the note’s revision.
+- Revision identifiers are concurrency controls, not evidence that every historical revision must be exposed through a user interface.
+
+### Draft
+
+A draft is the content a user attempted to save.
+
+- A submitted draft does not become authoritative until the save is accepted.
+- If a revision conflict prevents a save, the attempted draft must remain recoverable and visible to the user.
+- Preserving the draft does not authorize overwriting the current stored revision.
+- Automatic merging is outside the current scope.
+
+### Tag
+
+A tag is an independently managed classification associated with zero or more notes.
+
+- The note and tag have independent identities and lifecycles.
+- Deleting a tag removes that tag and its associations.
+- Deleting a tag never deletes an independent note or its content.
+- Repeating deletion or encountering an already-absent association must not cause note deletion.
+
+### Product invariants
+
+- **INV-001 — Privacy:** A private note is available only within its owner’s authorized context.
+- **INV-002 — Owner-only editing:** A non-owner cannot alter note content, revision state, ownership, or tags on the owner’s behalf.
+- **INV-003 — Conflict safety:** A save based on a stale revision cannot silently overwrite the current revision.
+- **INV-004 — Draft preservation:** A rejected conflicting save returns or retains the submitted draft in a form the user can recover.
+- **INV-005 — Independent deletion:** Deleting a tag cannot delete any note.
+- **INV-006 — Authoritative enforcement:** Permission and revision checks occur at the authoritative write boundary, not only in an interface.
+
+## Primary workflows
+
+### Create a note
+
+1. An authenticated owner supplies the minimum supported note content.
+2. The system creates a private note owned by that person with an initial revision.
+3. The created note and revision become the authoritative stored state.
+4. Failure must not report success or leave an ambiguously created note.
+
+### Edit and save a note
+
+1. The owner opens a note and receives its current content and revision identifier.
+2. The owner submits an edited draft with the revision on which it was based.
+3. The authoritative write boundary verifies ownership and compares revisions.
+4. If ownership and revision are valid, the new content is accepted and the revision advances.
+5. If authorization fails, no note state changes.
+6. If the submitted revision is stale, no stored content is overwritten. The current stored revision and the unsaved submitted draft remain distinguishable so the user can recover or reconcile their work.
+
+### Delete a tag
+
+1. An authorized user requests deletion of a tag within their permitted context.
+2. The tag and its associations are removed according to the established data model.
+3. Every associated note remains present, private, and independently addressable.
+4. A partial failure must not cascade into note deletion and must be reported without claiming complete success.
+
+## Requirements and acceptance
+
+| Reference | Required behavior | Observable acceptance and verification | Status/source |
+| --- | --- | --- | --- |
+| REQ-001 | Notes are private and scoped to their authoritative owner. | Requests outside the owner’s authorized context do not expose note content or metadata beyond an approved minimal error response. | Approved; existing PRD |
+| REQ-002 | Only the owner may edit a note. Authorization is enforced at the authoritative write boundary. | An owner can save against the current revision. A non-owner’s equivalent request is rejected and leaves content, revision, ownership, and associations unchanged. | Approved; existing PRD |
+| REQ-003 | Accepted note saves are revision-aware. | A save using the current revision stores the submitted content and returns a different current revision. | Approved; existing PRD |
+| REQ-004 | Conflicting saves preserve the unsaved draft. | After another accepted save advances the revision, a stale save is rejected without overwriting current content; the stale request’s submitted draft remains recoverable alongside the current authoritative state. | Approved; existing PRD |
+| REQ-005 | Tags and notes have independent deletion lifecycles. | Deleting a tag removes that tag or its associations while every formerly tagged note and its content remain unchanged. | Approved; existing PRD |
+| REQ-006 | Failed or rejected mutations do not claim success. | Permission failures, revision conflicts, and tag-deletion failures return distinguishable outcomes and do not produce unauthorized or destructive side effects. | Approved; derived from the approved integrity behavior |
+| REQ-007 | Recovery information must not weaken privacy. | Conflict responses and retained drafts are available only to the authorized editing context and do not expose another owner’s private note data. | Approved; consequence of REQ-001, REQ-002, and REQ-004 |
+
+## Experience and quality constraints
+
+- Conflict messaging must distinguish the current saved note from the unsaved attempted draft.
+- Recovery must not require the user to reconstruct or retype a rejected draft.
+- Permission errors must not disclose private content.
+- Destructive actions must clearly identify whether they affect a note, a tag, or only an association.
+- Loading, empty, denied, conflict, and failure states must preserve enough context for the user to understand the outcome.
+- Interactive controls must use meaningful semantics, keyboard access, visible focus, and clear error identification where an interface exists.
+- Focused tests must cover ownership, stale revisions, draft preservation, and tag deletion. No new end-to-end suite is required without authorization.
+- Performance targets and supported deployment environments are not established by this document and must not be invented during implementation.
+
+## Structure and technical direction
+
+Preserve the existing project structure and technology choices. No repository implementation or technical stack was available for verification during this documentation-only refresh.
+
+The implementation should maintain clear responsibility boundaries:
+
+- The authoritative note domain owns note identity, ownership, content, and revision transitions.
+- The authorization boundary verifies the acting identity against note ownership for every protected read or write.
+- The persistence boundary performs revision comparison and content mutation atomically enough to prevent a stale save from overwriting a newer revision.
+- The conflict result carries or durably preserves the attempted draft without treating it as authoritative note content.
+- Tag management owns tags and note-tag associations but has no cascading authority over note records.
+- Interface or transport code presents domain outcomes without replacing server-side permission or revision enforcement.
+
+Exact paths, frameworks, storage mechanisms, migrations, and commands must be established from the repository before implementation. Any new technology remains a proposal until approved.
+
+## Validation and delivery
+
+Implementation evidence must include focused checks for:
+
+1. An owner reading and saving their note against the current revision.
+2. A non-owner being unable to read or edit the private note.
+3. Two edits based on the same revision, with the first accepted and the second rejected as a conflict.
+4. The rejected edit’s complete submitted draft remaining recoverable.
+5. The current authoritative content remaining unchanged after the conflict.
+6. Deleting a tag that is associated with one or more notes.
+7. Every associated note remaining present and unchanged after tag deletion.
+8. Relevant denied, repeated, and failure operations producing no destructive side effects.
+
+Evidence must identify the artifact or revision tested, environment, date, coverage, result, and material gaps. Documentation review establishes consistency only; it is not runtime validation.
+
+A sensible delivery sequence is:
+
+1. Establish authoritative ownership and revision behavior.
+2. Add conflict-safe saves with draft recovery.
+3. Enforce independent tag deletion.
+4. Verify the connected owner, conflict, and deletion workflows.
+
+This sequence guides later planning but is not an executable task batch and does not authorize task creation or implementation.
+
+## Decisions and uncertainty
+
+### Accepted decisions
+
+- Notes are private.
+- Only owners may edit their notes.
+- Saves use revision-aware conflict detection.
+- A conflicting save preserves the unsaved draft.
+- Tag deletion never deletes independent notes.
+- Direct chat implementation requests do not require issue creation.
+- Issue-backed work follows the Core / Notes tracker and repository-review workflow defined in `AGENTS.md`.
+
+### Open implementation decisions
+
+- The existing application stack, storage technology, schema, routes, components, and validation commands must be inspected before implementation.
+- The exact draft-preservation mechanism is open. It may be client-held, returned by the conflict response, or durably stored if current architecture requires it. Whichever mechanism is selected must satisfy REQ-004 and REQ-007 without silently expanding product scope.
+- The exact revision representation is open. It must support reliable stale-write detection and must not be accepted solely on client authority.
+- Error shapes and interface presentation are open within the privacy, clarity, and recovery requirements above.
+
+These decisions block detailed implementation design, not the approved product behavior. The project owner approves consequential changes to scope, architecture, privacy, or data lifecycle.
+````
+
+## `AGENTS.md`
+
+````markdown
+# AGENTS.md
+
+## Project
+
+Revisioned Notes exists to give owners a private, conflict-safe place to maintain notes without losing drafts or deleting notes through tag management.
+
+- `PRD.md` owns approved product direction, scope, behavior, and decisions; proposals remain proposals.
+- `AGENTS.md` owns agent execution and delivery rules. `CLAUDE.md` imports this file; maintain shared rules here once.
+- An authorized direct request or an issue in Core / Notes owns work status and dependencies.
+- Accepted repository decisions own technical direction. Pull requests and recorded check results own observed validation.
+- Implementation and task status do not silently amend the product contract.
+
+## Working Rules
+
+- Follow accepted decisions; do not reopen settled scope without a material conflict or new evidence.
+- Make the smallest coherent change that meets the request and acceptance criteria.
+- Do not build public sharing, collaboration, shared ownership, automatic conflict merging, offline synchronization, speculative infrastructure, or unused parallel systems without approval.
+- Inspect affected work before editing. Preserve unrelated changes and established conventions.
+- Separate facts, assumptions, proposals, approved decisions, implementation status, and observed evidence.
+- Keep credentials out of chat, files, logs, and commits. Use supported secret-entry flows.
+- Make routine reversible choices within authorization. Ask only about consequential uncertainty or a real blocker; continue independent work.
+- Treat notes as private owner-controlled data.
+- Enforce owner-only editing at the authoritative write boundary.
+- Never resolve a revision conflict by silently overwriting the current note.
+- Preserve the submitted unsaved draft when a conflicting save is rejected.
+- Keep note and tag lifecycles independent. Tag deletion must never cascade into note deletion.
+- Do not claim application behavior was validated through document inspection alone.
+
+## Tech Direction
+
+- Preserve the existing project stack, dependency tools, supported environments, and repository layout.
+- Inspect the repository’s setup guidance and manifests before selecting commands or changing dependencies.
+- Do not introduce a second identity, authorization, revision, persistence, or state system.
+- Treat frameworks, storage mechanisms, schema changes, and new dependencies as proposals until grounded in the existing implementation and authorized scope.
+- Keep changing setup commands in the repository’s established setup guidance rather than inventing them here.
+
+## Architecture Principles
+
+- The authoritative note record owns note identity, owner, content, and current revision.
+- Authorization is derived from trusted identity and authoritative ownership, not client-supplied ownership claims.
+- Permission checks apply to protected reads and writes.
+- A successful save verifies ownership and the expected revision before advancing stored content and revision state.
+- A stale save leaves authoritative content unchanged and preserves the attempted draft for authorized recovery.
+- The current stored note and the rejected draft remain distinguishable.
+- Conflict recovery must not expose private note content outside its authorized context.
+- Tags and note-tag associations are independent from note existence.
+- Removing a tag or association cannot cascade into deletion of a note.
+- Failed or retried operations must not produce duplicate or destructive effects.
+- Preserve established public interfaces unless changing them is explicitly in scope and reviewed.
+
+## Task Workflow
+
+### Requests made directly in chat
+
+- Implement a direct implementation request within its authorized scope. Do not require issue creation or a brainstorming ceremony first.
+- Create external tasks only when explicitly requested or when the user authorizes a concrete reviewed batch.
+- If the request references an existing task, use that task. Do not create a duplicate.
+- For planning requests, use discuss → decide → draft tasks → approve creation.
+- Task creation does not start implementation automatically.
+
+### Task-backed execution
+
+Task destination: Core / Notes.
+
+Lifecycle states:
+
+- `Queued` — approved work not currently being implemented.
+- `Active` — implementation is underway.
+- `Review` — a review artifact is open and awaiting human action.
+- `Done` — the change has been merged into the integration branch.
+
+Follow this loop:
+
+1. Read the existing issue, accepted requirements, and actual blocking relationships. Create a new issue first only when explicitly authorized.
+2. Check the workspace and current branch before editing. For issue-backed work, use the branch name supplied by the issue.
+3. Move the issue to `Active` when access and the selected workflow permit it.
+4. Read only the relevant requirement sections, decisions, implementation, and tests.
+5. Implement only the issue scope.
+6. Run focused validation and the project’s required checks.
+7. Self-review the complete change for scope, correctness, privacy, data integrity, recovery behavior, and unsupported claims.
+8. Check the current branch again immediately before every commit and every push. Commit and push only through the repository’s review workflow.
+9. Open or update a human-reviewed pull request and verify that it is linked to the issue using the repository’s established linking mechanism.
+10. Move the issue to `Review`. Opening a pull request does not make the issue `Done`.
+11. Identify an approved, genuinely unblocked next issue only when the workflow calls for a recommendation. Do not create it or change its status without authorization.
+12. Stop for human review. Move the issue to `Done` only after the pull request has actually merged.
+
+For chat requests without an issue, skip tracker reads, writes, status changes, and next-task advancement. Still follow scope, branch, validation, self-review, and review rules.
+
+If access is missing, report the exact blocker. Do not request secrets, invent task or review links, or create test resources to prove write access.
+
+## Task Structure
+
+Every executable task uses the following sections.
+
+### Description
+
+State the concrete change, affected note behavior, and why it matters. Link the relevant approved `PRD.md` requirements without copying the full product contract.
+
+### Scope
+
+List the exact included work and nearby exclusions. Distinguish inspected implementation paths from proposed paths. Do not hide deferred features inside foundation work.
+
+### Suggested Models & Reasoning
+
+Recommend the smallest capable model and appropriate reasoning effort for the target platform, with one task-specific reason.
+
+Resolve available model names when drafting the task. If availability cannot be verified, recommend the needed capability and reasoning effort, mark the exact model unverified, and continue. Delegate only when authorized.
+
+### Acceptance Criteria
+
+Use numbered, independently verifiable conditions with a starting state, action, and observable result. Include applicable privacy, owner authorization, revision-conflict, draft-recovery, retry, and tag-deletion integrity boundaries.
+
+Do not use “works correctly,” “robust,” or “best practices” as acceptance criteria.
+
+### Dependencies
+
+Record actual blocked-by and blocking issue references, or explicitly state that none are known. Identify unresolved decisions, the exact work they block, and readiness.
+
+Do not serialize independent work or treat issue order as a dependency.
+
+### Execution Context and Verification
+
+Identify relevant requirement and decision references, known affected areas, existing components to reuse, and focused checks. Include commands only when they are established by the project; otherwise state what must be inspected or established.
+
+### Manual Test
+
+Include this section when a person can meaningfully verify the outcome. Give concrete setup, inputs, actions, and expected results, including relevant denied, conflict, or recovery behavior.
+
+Omit it when no meaningful manual check exists rather than inventing one.
+
+## Repository Rules
+
+- Repository: use the existing project repository.
+- Integration branch: `main`.
+- Never commit or push directly to `main`.
+- Check the current branch before the first edit and immediately before every commit and every push. An earlier check is not proof of the current branch.
+- For issue-backed work, use the branch name supplied by the issue.
+- For authorized chat-only implementation, use an isolated change branch following established repository conventions.
+- Preserve unrelated local work. Do not reset, overwrite, move, or discard it without authorization.
+- Deliver implementation changes through a human-reviewed pull request.
+- A pull request must explain the problem, resulting behavior, validation, material gaps, and meaningful manual checks.
+- Issue-backed pull requests must be linked to their issue using the project’s verified linking convention. An attachment or textual mention alone must not be assumed to trigger lifecycle automation.
+- Never enable automatic merge.
+- A human reviews and merges the pull request unless the user separately authorizes another permitted integration action.
+- An issue enters `Review` when the linked pull request is ready for human review.
+- An issue becomes `Done` only after its pull request has merged into `main`.
+- Review readiness is not integration, release, deployment, or final acceptance.
+
+## Completion Response
+
+Keep completion responses concise and use only observed results and real links.
+
+For chat-originated work without a tracker issue:
+
+- State what changed.
+- State the validation performed and its result.
+- Include the pull-request link if one was created.
+- Disclose material gaps or blocked checks.
+- Do not add Current/Next task fields or recommend backlog work unless requested.
+
+For issue-backed work, use:
+
+### Current
+
+- **Review:** actual pull-request link, or the precise blocker preventing one
+- **Task:** actual Core / Notes issue link
+- **Validation:** short observed result and material gaps
+
+### Next
+
+- **Task:** actual approved, unblocked issue link, or “None identified”
+- **Model:** currently verified model and reasoning effort, or an unverified capability/reasoning recommendation
+- **Reason:** one short readiness reason or the actual blocker
+
+Do not invent links, validation, a next issue, or progress. Do not advance another issue without authorization.
+
+## Context Efficiency
+
+- Read relevant requirement sections and affected code; avoid repeated broad scans.
+- Prefer focused checks before required broader suites.
+- Keep one authoritative home per fact.
+- Do not mirror the backlog locally or copy the PRD into issues.
+- Keep chat progress updates concise.
+- Remove repetition without deleting operational rules, workflow steps, task fields, or response formats.
+
+## Testing
+
+- Validate observable behavior and important privacy, ownership, integrity, concurrency, and recovery contracts.
+- Exercise changed workflows in the available browser or relevant runtime, including applicable loading, empty, denied, conflict, error, and recovery states.
+- State when a required runtime is unavailable.
+- Add focused tests for meaningful behavior rather than incidental implementation details.
+- Do not introduce a new end-to-end suite without authorization.
+- Use the project’s established lint, type, build, and focused test commands. Inspect the repository guidance first; do not invent commands or claim an unexecuted command passed.
+- For note changes, cover owner access, non-owner denial, successful revision advancement, stale-save rejection, preservation of the submitted draft, and unchanged authoritative content after conflict.
+- For tag deletion, verify that affected tags or associations are removed while every independent note remains present and unchanged.
+- For documentation, check terminology, internal consistency, links, unresolved placeholders, and representative scenarios. Documentation review is not runtime validation.
+- Record passed, failed, blocked, and untested checks with the artifact or revision, environment, date, coverage, and result.
+- Missing required evidence prevents a completion claim. Report the exact gap.
+
+## Human Control
+
+The project owner is the final decision-maker for consequential product gates, architecture changes, scope changes, spending, review approval, integration, release, and deployment.
+
+- Respect authorization already given.
+- Prepare concrete work and evidence before requesting approval.
+- Do not ask again for routine work already authorized.
+- Do not create issues, publish task batches, merge pull requests, add a new end-to-end suite, release, or deploy without the required authorization.
+- Human review is required before integration into `main`.
+````
+
+## `CLAUDE.md`
+
+```markdown
+# CLAUDE.md
+
+@AGENTS.md
+
+Shared project and workflow rules are maintained in `AGENTS.md`. Follow that file; do not create a second copy of its rules here.
+
+Use concise progress updates.
+```
+
+The recommended first outcome remains a conflict-safe private note workflow: establish owner-only access, accept saves against the current revision, and preserve an attempted draft when a stale save is rejected. Tag deletion should then be verified independently so it cannot remove notes.
+
+`PRD.md` is the product contract, `AGENTS.md` defines execution and review rules, and `CLAUDE.md` provides the one-way Claude bridge. These files were generated from the supplied sources and context; they were not written to a repository or runtime-tested.
+
+For the separate planning conversation, attach the generated `PRD.md` and `AGENTS.md`, then use this copy-ready starter:
+
+> Follow the task-planning instructions at https://raw.githubusercontent.com/DJPajares/project-bootstrap-template/main/TASK_PLANNING.md. The project documents are attached as `PRD.md` and `AGENTS.md`; `CLAUDE.md` imports the agent rules. Brainstorm the first implementation outcome for private, owner-only revisioned note saves, including stale-save detection and preservation of the unsaved draft. Preserve the Core / Notes workflow and do not create tasks until I approve the reviewed task proposal.

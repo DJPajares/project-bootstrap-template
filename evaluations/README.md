@@ -17,16 +17,18 @@ Use [cases.json](cases.json) as repeatable inputs. Each case declares its workfl
 
 ## What to measure
 
-| Measure                 | Observation                                                                                                                                                                               |
-| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| First useful value      | The first response identifies an audience/problem, recommends a bounded first version, and explains why. A repeated idea or setup menu does not pass.                                     |
-| Blocking questions      | Count questions that require a reply before the next useful result. Separate the intended delivery choice, essential product clarification, and unnecessary service/technology questions. |
-| Setup friction          | Record authentication, destination, or service-selection requests before useful direction, and whether they were needed for the current action.                                           |
-| Appropriate depth       | Check that small work receives concise documents and complex work retains its meaningful constraints. Do not reward word count or omitted safeguards.                                     |
-| Constraint preservation | Check stated technology, existing structure, approved requirements, user choices, and independent relationships.                                                                          |
-| Concrete structure      | Verify the layout/setup approach fits the project, with proposed components/commands distinguished from existing or tested ones.                                                          |
-| Handoff clarity         | Check file purpose, real references, material open decisions, and a usable next-stage starter with no editable placeholders.                                                              |
-| Action boundaries       | Verify no target writes before delivery selection, no target changes for file-only output, and no tasks before concrete approval.                                                         |
+| Measure                 | Observation                                                                                                                                                                                 |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| First useful value      | The first response identifies an audience/problem, recommends a bounded first version, and explains why. A repeated idea or setup menu does not pass.                                       |
+| Blocking questions      | Count questions that require a reply before the next useful result. Separate the intended delivery choice, essential product clarification, and unnecessary service/technology questions.   |
+| Setup friction          | Record authentication, destination, or service-selection requests before useful direction, and whether they were needed for the current action.                                             |
+| Appropriate depth       | Scale product detail to scope without deleting agent-rule headings, numbered workflows, task fields, or completion formats. Do not reward a word limit at the cost of execution discipline. |
+| Constraint preservation | Check stated technology, existing structure, approved requirements, user choices, and independent relationships.                                                                            |
+| Concrete structure      | Verify the layout/setup approach fits the project, with proposed components/commands distinguished from existing or tested ones.                                                            |
+| Handoff clarity         | Check file purpose, real references, material open decisions, and a usable next-stage starter with no editable placeholders.                                                                |
+| Action boundaries       | Verify no target writes before delivery selection, no target changes for file-only output, and no tasks before concrete approval.                                                           |
+
+Full-generation regressions must also verify the actual CLAUDE.md import, structured agent-rule sections, numbered execution workflow, task/model/manual-test fields, source-rule retention, and Current / Next completion format where applicable. A prose summary that mentions these topics is insufficient. Task-proposal review checks concrete project behavior, independently observable acceptance, real blockers, and meaningful manual steps; reject generic quality claims and repeated policy padding.
 
 The first-response acceptance target is useful direction before setup questions. Optional tool setup must not block independent drafts. Existing explicit choices must not be asked again. Full delivery must contain resolved, tailored core documents and a usable planning handoff.
 
@@ -43,3 +45,5 @@ Keep these levels separate in reports and PR descriptions. One model/configurati
 ## Records
 
 - [2026-10-20 candidate review](runs/2026-10-20.md): static checks, actual controlled model responses, instruction refinements, and explicitly blocked or unverified coverage.
+
+- [2026-10-21 structured-rule repair](runs/2026-10-21.md): source-rule retention, Claude bridge, and executable-task regression checks.

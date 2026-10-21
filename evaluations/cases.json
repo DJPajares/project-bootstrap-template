@@ -22,12 +22,13 @@
     "workflow": "bootstrap",
     "sources": "supplied",
     "context": "Chat-only output supports complete Markdown contents, not downloadable file links or target writes. The user explicitly selected file generation. Continue through the complete bootstrap deliverable.",
-    "user": "Give me the files only. I want a small Python standard-library utility that previews filename cleanup for one folder and renames files only after an explicit apply. It must not overwrite existing files. No interface, server, database, external services, or tracker. Prepare the project documents, not the program itself.",
+    "user": "Use file delivery. I want a small Python standard-library utility that previews filename cleanup for one folder and renames files only after an explicit apply. It must not overwrite existing files. No interface, server, database, external services, or tracker. Prepare the project documents, not the program itself.",
     "must": [
       "Honor file-only delivery without asking the same choice again",
-      "Produce concise tailored PRD.md and AGENTS.md with preview/apply and no-overwrite requirements",
+      "Produce a focused PRD.md, structured AGENTS.md retaining task/workflow/completion rules, and CLAUDE.md with a standalone @AGENTS.md import; preserve preview/apply and no-overwrite requirements",
       "Propose a minimal layout and clearly unverified implementation/setup approach",
-      "End with a ready-to-copy planning starter naming the actual generated documents and suggested focus"
+      "End with a ready-to-copy planning starter naming the actual generated documents and suggested focus",
+      "Preserve the software testing policy, including no new end-to-end suite without a request or accepted testing policy, rather than merely including a Testing heading"
     ],
     "must_not": [
       "Add unrelated infrastructure or every template register",
@@ -46,7 +47,8 @@
       "Preserve supplied structure, public interface constraints, and accepted requirements",
       "Make scoped document revisions without reopening delivery or technology choices",
       "Distinguish the documented test command from an executed check",
-      "Supply the next-stage starter with the actual document names and the recovery/verification focus"
+      "Supply the next-stage starter with the actual document names and the recovery/verification focus",
+      "Retain structured task/execution/completion rules and provide the one-way CLAUDE.md bridge without overwriting existing agent-specific additions"
     ],
     "must_not": [
       "Introduce a service architecture or rewrite unaffected contracts",
@@ -150,12 +152,53 @@
     "must": [
       "Reuse settled decisions and proceed to a concrete task proposal",
       "Include scope/exclusions, requirement context, acceptance, dependencies/readiness, and focused verification",
-      "Stop for review/creation authorization without forcing another brainstorming round"
+      "Stop for review/creation authorization without forcing another brainstorming round",
+      "Use Description, Scope, Suggested Models & Reasoning, Acceptance Criteria, Dependencies, Execution Context and Verification, and meaningful Manual Test sections with concrete behavior rather than repeated policy text"
     ],
     "must_not": [
       "Publish tasks or require sign-in to draft them",
       "Reopen settled decisions without new evidence",
       "Claim implementation or verification already happened"
+    ]
+  },
+  {
+    "id": "structured-rule-retention",
+    "workflow": "bootstrap",
+    "sources": "supplied",
+    "context": "Synthetic existing software project. Current PRD: private revisioned notes; only owners may edit; conflicting saves preserve the unsaved draft; deleting a tag never deletes independent notes. Existing agent policy has separate Working Rules, Task Workflow, Task Structure, Repository Rules, Completion Response, Context Efficiency, Testing, and Human Control sections. Direct chat implementation requests do not create issues. Tracker scope is Core / Notes; states are Queued, Active, Review, Done; issue-backed changes use the issue-supplied branch name, open and link a human-reviewed PR, enter Review, and become Done only after merge. Never commit to the integration branch main; check before first edit and every commit/push. No automatic merge or new end-to-end suite without authorization. Task fields include model/reasoning recommendations, observable acceptance, real dependencies, and concrete manual checks. Issue completion uses Current (PR/task/validation) and Next (approved unblocked task/model/reason) sections. CLAUDE.md currently has the tool-specific instruction to use concise progress updates. Read-only context; output complete Markdown contents, no actual writes or service access.",
+    "user": "Refresh the project documents using file delivery. Preserve the approved note behavior and existing operating conventions. Do not implement the application or create tasks.",
+    "must": [
+      "Deliver PRD.md, a structured AGENTS.md, and CLAUDE.md with an unfenced @AGENTS.md import while preserving the existing Claude-specific addition",
+      "Preserve separate headings, explicit numbered task execution, chat-versus-issue behavior, tracker scope/states/branch/review/completion conventions, meaningful testing, and human control",
+      "Preserve the task schema including model/reasoning and manual-test fields and the Current / Next completion format",
+      "Preserve note ownership, revision-conflict draft recovery, and independent tag/note relationships",
+      "Use actual document names and the planning URL in the handoff without requiring a new delivery choice"
+    ],
+    "must_not": [
+      "Compress working rules into a generic summary or drop workflow/response fields to satisfy a word budget",
+      "Invent task links, model names, successful checks, unrelated technologies, or completion evidence",
+      "Duplicate shared rules across both agent entry files or create circular/prose-only imports",
+      "Create tasks, implement the application, or modify destinations"
+    ]
+  },
+  {
+    "id": "specific-task-proposal",
+    "workflow": "planning",
+    "sources": "supplied",
+    "context": "Synthetic task-planning fixture. Approved requirement NOTE-7: an owner edits a private note; a stale revision is rejected while preserving the unsaved draft; after an uncertain save result reconcile the mutation ID before retrying so one action cannot create duplicate revisions. No sharing or offline writes. The agreed solution reuses the existing ownership guard, revision check, and mutation-result lookup. Inspected areas: notes/editor.ts, notes/save.ts, tests/note-save.test.ts. Existing ownership task REC-12 is merged, so it is not an active blocker. The editor already exists and permits meaningful browser checks. Existing agent rules require Description, Scope, Suggested Models & Reasoning, numbered Acceptance Criteria, real Dependencies/readiness, Execution Context and Verification, and Manual Test. No model catalog is available; exact model names must remain unverified while capability/reasoning is recommended. No real issue-write tools are available. No test commands were supplied or executed.",
+    "user": "We agreed the behavior and solution. Draft one executable task for safe note edits under NOTE-7. Do not publish or implement it.",
+    "must": [
+      "Produce the established named task sections, including model capability/reasoning with exact names unverified",
+      "Make criteria specific to owner edits, stale revisions with retained drafts, and mutation-result reconciliation without duplicate revisions",
+      "Reference inspected areas and reuse existing guards/checks; state readiness and the already-completed prerequisite accurately",
+      "Give concrete manual steps with an owner note, conflicting edits in two sessions, and expected draft/authoritative-state outcomes",
+      "Provide focused verification without invented commands or claims of completed validation, then stop for review"
+    ],
+    "must_not": [
+      "Restart settled brainstorming or require tracker/model setup before drafting",
+      "Use generic quality adjectives as acceptance criteria or repeat global policy padding in place of execution details",
+      "Invent blockers, model names, files, task links, commands, or completed tests",
+      "Publish issues, implement code, or fabricate an implementation PR in a completion format"
     ]
   }
 ]
